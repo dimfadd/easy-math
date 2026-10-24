@@ -21,7 +21,7 @@
   --mut-soft: #ECE7DC;
   --pos: #1F5FAD;
   --pos-soft: #DCE8F7;
-  --neg: #BD3626;
+  --neg: #B32F1F;
   --neg-soft: #F8DEDA;
   --acc: #E5A91F;
   --acc-soft: #FCEBBF;
@@ -29,6 +29,7 @@
   --ok: #1B7349;
   --ok-soft: #D5EEDF;
   --onfill: #FFFFFF;
+  --on-acc: #1D2733;
   --focus: #1F5FAD;
   --shadow: 0 1px 0 rgba(29, 39, 51, .06), 0 8px 24px -14px rgba(29, 39, 51, .35);
   --radius: 14px;
@@ -42,7 +43,7 @@
   :root:not([data-theme="light"]) {
     --bg: #12161C; --paper: #1B2129; --ink: #EEE8DA; --ink-2: #B9C0CA; --line: #313A46; --mut: #5E6A78; --mut-soft: #262E38;
     --pos: #7EB2EE; --pos-soft: #1D3250; --neg: #F28C7B; --neg-soft: #4A2520; --acc: #F2BE45; --acc-soft: #48391A; --acc-ink: #F6D27E;
-    --ok: #6ED3A1; --ok-soft: #173A2A; --onfill: #10151B; --focus: #7EB2EE;
+    --ok: #6ED3A1; --ok-soft: #173A2A; --onfill: #10151B; --on-acc: #10151B; --focus: #7EB2EE;
     --shadow: 0 1px 0 rgba(0,0,0,.4), 0 10px 26px -16px rgba(0,0,0,.8);
     color-scheme: dark;
   }
@@ -50,7 +51,7 @@
 :root[data-theme="dark"] {
   --bg: #12161C; --paper: #1B2129; --ink: #EEE8DA; --ink-2: #B9C0CA; --line: #313A46; --mut: #5E6A78; --mut-soft: #262E38;
   --pos: #7EB2EE; --pos-soft: #1D3250; --neg: #F28C7B; --neg-soft: #4A2520; --acc: #F2BE45; --acc-soft: #48391A; --acc-ink: #F6D27E;
-  --ok: #6ED3A1; --ok-soft: #173A2A; --onfill: #10151B; --focus: #7EB2EE;
+  --ok: #6ED3A1; --ok-soft: #173A2A; --onfill: #10151B; --on-acc: #10151B; --focus: #7EB2EE;
   --shadow: 0 1px 0 rgba(0,0,0,.4), 0 10px 26px -16px rgba(0,0,0,.8);
   color-scheme: dark;
 }
@@ -279,6 +280,7 @@ h1:focus { outline: none; }
 .c-ok { fill: var(--ok); color: var(--ok); }
 .c-mut { fill: var(--ink-2); color: var(--mut); }
 .c-onfill { fill: var(--onfill); color: var(--onfill); }
+.c-onacc { fill: var(--on-acc); color: var(--on-acc); }
 .f-none { fill: none; } .f-paper { fill: var(--paper); } .f-ink { fill: var(--ink); }
 .f-pos { fill: var(--pos); } .f-pos-soft { fill: var(--pos-soft); }
 .f-neg { fill: var(--neg); } .f-neg-soft { fill: var(--neg-soft); }

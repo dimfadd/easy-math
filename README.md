@@ -1,0 +1,104 @@
+# Easy Math · Matematika SMP Kelas 7
+
+Media pembelajaran matematika berbentuk PWA: setiap materi berupa animasi
+bercerita (dimulai dari pertanyaan, dijawab dengan benda yang bisa dilihat),
+diikuti soal latihan yang menjelaskan letak keliru setiap jawaban salah.
+
+- 8 bab, 27 materi animasi, 213 soal (135 soal latihan, 54 pertanyaan "tebak dulu"
+  di dalam animasi, 24 soal tambahan untuk uji bab).
+- Ukuran HP, tablet, dan laptop. Tema terang dan gelap.
+- Bisa dipasang ke layar utama dan dipakai offline setelah kunjungan pertama.
+- Narasi tampil sebagai teks. Kalau perangkat punya suara Bahasa Indonesia
+  (Web Speech API), narasi juga dibacakan.
+- Progres disimpan di perangkat (localStorage), tanpa akun dan tanpa server.
+
+| Bab | Materi |
+|---|---|
+| 1. Bilangan Bulat | garis bilangan, tambah, kurang, kali, bagi |
+| 2. Bilangan Rasional | pecahan senilai, operasi pecahan, desimal, persen |
+| 3. Bentuk Aljabar | suku sejenis, ubin aljabar, perkalian distributif |
+| 4. Persamaan dan Pertidaksamaan Linear | timbangan, pertidaksamaan di garis bilangan |
+| 5. Rasio dan Perbandingan | rasio, senilai, berbalik nilai, skala |
+| 6. Garis dan Sudut | busur derajat, hubungan antarsudut, garis sejajar |
+| 7. Segitiga dan Segi Empat | jumlah sudut segitiga, keliling, luas bangun datar |
+| 8. Data dan Diagram | turus, tabel frekuensi, diagram batang, garis, lingkaran |
+
+## Menjalankan di komputer
+
+Tidak perlu build atau `npm install`. Cukup server statis untuk folder `web/`:
+
+```sh
+python3 -m http.server 8765 --directory web
+```
+
+Buka http://localhost:8765. Service worker hanya aktif di `localhost` atau HTTPS.
+
+## Deploy ke Vercel
+
+1. Di Vercel, pilih **Add New → Project**, lalu impor repo `dimfadd/easy-math`.
+2. **Framework Preset: Other**. Kosongkan Build Command dan Install Command.
+3. `vercel.json` sudah mengarahkan output ke folder `web`. Kalau Vercel tetap
+   menampilkan daftar file repo, ubah **Root Directory** menjadi `web`.
+4. Pilih branch yang berisi website ini sebagai Production Branch
+   (saat ini `claude/peaceful-faraday-coz3ok`), atau gabungkan dulu ke branch utama.
+
+`.vercelignore` mengecualikan folder riset (`ig-analysis/`) dan `tests/` dari upload.
+
+## Struktur
+
+```
+web/
+  index.html, manifest.webmanifest, sw.js
+  css/app.css          tampilan, token warna terang/gelap, tata letak responsif
+  js/app.js            router dan halaman (beranda, bab, materi, latihan, uji bab)
+  js/player.js         pemutar animasi: langkah, narasi, pertanyaan di tengah materi
+  js/shapes.js         bentuk SVG (teks, pecahan, keping, garis bilangan, diagram, busur, dll.)
+  js/quiz.js           latihan soal dan pemeriksa jawaban isian
+  js/store.js          progres di localStorage
+  js/speech.js         narasi suara bawaan perangkat
+  content/b1.js … b8.js  isi setiap bab
+  content/helpers.js   fungsi bantu menulis materi
+tests/                 uji otomatis (Playwright)
+ig-analysis/           riset referensi video (@akalmatika, @nasrularifin26)
+```
+
+## Menulis atau mengubah materi
+
+Satu materi berisi beberapa bagian (`chapters`). Setiap langkah (`steps`) punya
+narasi `say` dan mengubah panggung 400 × 300 dengan `add`, `set`, `del`, atau
+`clear`. Pemutar menganimasikan perbedaan antarlangkah secara otomatis.
+
+```js
+{
+  say: 'Pasangkan biru dengan merah. Ada 3 pasangan nol.',
+  add: [box('pr0', 110, 146, 36, 92, { dash: '5 4' })],
+  set: { q: { text: '{p:5} + ({n:−3}) = {p:2}' } },
+  ask: { options: [{ t: '2', ok: true }, { t: '8', why: 'Penjelasan kenapa salah' }] },
+}
+```
+
+Warna di teks: `{p:…}` biru (positif), `{n:…}` merah (negatif), `{a:…}` kuning,
+`{g:…}` hijau. Setiap opsi salah wajib punya `why`. Soal isian memakai
+`type: 'num'` dengan `ans` (bisa menerima pecahan, desimal koma, dan 112.000).
+
+Setelah mengubah isi, naikkan `VERSION` di `web/sw.js` supaya perangkat yang
+sudah memasang aplikasi mengambil versi baru.
+
+## Uji otomatis
+
+Jalankan server lokal dulu, lalu:
+
+```sh
+BASE=http://localhost:8765/ node tests/smoke.cjs     # semua halaman, semua langkah, 3 ukuran layar
+node tests/answers.mjs                                # pemeriksa jawaban isian
+BASE=http://localhost:8765/ node tests/offline.cjs   # service worker dan mode offline
+BASE=http://localhost:8765/ OUT=shots node tests/shots.cjs && sh tests/sheets.sh shots
+```
+
+`smoke.cjs` memeriksa error, overflow horizontal, objek keluar panggung, teks
+bertumpuk, objek kosong, id bentrok, dan soal tanpa kunci atau tanpa penjelasan.
+Butuh Node 18+ dan paket `playwright`.
+
+## Lisensi font
+
+Nunito dan Fraunces, SIL Open Font License 1.1 (lihat `web/fonts/`).

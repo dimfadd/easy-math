@@ -42,7 +42,7 @@ function tspans(str) {
 
 // Warna teks yang terbaca di atas isian tertentu
 export const onCls = (fill) =>
-  !fill || fill === 'paper' || fill === 'none' || fill.startsWith('acc') || fill.endsWith('-soft') ? 'c-ink' : 'c-onfill';
+  fill === 'acc' ? 'c-onacc' : !fill || fill === 'paper' || fill === 'none' || fill.endsWith('-soft') ? 'c-ink' : 'c-onfill';
 
 const n = (v, d = 0) => (v === undefined || v === null ? d : v);
 const r2 = (v) => Math.round(v * 100) / 100;
