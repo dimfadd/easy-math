@@ -5,7 +5,7 @@ ffmpeg, simpan frame di `ig-analysis/frames/<shortCode>/`, lalu analisis
 visualnya (hook 3 detik pertama, teks di layar, gaya ilustrasi, tempo).
 
 ## Status
-- Sesi sebelumnya: semua domain Instagram (`instagram.com`, `cdninstagram.com`,
+- Sesi sebelumnya (lama): semua domain Instagram (`instagram.com`, `cdninstagram.com`,
   `fbcdn.net`) dan `instasave.website` diblokir jaringan sandbox.
 - Pemilik sudah menambahkan domain di pengaturan environment. Perubahan ini
   baru berlaku di sesi/container baru.
@@ -54,3 +54,10 @@ Non-video: DdiFio3E7RO (carousel sudut 15°/75°), DdwvRVok7iR (carousel modulo
   ~200–260 tayangan.
 - Topik yang laku: miskonsepsi dasar SD/SMP. Soal UTBK/olimpiade sepi.
 - Caption viral: santai, huruf kecil, satu klaim tajam.
+
+## Progres
+- 24 Okt 2026: koneksi CDN Instagram tembus. Video #1 (De3AtMHTGaK) selesai:
+  frame di `frames/De3AtMHTGaK/`, analisis di `01_De3AtMHTGaK.md`.
+  Cara ambil link per video (lebih hemat): `apify/instagram-scraper` dengan
+  `directUrls: ["https://www.instagram.com/reel/<shortCode>/"]`, `resultsType: posts`.
+  Berikutnya: #2 Dex5IX6tdiY.
