@@ -71,6 +71,15 @@ function arrowHead(x1, y1, x2, y2, size) {
   return `<polygon points="${p.map((q) => q.map(r2).join(',')).join(' ')}" fill="currentColor"/>`;
 }
 
+// Label sudut: diletakkan sedikit di luar busur, pada sudut tengahnya
+function labelAt(p, r, deg, c) {
+  const lr = r + n(p.lpad, 15);
+  const a = (deg * Math.PI) / 180;
+  const x = r2(lr * Math.cos(a));
+  const y = r2(-lr * Math.sin(a));
+  return `<text class="t c-${p.lc || (c === 'acc' ? 'ink' : c)}" x="${x}" y="${y}" font-size="${n(p.lsize, 15)}" font-weight="800" text-anchor="middle" dominant-baseline="central">${tspans(p.label)}</text>`;
+}
+
 // ---------- Garis bilangan ----------
 export const NL_PAD = 16;
 export function nlX(cfg, v) {
@@ -371,6 +380,7 @@ const TYPES = {
       const r1 = r - (d % 30 === 0 ? 14 : big ? 9 : 5);
       s += `<line x1="${r2(r * Math.cos(a))}" y1="${r2(-r * Math.sin(a))}" x2="${r2(r1 * Math.cos(a))}" y2="${r2(-r1 * Math.sin(a))}" class="s-ink" stroke-width="${big ? 1.5 : 1}"/>`;
       if (d % 30 === 0) s += `<text class="t c-ink" x="${r2((r - 24) * Math.cos(a))}" y="${r2(-(r - 24) * Math.sin(a))}" font-size="11" font-weight="800" text-anchor="middle" dominant-baseline="central">${d}</text>`;
+      if (p.double && d % 30 === 0) s += `<text class="t c-mut" x="${r2((r - 40) * Math.cos(a))}" y="${r2(-(r - 40) * Math.sin(a))}" font-size="9.5" font-weight="700" text-anchor="middle" dominant-baseline="central">${180 - d}</text>`;
     }
     return s + `<circle r="3" class="f-ink s-ink" stroke-width="1"/>`;
   },
