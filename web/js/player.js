@@ -75,6 +75,7 @@ export class Stage {
         node = this.create(p, key, instant);
       } else if (node.key !== key) {
         node.fx.innerHTML = innerSVG(instant ? { ...p, draw: false } : p);
+        node.g.setAttribute('data-t', p.t || 'text');
         node.key = key;
       }
       this.place(node, p);
