@@ -748,6 +748,7 @@ const l4 = {
         { say: 'Lalu minus 1 kali minus 4? Polanya harus naik 4 lagi.', add: [multRow(4, false), plus4(3)], hl: ['r4'] },
         {
           say: 'Jadi minus 1 kali minus 4 sama dengan 4. Minus 2 kali minus 4 sama dengan 8. Minus 3 kali minus 4 sama dengan 12.',
+          replace: true,
           add: [multRow(4), multRow(5), multRow(6), plus4(4), plus4(5)],
         },
         { say: 'Negatif dikali negatif hasilnya positif. Ini bukan aturan sembarangan. Polanya yang memaksa begitu.', hl: ['r6'] },

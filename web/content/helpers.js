@@ -1,5 +1,5 @@
 // Fungsi bantu untuk menulis materi. Panggung: 400 × 300.
-import { nlX, panPos } from '../js/shapes.js';
+import { nlX, panPos, stripMarkup } from '../js/shapes.js';
 
 // Teks
 export const T = (id, text, x, y, o = {}) => ({ id, t: 'text', text, x, y, size: 26, w: 800, ...o });
@@ -93,3 +93,42 @@ export function onPan(pan, count, { size = 22, gap = 3, cols = 4 } = {}) {
 
 // Tabel cepat
 export const table = (id, x, y, rows, o = {}) => ({ id, t: 'table', x, y, rows, ...o });
+
+// Model luas: persegi panjang dibagi rows × cols sel. fill(r, c) -> kelas warna
+export function areaCells(prefix, x, y, w, h, rows, cols, fill = () => 'paper') {
+  const cw = w / cols;
+  const ch = h / rows;
+  const els = [];
+  for (let r = 0; r < rows; r++)
+    for (let c = 0; c < cols; c++)
+      els.push({ id: `${prefix}${r}_${c}`, t: 'rect', x: x - w / 2 + cw * (c + 0.5), y: y - h / 2 + ch * (r + 0.5), w: cw, h: ch, r: 0, fill: fill(r, c), stroke: 'ink', sw: 1.5 });
+  return els;
+}
+export function areaFill(prefix, rows, cols, fill) {
+  const out = {};
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) out[`${prefix}${r}_${c}`] = { fill: fill(r, c) };
+  return out;
+}
+
+// Batang pecahan
+export const bar = (id, x, y, parts, filled, o = {}) => ({ id, t: 'bar', x, y, w: 300, h: 34, parts, filled, ...o });
+
+// Baris persamaan yang memuat pecahan bertumpuk.
+// items: string (teks biasa, boleh markup warna) atau [pembilang, penyebut, opsi?]
+// Contoh: eqRow('r', 120, [[1, 2], '+', [1, 3], '=', [5, 6]])
+export function eqRow(prefix, y, items, { size = 26, cx = 200, gap = 8, c } = {}) {
+  const fs = size * 0.82;
+  const w = items.map((it) =>
+    Array.isArray(it) ? Math.max(String(it[0]).length, String(it[1]).length) * fs * 0.6 + fs * 0.4 : Math.max(1, stripMarkup(String(it)).length) * size * 0.56,
+  );
+  const total = w.reduce((a, b) => a + b, 0) + gap * (items.length - 1);
+  let x = cx - total / 2;
+  return items.map((it, i) => {
+    const xm = x + w[i] / 2;
+    x += w[i] + gap;
+    // teks berisi spasi saja hanya dipakai sebagai jarak
+    if (!Array.isArray(it) && !String(it).trim()) return null;
+    if (Array.isArray(it)) return { id: `${prefix}${i}`, t: 'frac', n: it[0], d: it[1], x: xm, y, size: fs, ...(c ? { c } : {}), ...(it[2] || {}) };
+    return { id: `${prefix}${i}`, t: 'text', text: String(it), x: xm, y, size, w: 800, ...(c ? { c } : {}) };
+  }).filter(Boolean);
+}

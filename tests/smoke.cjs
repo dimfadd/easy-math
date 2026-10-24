@@ -46,7 +46,13 @@ async function validateContent(page) {
             for (const o of q.options || []) if (!o.ok && !o.why) out.push(`${l.id}: opsi salah tanpa penjelasan "${o.t}" di: ${q.q}`);
           }
         }
-        for (const c of l.chapters) for (const s of c.steps) if (!s.say) out.push(`${l.id}/${c.title}: langkah tanpa narasi`);
+        for (const c of l.chapters)
+          for (const s of c.steps) {
+            if (!s.say) out.push(`${l.id}/${c.title}: langkah tanpa narasi`);
+            const ids = [].concat(s.add || []).flat(Infinity).filter(Boolean).map((e) => e.id);
+            const dup = ids.filter((x, k) => ids.indexOf(x) !== k);
+            if (dup.length) out.push(`${l.id}/${c.title}: id ganda dalam satu langkah: ${[...new Set(dup)].join(', ')}`);
+          }
       }
       for (const q of b.extra || []) {
         if (q.type !== 'num' && (q.options || []).filter((o) => o.ok).length !== 1) out.push(`${b.id} extra: jumlah jawaban benar salah: ${q.q}`);
@@ -63,6 +69,17 @@ async function checkFrames(page, id, vpName) {
     const out = [];
     const svg = document.querySelector('.stage');
     P.pause();
+    // objek baru yang menimpa objek lama yang masih tampil (biasanya id bentrok tanpa sengaja)
+    for (let i = 1; i < P.frames.length; i++) {
+      const st = P.frames[i].step;
+      if (st.clear) continue;
+      const prev = P.frames[i - 1].state;
+      const dels = [].concat(st.del || []);
+      for (const e of [].concat(st.add || []).flat(Infinity).filter(Boolean)) {
+        const deleted = dels.some((d) => (d.endsWith('*') ? e.id.startsWith(d.slice(0, -1)) : d === e.id));
+        if (prev.has(e.id) && !deleted && !st.replace) out.push(`langkah ${i + 1}: "${e.id}" ditambahkan lagi dan menimpa objek lama`);
+      }
+    }
     for (let i = 0; i < P.frames.length; i++) {
       P.show(i, { instant: true });
       const sr = svg.getBoundingClientRect();

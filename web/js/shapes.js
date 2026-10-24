@@ -245,11 +245,13 @@ const TYPES = {
     const pw = w / parts;
     let s = '';
     for (let i = 0; i < parts; i++) {
-      const on = Array.isArray(p.filled) ? p.filled.includes(i) : i < n(p.filled, 0);
-      s += `<rect x="${r2(-w / 2 + i * pw)}" y="${-h / 2}" width="${r2(pw)}" height="${h}" class="${on ? `f-${p.fc || 'pos'}` : 'f-paper'} s-ink" stroke-width="2"/>`;
+      // colors: daftar kelas warna per potongan (null = kosong); kalau tidak ada, pakai filled + fc
+      const fc = p.colors ? p.colors[i] || null : (Array.isArray(p.filled) ? p.filled.includes(i) : i < n(p.filled, 0)) ? p.fc || 'pos' : null;
+      const on = !!fc;
+      s += `<rect x="${r2(-w / 2 + i * pw)}" y="${-h / 2}" width="${r2(pw)}" height="${h}" class="${on ? `f-${fc}` : 'f-paper'} s-ink" stroke-width="2"/>`;
       if (p.lab) {
         const lab = typeof p.lab === 'string' ? p.lab : p.lab[i];
-        if (lab) s += `<text class="t ${on ? onCls(p.fc || 'pos') : 'c-ink'}" x="${r2(-w / 2 + (i + 0.5) * pw)}" y="0" font-size="${n(p.lsize, Math.min(h * 0.45, 16))}" font-weight="800" text-anchor="middle" dominant-baseline="central">${esc(lab)}</text>`;
+        if (lab) s += `<text class="t ${on ? onCls(fc) : 'c-ink'}" x="${r2(-w / 2 + (i + 0.5) * pw)}" y="0" font-size="${n(p.lsize, Math.min(h * 0.45, 16))}" font-weight="800" text-anchor="middle" dominant-baseline="central">${esc(lab)}</text>`;
       }
     }
     return s + `<rect x="${-w / 2}" y="${-h / 2}" width="${w}" height="${h}" rx="3" class="f-none s-ink" stroke-width="2.5"/>`;
