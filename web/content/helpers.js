@@ -51,9 +51,10 @@ export const F = (id, nn, d, x, y, o = {}) => ({ id, t: 'frac', n: nn, d, x, y, 
 
 // Timbangan dua lengan. Mengembalikan elemen dasar + posisi piring.
 // tilt: derajat, positif = sisi kanan turun.
+export const PAN_Y = 52;
 export function balance(prefix, cx, cy, tilt = 0, len = 120) {
   const pans = panPos(cx, cy, len, tilt);
-  const panY = 34;
+  const panY = PAN_Y;
   const els = [
     { id: `${prefix}base`, t: 'poly', x: cx, y: cy, pts: [[-26, 96], [26, 96], [0, 0]], fill: 'mut-soft', stroke: 'ink', sw: 2.5, z: -2 },
     { id: `${prefix}beam`, t: 'rect', x: cx, y: cy, w: len * 2 + 16, h: 8, r: 4, fill: 'ink', stroke: 'ink', sw: 1, rot: tilt, z: -1 },
@@ -69,7 +70,7 @@ export function balance(prefix, cx, cy, tilt = 0, len = 120) {
 // Posisi "set" timbangan untuk kemiringan baru (dipakai bersama balance())
 export function tiltSet(prefix, cx, cy, tilt, len = 120) {
   const pans = panPos(cx, cy, len, tilt);
-  const panY = 34;
+  const panY = PAN_Y;
   return {
     [`${prefix}beam`]: { rot: tilt },
     [`${prefix}panL`]: { x: pans.left.x, y: pans.left.y + panY },
