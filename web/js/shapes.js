@@ -322,7 +322,7 @@ const TYPES = {
       const i = data.indexOf(d);
       return [r2(-w / 2 + gap * (i + 0.5)), r2(h / 2 - (d.v / max) * h)];
     });
-    if (pts.length > 1) s += `<g class="c-${p.fc || 'pos'}"><polyline points="${pts.map((q) => q.join(',')).join(' ')}" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" pathLength="1" class="ln draw"/></g>`;
+    if (pts.length > 1) s += `<g class="c-${p.fc || 'pos'}"><polyline points="${pts.map((q) => q.join(',')).join(' ')}" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" pathLength="1" class="ln${p.draw !== false ? ' draw' : ''}"/></g>`;
     data.forEach((d, i) => {
       const cx = r2(-w / 2 + gap * (i + 0.5));
       s += `<text class="t c-ink" x="${cx}" y="${r2(h / 2 + 14)}" font-size="${n(p.lsize, 12)}" font-weight="700" text-anchor="middle" dominant-baseline="central">${esc(d.l)}</text>`;
