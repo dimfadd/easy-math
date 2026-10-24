@@ -128,7 +128,8 @@ export class Stage {
   place(node, p) {
     node.g.style.transform = `translate(${p.x ?? 0}px, ${p.y ?? 0}px)`;
     node.g.style.opacity = String(p.o ?? 1);
-    node.rs.style.transform = `rotate(${p.rot ?? 0}deg) scale(${p.s ?? 1})`;
+    const sc = p.s ?? 1;
+    node.rs.style.transform = `rotate(${p.rot ?? 0}deg) scale(${sc * (p.sx ?? 1)}, ${sc * (p.sy ?? 1)})`;
   }
 
   remove(id, node, instant) {

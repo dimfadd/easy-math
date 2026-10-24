@@ -122,7 +122,10 @@ const TYPES = {
       p.label !== undefined
         ? textBlock({ text: p.label, w: n(p.lw, 800) }, n(p.lsize, Math.min(h * 0.55, 20)), `c-${p.lc || 'ink'}`)
         : '';
-    return `<rect x="${r2(-w / 2)}" y="${r2(-h / 2)}" width="${w}" height="${h}" rx="${n(p.r, 6)}" class="f-${p.fill || 'paper'} s-${p.stroke || 'ink'}" stroke-width="${n(p.sw, 2)}"${dash}/>${label}`;
+    // anchor 'bottom': titik (x,y) ada di tengah sisi bawah (untuk batang yang tumbuh ke atas)
+    const oy = p.anchor === 'bottom' ? -h / 2 : 0;
+    const rectEl = `<rect x="${r2(-w / 2)}" y="${r2(-h / 2 + oy)}" width="${w}" height="${h}" rx="${n(p.r, 6)}" class="f-${p.fill || 'paper'} s-${p.stroke || 'ink'}" stroke-width="${n(p.sw, 2)}"${dash}/>`;
+    return oy ? `${rectEl}<g transform="translate(0,${r2(oy)})">${label}</g>` : `${rectEl}${label}`;
   },
 
   circle(p) {
@@ -294,17 +297,19 @@ const TYPES = {
     const w = n(p.w, 300);
     const h = n(p.h, 180);
     const max = n(p.max, Math.max(1, ...data.map((d) => d.v)));
+    const min = n(p.min, 0);
     const gap = w / Math.max(1, data.length);
     const bw = gap * n(p.bw, 0.6);
-    const tick = n(p.tick, max <= 10 ? 1 : max <= 20 ? 2 : 5);
+    const tick = n(p.tick, max - min <= 10 ? 1 : max - min <= 20 ? 2 : 5);
+    const yOf = (v) => r2(h / 2 - ((v - min) / (max - min)) * h);
     let s = `<g class="c-ink"><line x1="${-w / 2}" y1="${h / 2}" x2="${w / 2}" y2="${h / 2}" stroke="currentColor" stroke-width="2"/><line x1="${-w / 2}" y1="${h / 2}" x2="${-w / 2}" y2="${-h / 2 - 6}" stroke="currentColor" stroke-width="2"/></g>`;
-    for (let v = 0; v <= max + 1e-9; v += tick) {
-      const y = r2(h / 2 - (v / max) * h);
-      s += `<line x1="${-w / 2 - 4}" x2="${w / 2}" y1="${y}" y2="${y}" class="s-mut" stroke-width="${v === 0 ? 0 : 1}" stroke-dasharray="3 4"/><text class="t c-ink" x="${-w / 2 - 8}" y="${y}" font-size="11" font-weight="700" text-anchor="end" dominant-baseline="central">${r2(v)}</text>`;
+    for (let v = min; v <= max + 1e-9; v += tick) {
+      const y = yOf(v);
+      s += `<line x1="${-w / 2 - 4}" x2="${w / 2}" y1="${y}" y2="${y}" class="s-mut" stroke-width="${v === min ? 0 : 1}" stroke-dasharray="3 4"/><text class="t c-ink" x="${-w / 2 - 8}" y="${y}" font-size="11" font-weight="700" text-anchor="end" dominant-baseline="central">${r2(v)}</text>`;
     }
     data.forEach((d, i) => {
       const cx = -w / 2 + gap * (i + 0.5);
-      const bh = (n(d.show, 1) ? d.v / max : 0) * h;
+      const bh = n(d.show, 1) ? h / 2 - yOf(d.v) : 0;
       const cls = d.c || p.fc || 'pos';
       s += `<rect class="barfill f-${cls}" x="${r2(cx - bw / 2)}" y="${r2(h / 2 - bh)}" width="${r2(bw)}" height="${r2(Math.max(0, bh))}" rx="2"/>`;
       s += `<text class="t c-ink" x="${r2(cx)}" y="${r2(h / 2 + 14)}" font-size="${n(p.lsize, 12)}" font-weight="700" text-anchor="middle" dominant-baseline="central">${esc(d.l)}</text>`;
@@ -348,8 +353,10 @@ const TYPES = {
   pie(p) {
     const r = n(p.r, 80);
     const vals = p.values || [];
-    const total = vals.reduce((a, b) => a + b, 0) || 1;
+    let s0 = '';
+    const total = n(p.total, vals.reduce((a, b) => a + b, 0)) || 1;
     const cls = p.cls || [];
+    if (p.total) s0 = `<circle r="${r}" class="f-paper s-mut" stroke-width="1.5" stroke-dasharray="4 4"/>`;
     let a = -90;
     let s = '';
     vals.forEach((v, i) => {
@@ -367,7 +374,7 @@ const TYPES = {
       }
       a = a2;
     });
-    return s;
+    return s0 + s;
   },
 
   // Busur derajat (setengah lingkaran), pusat di (0,0)
