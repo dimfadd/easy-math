@@ -61,3 +61,11 @@ Non-video: DdiFio3E7RO (carousel sudut 15°/75°), DdwvRVok7iR (carousel modulo
   Cara ambil link per video (lebih hemat): `apify/instagram-scraper` dengan
   `directUrls: ["https://www.instagram.com/reel/<shortCode>/"]`, `resultsType: posts`.
   Berikutnya: #2 Dex5IX6tdiY.
+- 24 Okt 2026 (lanjutan): 12 reel terbaru akalmatika + 6 reel terbaru
+  nasrularifin26 selesai: frame, contact sheet, transkrip, metadata, dan
+  `SINTESIS.md`. Struktur frame pindah ke `frames/<akun>/<shortCode>/`.
+  Whisper lokal tidak bisa dipakai: `huggingface.co` diblokir jaringan sandbox.
+  Transkrip dibuat lewat actor Apify
+  `scraping_solutions/instagram-reels-transcript-scraper-audio-to-text`
+  (`transcriptionMode: ai-only`, `language: id`), biaya ≈ $0,29 untuk 18 video.
+  Langkah berikutnya: rancang website (materi animasi + soal).
