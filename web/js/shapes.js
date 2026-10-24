@@ -56,7 +56,7 @@ function textBlock(p, size, cls = '') {
   const body = lines
     .map((ln, i) => `<tspan x="0" y="${r2(y0 + i * lh)}">${tspans(ln)}</tspan>`)
     .join('');
-  return `<text class="t${font} ${cls}" font-size="${size}" font-weight="${n(p.w, 700)}" text-anchor="${anchor}" dominant-baseline="central">${body}</text>`;
+  return `<text class="t${font} ${cls}" xml:space="preserve" font-size="${size}" font-weight="${n(p.w, 700)}" text-anchor="${anchor}" dominant-baseline="central">${body}</text>`;
 }
 
 function arrowHead(x1, y1, x2, y2, size) {

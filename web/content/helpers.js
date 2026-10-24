@@ -113,13 +113,19 @@ export function areaFill(prefix, rows, cols, fill) {
 // Batang pecahan
 export const bar = (id, x, y, parts, filled, o = {}) => ({ id, t: 'bar', x, y, w: 300, h: 34, parts, filled, ...o });
 
+// Perkiraan lebar teks (Nunito tebal) dalam satuan panggung
+const CW = { ' ': 0.27, '(': 0.34, ')': 0.34, ',': 0.27, '.': 0.27, ':': 0.27, '−': 0.6, '+': 0.6, '=': 0.6, '×': 0.56, '÷': 0.6, '<': 0.6, '>': 0.6, '%': 0.85, '²': 0.38, 'm': 0.86, 'w': 0.8 };
+export function textWidth(str, size) {
+  return [...stripMarkup(String(str))].reduce((a, ch) => a + (CW[ch] ?? (/[0-9]/.test(ch) ? 0.58 : /[A-Z]/.test(ch) ? 0.66 : 0.53)), 0) * size;
+}
+
 // Baris persamaan yang memuat pecahan bertumpuk.
 // items: string (teks biasa, boleh markup warna) atau [pembilang, penyebut, opsi?]
 // Contoh: eqRow('r', 120, [[1, 2], '+', [1, 3], '=', [5, 6]])
-export function eqRow(prefix, y, items, { size = 26, cx = 200, gap = 8, c } = {}) {
+export function eqRow(prefix, y, items, { size = 26, cx = 200, gap = 11, c } = {}) {
   const fs = size * 0.82;
   const w = items.map((it) =>
-    Array.isArray(it) ? Math.max(String(it[0]).length, String(it[1]).length) * fs * 0.6 + fs * 0.4 : Math.max(1, stripMarkup(String(it)).length) * size * 0.56,
+    Array.isArray(it) ? Math.max(textWidth(it[0], fs), textWidth(it[1], fs)) + fs * 0.4 : Math.max(size * 0.3, textWidth(it, size)),
   );
   const total = w.reduce((a, b) => a + b, 0) + gap * (items.length - 1);
   let x = cx - total / 2;
