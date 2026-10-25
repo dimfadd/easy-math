@@ -10,6 +10,7 @@ import b8 from './b8.js';
 import b9 from './b9.js';
 import { K1 } from './k1/index.js';
 import { K2 } from './k2/index.js';
+import { K3 } from './k3/index.js';
 import { K8 } from './k8/index.js';
 import { K9 } from './k9/index.js';
 import { K10 } from './k10/index.js';
@@ -34,6 +35,14 @@ export const KELAS = [
     desc: 'Puluhan dan satuan sampai 100, penjumlahan dan pengurangan, bentuk, posisi dan pola, pecahan, pengukuran, dan diagram.',
     foot: 'Materi mengacu pada buku Matematika Kelas II Kurikulum Merdeka (Fase A). Anak kelas 2 sebaiknya belajar ditemani orang tua atau guru.',
     babs: K2,
+  },
+  {
+    no: 3,
+    jenjang: 'SD',
+    fase: 'B',
+    desc: 'Bilangan sampai 1.000, kalimat matematika, perkalian dan pembagian, pengukuran panjang dan berat, unsur bangun datar, dan tabel.',
+    foot: 'Materi mengacu pada buku Matematika Kelas III Kurikulum Merdeka (Fase B), ditambah perkalian dan pembagian sampai 100 dari capaian pembelajaran Fase B.',
+    babs: K3,
   },
   {
     no: 7,
