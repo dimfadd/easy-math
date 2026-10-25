@@ -1,7 +1,7 @@
 {
   "name": "Easy Math · Matematika SMP & SMA",
   "short_name": "Easy Math",
-  "description": "Materi matematika SMP dan SMA kelas 7 sampai 12 (termasuk Matematika Tingkat Lanjut kelas 11) dalam animasi bercerita, dengan soal latihan dan pembahasan.",
+  "description": "Materi matematika SMP dan SMA kelas 7 sampai 12 (termasuk Matematika Tingkat Lanjut) dalam animasi bercerita, dengan soal latihan dan pembahasan.",
   "lang": "id",
   "start_url": "./",
   "scope": "./",

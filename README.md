@@ -1,4 +1,4 @@
-# Easy Math · Matematika SMP dan SMA Kelas 7–12 (termasuk Tingkat Lanjut kelas 11)
+# Easy Math · Matematika SMP dan SMA Kelas 7–12 (termasuk Tingkat Lanjut)
 
 Media pembelajaran matematika berbentuk PWA: setiap materi berupa animasi
 bercerita (dimulai dari pertanyaan, dijawab dengan benda yang bisa dilihat),
@@ -11,6 +11,7 @@ diikuti soal latihan yang menjelaskan letak keliru setiap jawaban salah.
 - Kelas 11 (matematika umum): 4 bab, 13 materi animasi, 103 soal.
 - Kelas 11 Tingkat Lanjut: 5 bab, 15 materi animasi, 120 soal.
 - Kelas 12 (matematika umum): 3 bab, 12 materi animasi, 93 soal.
+- Kelas 12 Tingkat Lanjut: 5 bab, 15 materi animasi, 120 soal.
 - Soal terdiri dari soal latihan per materi, pertanyaan "tebak dulu" di dalam
   animasi, dan soal tambahan untuk uji bab.
 - Ukuran HP, tablet, dan laptop. Tema terang dan gelap.
@@ -100,6 +101,19 @@ permutasi-kombinasi dasar sudah ada di kelas 9 dan 11, jadi di sini diperdalam.
 | 2. Busur dan Juring Lingkaran | ukuran radian, busur dan juring dengan radian, luas tembereng |
 | 3. Kombinatorik | pengisian tempat bersyarat, permutasi siklis, segitiga Pascal dan binomial Newton, peluang dengan kombinasi |
 
+### Kelas 12 Matematika Tingkat Lanjut (`#/kelas/12-lanjut`)
+
+Persamaan lingkaran sudah ada di kelas 11, jadi bab geometri analitik berfokus
+pada parabola, elips, dan hiperbola.
+
+| Bab | Materi |
+|---|---|
+| 1. Geometri Analitik | irisan kerucut, parabola (fokus dan direktris), elips, hiperbola dan asimtot |
+| 2. Limit | konsep limit, limit kiri-kanan, bentuk 0/0 (faktorisasi, sekawan), limit di tak hingga |
+| 3. Turunan | gradien garis singgung, aturan turunan, naik-turun, titik stasioner, nilai terbesar |
+| 4. Integral | integral tak tentu, integral tentu sebagai luas, luas daerah antara dua kurva |
+| 5. Analisis Data dan Peluang | variabel acak, nilai harapan, distribusi binomial, distribusi normal, skor z |
+
 ## Menjalankan di komputer
 
 Tidak perlu build atau `npm install`. Cukup server statis untuk folder `web/`:
@@ -140,6 +154,7 @@ web/
   content/k11/         isi bab kelas 11 (kit.js: diagram panah, mesin fungsi)
   content/k11l/        isi bab kelas 11 Tingkat Lanjut (kit.js: matriks)
   content/k12/         isi bab kelas 12 (kit.js: kurva relatif titik asal untuk transformasi)
+  content/k12l/        isi bab kelas 12 Tingkat Lanjut (kit.js: kurva parametrik)
   content/helpers.js   fungsi bantu menulis materi
 tests/                 uji otomatis (Playwright)
 ig-analysis/           riset referensi video (@akalmatika, @nasrularifin26)
