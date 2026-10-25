@@ -11,6 +11,7 @@ import b9 from './b9.js';
 import { K1 } from './k1/index.js';
 import { K2 } from './k2/index.js';
 import { K3 } from './k3/index.js';
+import { K4 } from './k4/index.js';
 import { K8 } from './k8/index.js';
 import { K9 } from './k9/index.js';
 import { K10 } from './k10/index.js';
@@ -43,6 +44,14 @@ export const KELAS = [
     desc: 'Bilangan sampai 1.000, kalimat matematika, perkalian dan pembagian, pengukuran panjang dan berat, unsur bangun datar, dan tabel.',
     foot: 'Materi mengacu pada buku Matematika Kelas III Kurikulum Merdeka (Fase B), ditambah perkalian dan pembagian sampai 100 dari capaian pembelajaran Fase B.',
     babs: K3,
+  },
+  {
+    no: 4,
+    jenjang: 'SD',
+    fase: 'B',
+    desc: 'Bilangan sampai 10.000, pecahan, pola gambar dan bilangan, luas dan volume, bangun datar, serta piktogram dan diagram batang.',
+    foot: 'Materi mengacu pada buku Matematika Kelas IV Kurikulum Merdeka (Fase B).',
+    babs: K4,
   },
   {
     no: 7,
