@@ -9,6 +9,7 @@ import b7 from './b7.js';
 import b8 from './b8.js';
 import b9 from './b9.js';
 import { K8 } from './k8/index.js';
+import { K9 } from './k9/index.js';
 
 export const KELAS = [
   {
@@ -22,6 +23,12 @@ export const KELAS = [
     desc: 'Pangkat dan akar, Pythagoras, fungsi, garis lurus, SPLDV, bangun ruang, statistika, dan peluang.',
     foot: 'Materi mengacu pada capaian pembelajaran matematika Fase D Kurikulum Merdeka, ditambah topik kelas 8 yang masih umum diajarkan seperti SPLDV dan bangun ruang sisi datar.',
     babs: K8,
+  },
+  {
+    no: 9,
+    desc: 'Persamaan dan fungsi kuadrat, transformasi, kesebangunan, lingkaran, dan bangun ruang sisi lengkung.',
+    foot: 'Materi mengacu pada capaian pembelajaran matematika Fase D Kurikulum Merdeka, ditambah topik kelas 9 yang masih umum diajarkan dari Kurikulum 2013.',
+    babs: K9,
   },
 ].filter((k) => k.babs.length);
 

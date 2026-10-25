@@ -1,7 +1,7 @@
 {
   "name": "Easy Math · Matematika SMP",
   "short_name": "Easy Math",
-  "description": "Materi matematika SMP kelas 7 dan 8 dalam animasi bercerita, dengan soal latihan dan pembahasan.",
+  "description": "Materi matematika SMP kelas 7, 8, dan 9 dalam animasi bercerita, dengan soal latihan dan pembahasan.",
   "lang": "id",
   "start_url": "./",
   "scope": "./",
