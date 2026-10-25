@@ -12,6 +12,7 @@ import { K1 } from './k1/index.js';
 import { K2 } from './k2/index.js';
 import { K3 } from './k3/index.js';
 import { K4 } from './k4/index.js';
+import { K5 } from './k5/index.js';
 import { K8 } from './k8/index.js';
 import { K9 } from './k9/index.js';
 import { K10 } from './k10/index.js';
@@ -52,6 +53,14 @@ export const KELAS = [
     desc: 'Bilangan sampai 10.000, pecahan, pola gambar dan bilangan, luas dan volume, bangun datar, serta piktogram dan diagram batang.',
     foot: 'Materi mengacu pada buku Matematika Kelas IV Kurikulum Merdeka (Fase B).',
     babs: K4,
+  },
+  {
+    no: 5,
+    jenjang: 'SD',
+    fase: 'C',
+    desc: 'Bilangan sampai 1.000.000, KPK dan FPB, pecahan dan desimal, keliling dan luas, sudut, serta data dan modus.',
+    foot: 'Materi mengacu pada capaian pembelajaran Matematika Fase C Kurikulum Merdeka untuk kelas 5. Urutan bab buku resmi belum bisa dipastikan, jadi bab disusun mengikuti elemen capaian pembelajaran.',
+    babs: K5,
   },
   {
     no: 7,
