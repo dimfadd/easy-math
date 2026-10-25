@@ -467,7 +467,8 @@ const MOTION_KEYS = new Set(['x', 'y', 's', 'o', 'rot', 'hl', 'pulse', 'from', '
 export function shapeKey(p) {
   const o = {};
   for (const k of Object.keys(p).sort()) {
-    if (MOTION_KEYS.has(k)) continue;
+    // hl pada tabel menandai sel, jadi ikut menentukan bentuk
+    if (MOTION_KEYS.has(k) && !(k === 'hl' && p.t === 'table')) continue;
     // garis memakai x,y absolut untuk titik ujung, jadi masuk kunci bentuk
     o[k] = p[k];
   }
