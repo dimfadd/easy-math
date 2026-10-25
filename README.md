@@ -1,4 +1,4 @@
-# Easy Math · Matematika SMP dan SMA Kelas 7–11
+# Easy Math · Matematika SMP dan SMA Kelas 7–11 (termasuk Tingkat Lanjut)
 
 Media pembelajaran matematika berbentuk PWA: setiap materi berupa animasi
 bercerita (dimulai dari pertanyaan, dijawab dengan benda yang bisa dilihat),
@@ -9,6 +9,7 @@ diikuti soal latihan yang menjelaskan letak keliru setiap jawaban salah.
 - Kelas 9: 6 bab, 18 materi animasi, 144 soal.
 - Kelas 10: 8 bab, 27 materi animasi, 213 soal.
 - Kelas 11 (matematika umum): 4 bab, 13 materi animasi, 103 soal.
+- Kelas 11 Tingkat Lanjut: 5 bab, 15 materi animasi, 120 soal.
 - Soal terdiri dari soal latihan per materi, pertanyaan "tebak dulu" di dalam
   animasi, dan soal tambahan untuk uji bab.
 - Ukuran HP, tablet, dan laptop. Tema terang dan gelap.
@@ -77,6 +78,16 @@ diikuti soal latihan yang menjelaskan letak keliru setiap jawaban salah.
 | 3. Statistika Data Dua Variabel | diagram pencar, garis regresi, koefisien korelasi dan determinasi |
 | 4. Permutasi, Kombinasi, dan Peluang Bersyarat | faktorial, permutasi, kombinasi, peluang bersyarat |
 
+### Kelas 11 Matematika Tingkat Lanjut (`#/kelas/11-lanjut`)
+
+| Bab | Materi |
+|---|---|
+| 1. Bilangan Kompleks | satuan imajiner, bidang kompleks, operasi, konjugat, modulus, argumen |
+| 2. Polinomial | derajat, bentuk grafik, operasi, cara Horner, teorema sisa dan faktor |
+| 3. Matriks | ordo, transpos, operasi, determinan sebagai luas, invers, SPLDV |
+| 4. Transformasi Geometri dengan Matriks | translasi, refleksi, rotasi, dilatasi, komposisi |
+| 5. Fungsi dan Pemodelannya | grafik sinus, fungsi logaritma, fungsi rasional dan akar, memilih model |
+
 ## Menjalankan di komputer
 
 Tidak perlu build atau `npm install`. Cukup server statis untuk folder `web/`:
@@ -115,6 +126,7 @@ web/
   content/k9/          isi bab kelas 9 (curve.js: parabola)
   content/k10/         isi bab kelas 10 (kit.js: label, kurva, vektor kolom, deret kotak)
   content/k11/         isi bab kelas 11 (kit.js: diagram panah, mesin fungsi)
+  content/k11l/        isi bab kelas 11 Tingkat Lanjut (kit.js: matriks)
   content/helpers.js   fungsi bantu menulis materi
 tests/                 uji otomatis (Playwright)
 ig-analysis/           riset referensi video (@akalmatika, @nasrularifin26)
