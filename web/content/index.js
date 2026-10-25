@@ -14,6 +14,7 @@ import { K10 } from './k10/index.js';
 import { K11 } from './k11/index.js';
 import { K11L } from './k11l/index.js';
 import { K12 } from './k12/index.js';
+import { K12L } from './k12l/index.js';
 
 export const KELAS = [
   {
@@ -73,6 +74,16 @@ export const KELAS = [
     desc: 'Transformasi fungsi, busur dan juring lingkaran dengan radian, serta kombinatorik dan peluang.',
     foot: 'Materi mengacu pada buku Matematika Kelas XII Kurikulum Merdeka (Fase F). Topik yang sudah dibahas di kelas sebelumnya diperdalam, tidak diulang.',
     babs: K12,
+  },
+  {
+    no: 12,
+    key: '12-lanjut',
+    name: 'Kelas 12 Lanjut',
+    jenjang: 'SMA',
+    fase: 'F',
+    desc: 'Matematika Tingkat Lanjut: irisan kerucut, limit, turunan, integral, serta distribusi peluang.',
+    foot: 'Materi mengacu pada buku Matematika Tingkat Lanjut Kelas XII Kurikulum Merdeka (Fase F). Persamaan lingkaran sudah dibahas di kelas 11, jadi bab geometri analitik berfokus pada parabola, elips, dan hiperbola.',
+    babs: K12L,
   },
 ].filter((k) => k.babs.length);
 
