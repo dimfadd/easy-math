@@ -8,12 +8,13 @@ const app = document.getElementById('app');
 let current = null; // pemutar/demo aktif yang perlu dibersihkan saat pindah halaman
 
 // Kelas yang sedang dibuka (diingat di perangkat)
-let kelasNo = kelasOf(store.settings.kelas) ? Number(store.settings.kelas) : KELAS[0].no;
-function setKelas(no) {
-  if (!kelasOf(no) || Number(no) === kelasNo) return;
-  kelasNo = Number(no);
+let kelasNo = kelasOf(store.settings.kelas) ? String(store.settings.kelas) : KELAS[0].key;
+function setKelas(key) {
+  if (!kelasOf(key) || String(key) === kelasNo) return;
+  kelasNo = String(key);
   store.setSetting('kelas', kelasNo);
 }
+const kName = (key = kelasNo) => kelasOf(key).name;
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -42,7 +43,7 @@ function topbar() {
     <a class="brand" href="#/" aria-label="Easy Math, ke beranda">
       <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><circle cx="15" cy="20" r="11" class="f-pos"/><circle cx="25" cy="20" r="11" class="f-neg" fill-opacity=".92"/><path d="M10 20h10M15 15v10" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M21.5 20h8" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>
       <span class="brand-name">Easy Math</span>
-      <span class="brand-sub">${kelasOf(kelasNo).jenjang} Kelas ${kelasNo}</span>
+      <span class="brand-sub">${kelasOf(kelasNo).jenjang} ${kName()}</span>
     </a>
     <button type="button" class="icon-btn" id="themeBtn" aria-label="${t === 'dark' ? 'Pakai tema terang' : 'Pakai tema gelap'}">${t === 'dark' ? THEME_ICON.light : THEME_ICON.dark}</button>
   </header>`;
@@ -95,7 +96,7 @@ function continueTarget() {
 }
 
 function setTitle(t) {
-  document.title = t ? `${t} · Easy Math Kelas ${kelasNo}` : `Easy Math · Matematika ${kelasOf(kelasNo).jenjang} Kelas ${kelasNo}`;
+  document.title = t ? `${t} · Easy Math ${kName()}` : `Easy Math · Matematika ${kelasOf(kelasNo).jenjang} ${kName()}`;
 }
 
 function focusMain() {
@@ -149,7 +150,7 @@ function mountDemo(el) {
 function kelasTabs() {
   if (KELAS.length < 2) return '';
   return `<nav class="kelas-tabs" aria-label="Pilih kelas">${KELAS.map(
-    (k) => `<a class="kelas-tab" href="#/kelas/${k.no}"${k.no === kelasNo ? ' aria-current="page"' : ''}><strong>Kelas ${k.no}</strong><span>${k.desc}</span></a>`,
+    (k) => `<a class="kelas-tab" href="#/kelas/${k.key}"${k.key === kelasNo ? ' aria-current="page"' : ''}><strong>${k.name}</strong><span>${k.desc}</span></a>`,
   ).join('')}</nav>`;
 }
 
@@ -167,7 +168,7 @@ function viewHome() {
     <main id="main">
       <section class="intro">
         <div class="intro-text">
-          <p class="kicker">Matematika ${K.jenjang} Kelas ${kelasNo} · Fase ${K.fase}</p>
+          <p class="kicker">Matematika ${K.jenjang} ${K.name} · Fase ${K.fase}</p>
           <h1>Belajar matematika dengan melihat <span class="hl-word">kenapa</span>, bukan cuma menghafal caranya.</h1>
           <p class="lead">Tiap materi berupa animasi pendek yang bercerita: dimulai dari pertanyaan, lalu dijawab dengan benda yang bisa dilihat. Setelah itu ada soal latihan, dan tiap jawaban salah dijelaskan letak kelirunya.</p>
           <div class="intro-cta">${cta}<a class="btn btn-ghost btn-lg" href="#peta">Lihat semua bab</a></div>
@@ -179,7 +180,7 @@ function viewHome() {
       </section>
 
       <section id="peta" class="map" aria-labelledby="peta-h">
-        <h2 id="peta-h">Peta belajar kelas ${kelasNo}</h2>
+        <h2 id="peta-h">Peta belajar ${K.name.toLowerCase()}</h2>
         ${kelasTabs()}
         <ol class="bab-list">
           ${babs.map((b) => {
@@ -230,7 +231,7 @@ function viewBab(id) {
   app.innerHTML = `
     ${topbar()}
     <main id="main" class="page-bab">
-      <a class="back" href="#/kelas/${b.kelas}">← Peta belajar kelas ${b.kelas}</a>
+      <a class="back" href="#/kelas/${b.kelas}">← Peta belajar ${kName(b.kelas).toLowerCase()}</a>
       <header class="bab-head">
         <p class="kicker">Bab ${b.no}</p>
         <h1>${b.title}</h1>

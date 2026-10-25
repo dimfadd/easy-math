@@ -12,6 +12,7 @@ import { K8 } from './k8/index.js';
 import { K9 } from './k9/index.js';
 import { K10 } from './k10/index.js';
 import { K11 } from './k11/index.js';
+import { K11L } from './k11l/index.js';
 
 export const KELAS = [
   {
@@ -54,9 +55,24 @@ export const KELAS = [
     foot: 'Materi mengacu pada capaian pembelajaran matematika umum Fase F Kurikulum Merdeka (kelas 11 SMA/SMK), belum termasuk Matematika Tingkat Lanjut.',
     babs: K11,
   },
+  {
+    no: 11,
+    key: '11-lanjut',
+    name: 'Kelas 11 Lanjut',
+    jenjang: 'SMA',
+    fase: 'F',
+    desc: 'Matematika Tingkat Lanjut: bilangan kompleks, polinomial, matriks, transformasi dengan matriks, serta fungsi dan pemodelannya.',
+    foot: 'Materi mengacu pada mata pelajaran pilihan Matematika Tingkat Lanjut Fase F Kurikulum Merdeka (kelas 11 SMA).',
+    babs: K11L,
+  },
 ].filter((k) => k.babs.length);
 
-KELAS.forEach((k) => k.babs.forEach((b) => (b.kelas = k.no)));
+// key: penanda unik di URL (#/kelas/<key>); name: label yang tampil
+KELAS.forEach((k) => {
+  k.key = k.key || String(k.no);
+  k.name = k.name || `Kelas ${k.no}`;
+  k.babs.forEach((b) => (b.kelas = k.key));
+});
 
 // Semua bab dari semua kelas (dipakai juga oleh skrip uji)
 export const BAB = KELAS.flatMap((k) => k.babs);
@@ -66,4 +82,4 @@ BAB.forEach((bab) => bab.lessons.forEach((lesson, i) => LESSONS.set(lesson.id, {
 
 export const ORDER = BAB.flatMap((b) => b.lessons.map((l) => l.id));
 
-export const kelasOf = (no) => KELAS.find((k) => k.no === Number(no));
+export const kelasOf = (key) => KELAS.find((k) => k.key === String(key));
