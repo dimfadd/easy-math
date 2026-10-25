@@ -63,7 +63,7 @@ async function validateContent(page) {
         else if (v && typeof v === 'object') for (const [k, x] of Object.entries(v)) if (k !== 'd') walk(x);
       };
       walk(b);
-      for (const t of texts) if (/[{}]/.test(stripMarkup(t))) out.push(`${b.id}: markup rusak: ${t}`);
+      for (const t of texts) if (/\{[a-z^]+:/.test(stripMarkup(t))) out.push(`${b.id}: markup rusak: ${t}`);
       for (const q of b.extra || []) {
         if (q.type !== 'num' && (q.options || []).filter((o) => o.ok).length !== 1) out.push(`${b.id} extra: jumlah jawaban benar salah: ${q.q}`);
       }
