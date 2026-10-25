@@ -1,5 +1,6 @@
 // Bab 1: Bilangan Bulat
 import { T, chips, place, numberLine, dot, hop, box, range, table } from './helpers.js';
+import { faktorLessons, faktorExtra } from './b1x.js';
 
 // ---------- 1.1 Bilangan negatif dan garis bilangan ----------
 const thermoY = (v) => 50 + (6 - v) * 13;
@@ -893,9 +894,10 @@ export default {
   id: 'b1',
   no: 1,
   title: 'Bilangan Bulat',
-  desc: 'Bilangan negatif, garis bilangan, serta operasi tambah, kurang, kali, dan bagi.',
-  lessons: [l1, l2, l3, l4],
+  desc: 'Bilangan negatif, operasi hitung, faktor dan kelipatan, bilangan prima, serta FPB dan KPK.',
+  lessons: [l1, l2, l3, l4, ...faktorLessons],
   extra: [
+    ...faktorExtra,
     {
       type: 'num',
       q: 'Nilai dari {n:−12} + 20 − ({n:−4}) adalah …',

@@ -7,8 +7,9 @@ import b5 from './b5.js';
 import b6 from './b6.js';
 import b7 from './b7.js';
 import b8 from './b8.js';
+import b9 from './b9.js';
 
-export const BAB = [b1, b2, b3, b4, b5, b6, b7, b8];
+export const BAB = [b1, b2, b3, b4, b5, b6, b7, b8, b9];
 
 export const LESSONS = new Map();
 BAB.forEach((bab) => bab.lessons.forEach((lesson, i) => LESSONS.set(lesson.id, { lesson, bab, i })));

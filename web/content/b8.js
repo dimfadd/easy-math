@@ -1,5 +1,6 @@
 // Bab 8: Data dan Diagram
 import { T, table, box } from './helpers.js';
+import { ukuranLessons } from './b8x.js';
 
 // Turus: kelompok empat garis tegak dicoret garis miring kelima
 function tallyPath(n) {
@@ -501,8 +502,8 @@ export default {
   id: 'b8',
   no: 8,
   title: 'Data dan Diagram',
-  desc: 'Jenis data, turus dan tabel frekuensi, diagram batang, diagram garis, dan diagram lingkaran.',
-  lessons: [l1, l2, l3],
+  desc: 'Jenis data, tabel frekuensi, diagram batang, garis, dan lingkaran, serta rata-rata, median, dan modus.',
+  lessons: [l1, l2, l3, ...ukuranLessons],
   extra: [
     {
       q: 'Pada sebuah diagram batang, sumbu tegaknya dimulai dari 50, bukan dari 0. Akibatnya …',

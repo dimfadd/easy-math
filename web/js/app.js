@@ -181,7 +181,7 @@ function viewHome() {
       </section>
 
       <footer class="foot">
-        <p>Materi disusun mengikuti capaian pembelajaran matematika Fase D Kurikulum Merdeka untuk kelas 7.</p>
+        <p>Materi mengacu pada capaian pembelajaran matematika Fase D Kurikulum Merdeka, ditambah topik kelas 7 yang masih umum diajarkan seperti aritmetika sosial.</p>
         <p>${store.persistent ? 'Progresmu tersimpan di perangkat ini saja, tanpa akun.' : 'Penyimpanan perangkat sedang tidak bisa dipakai (misalnya mode privat), jadi progres tidak tersimpan setelah halaman ditutup.'}</p>
         <button type="button" class="btn btn-ghost btn-sm" id="resetBtn">Hapus progres di perangkat ini</button>
       </footer>

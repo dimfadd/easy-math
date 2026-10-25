@@ -14,7 +14,8 @@ export function shuffle(arr, rnd = Math.random) {
 }
 
 export function normalize(s) {
-  let t = String(s ?? '').trim();
+  // awalan "Rp" dan akhiran satuan (%, kg) boleh ikut diketik
+  let t = String(s ?? '').trim().replace(/^rp\.?\s*/i, '').replace(/\s*(%|kg)$/i, '');
   // Titik sebagai pemisah ribuan (gaya Indonesia): 112.000 atau 1.250.000
   if (/^[−–-]?\d{1,3}(\.\d{3})+(,\d+)?$/.test(t.replace(/\s+/g, ''))) t = t.replace(/\./g, '');
   return t

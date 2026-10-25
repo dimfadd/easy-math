@@ -109,6 +109,15 @@ async function checkFrames(page, id, vpName) {
           const oy = Math.min(A.y + A.h, B.y + B.h) - Math.max(A.y, B.y);
           if (ox > 4 && oy > 4) out.push(`langkah ${i + 1}: teks "${A.id}" dan "${B.id}" bertumpuk`);
         }
+      // teks yang titik tengahnya di dalam kotak harus muat di dalam kotak itu
+      const rects = boxes.filter((b) => b.t === 'rect');
+      for (const A of texts)
+        for (const R of rects) {
+          const cx = A.x + A.w / 2;
+          const cy = A.y + A.h / 2;
+          if (cx < R.x || cx > R.x + R.w || cy < R.y || cy > R.y + R.h) continue;
+          if (A.x < R.x - 2 || A.x + A.w > R.x + R.w + 2) out.push(`langkah ${i + 1}: teks "${A.id}" keluar dari kotak "${R.id}"`);
+        }
     }
     return out;
   });

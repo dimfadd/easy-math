@@ -4,8 +4,8 @@ Media pembelajaran matematika berbentuk PWA: setiap materi berupa animasi
 bercerita (dimulai dari pertanyaan, dijawab dengan benda yang bisa dilihat),
 diikuti soal latihan yang menjelaskan letak keliru setiap jawaban salah.
 
-- 8 bab, 27 materi animasi, 213 soal (135 soal latihan, 54 pertanyaan "tebak dulu"
-  di dalam animasi, 24 soal tambahan untuk uji bab).
+- 9 bab, 34 materi animasi, 266 soal (170 soal latihan, 68 pertanyaan "tebak dulu"
+  di dalam animasi, 28 soal tambahan untuk uji bab).
 - Ukuran HP, tablet, dan laptop. Tema terang dan gelap.
 - Bisa dipasang ke layar utama dan dipakai offline setelah kunjungan pertama.
 - Narasi tampil sebagai teks. Kalau perangkat punya suara Bahasa Indonesia
@@ -14,14 +14,15 @@ diikuti soal latihan yang menjelaskan letak keliru setiap jawaban salah.
 
 | Bab | Materi |
 |---|---|
-| 1. Bilangan Bulat | garis bilangan, tambah, kurang, kali, bagi |
+| 1. Bilangan Bulat | garis bilangan, tambah, kurang, kali, bagi, faktor, prima, FPB dan KPK |
 | 2. Bilangan Rasional | pecahan senilai, operasi pecahan, desimal, persen |
 | 3. Bentuk Aljabar | suku sejenis, ubin aljabar, perkalian distributif |
 | 4. Persamaan dan Pertidaksamaan Linear | timbangan, pertidaksamaan di garis bilangan |
 | 5. Rasio dan Perbandingan | rasio, senilai, berbalik nilai, skala |
 | 6. Garis dan Sudut | busur derajat, hubungan antarsudut, garis sejajar |
 | 7. Segitiga dan Segi Empat | jumlah sudut segitiga, keliling, luas bangun datar |
-| 8. Data dan Diagram | turus, tabel frekuensi, diagram batang, garis, lingkaran |
+| 8. Data dan Diagram | turus, tabel frekuensi, diagram batang, garis, lingkaran, rata-rata, median, modus |
+| 9. Aritmetika Sosial | untung dan rugi, diskon dan pajak, bunga tunggal, bruto-neto-tara |
 
 ## Menjalankan di komputer
 
@@ -56,7 +57,7 @@ web/
   js/quiz.js           latihan soal dan pemeriksa jawaban isian
   js/store.js          progres di localStorage
   js/speech.js         narasi suara bawaan perangkat
-  content/b1.js … b8.js  isi setiap bab
+  content/b1.js … b9.js  isi setiap bab (b1x, b8x: materi tambahan bab 1 dan 8)
   content/helpers.js   fungsi bantu menulis materi
 tests/                 uji otomatis (Playwright)
 ig-analysis/           riset referensi video (@akalmatika, @nasrularifin26)
