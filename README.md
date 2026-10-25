@@ -1,4 +1,4 @@
-# Easy Math · Matematika SMP Kelas 7, 8, dan 9
+# Easy Math · Matematika SMP dan SMA Kelas 7–10
 
 Media pembelajaran matematika berbentuk PWA: setiap materi berupa animasi
 bercerita (dimulai dari pertanyaan, dijawab dengan benda yang bisa dilihat),
@@ -7,6 +7,7 @@ diikuti soal latihan yang menjelaskan letak keliru setiap jawaban salah.
 - Kelas 7: 9 bab, 34 materi animasi, 266 soal.
 - Kelas 8: 8 bab, 25 materi animasi, 199 soal.
 - Kelas 9: 6 bab, 18 materi animasi, 144 soal.
+- Kelas 10: 8 bab, 27 materi animasi, 213 soal.
 - Soal terdiri dari soal latihan per materi, pertanyaan "tebak dulu" di dalam
   animasi, dan soal tambahan untuk uji bab.
 - Ukuran HP, tablet, dan laptop. Tema terang dan gelap.
@@ -53,6 +54,19 @@ diikuti soal latihan yang menjelaskan letak keliru setiap jawaban salah.
 | 5. Lingkaran | unsur, keliling dan π, luas, busur, juring, sudut keliling |
 | 6. Bangun Ruang Sisi Lengkung | tabung, kerucut, bola |
 
+### Kelas 10
+
+| Bab | Materi |
+|---|---|
+| 1. Eksponen dan Logaritma | fungsi eksponen (tumbuh, meluruh), persamaan eksponen, logaritma, sifat logaritma |
+| 2. Barisan dan Deret | aritmetika, deret aritmetika, geometri, deret geometri tak hingga |
+| 3. Vektor | panah dan notasi kolom, panjang vektor, penjumlahan, pengurangan, perkalian skalar |
+| 4. Trigonometri | sin, cos, tan, sudut istimewa, sudut elevasi dan depresi |
+| 5. Sistem Persamaan dan Pertidaksamaan Linear | SPLTV, daerah penyelesaian, nilai optimum di titik pojok |
+| 6. Fungsi Kuadrat | bentuk puncak dan pergeseran, melengkapkan kuadrat, menyusun fungsi, nilai maksimum |
+| 7. Statistika | distribusi frekuensi, histogram, rata-rata, median, modus data berkelompok, ragam, simpangan baku |
+| 8. Peluang | kaidah pencacahan, gabungan dan irisan, saling lepas, saling bebas |
+
 ## Menjalankan di komputer
 
 Tidak perlu build atau `npm install`. Cukup server statis untuk folder `web/`:
@@ -89,6 +103,7 @@ web/
   content/b1.js … b9.js  isi bab kelas 7 (b1x, b8x: materi tambahan bab 1 dan 8)
   content/k8/          isi bab kelas 8 (plot.js: bidang koordinat, solid.js: bangun ruang)
   content/k9/          isi bab kelas 9 (curve.js: parabola)
+  content/k10/         isi bab kelas 10 (kit.js: label, kurva, vektor kolom, deret kotak)
   content/helpers.js   fungsi bantu menulis materi
 tests/                 uji otomatis (Playwright)
 ig-analysis/           riset referensi video (@akalmatika, @nasrularifin26)
