@@ -8,6 +8,7 @@ import b6 from './b6.js';
 import b7 from './b7.js';
 import b8 from './b8.js';
 import b9 from './b9.js';
+import { K1 } from './k1/index.js';
 import { K8 } from './k8/index.js';
 import { K9 } from './k9/index.js';
 import { K10 } from './k10/index.js';
@@ -17,6 +18,14 @@ import { K12 } from './k12/index.js';
 import { K12L } from './k12l/index.js';
 
 export const KELAS = [
+  {
+    no: 1,
+    jenjang: 'SD',
+    fase: 'A',
+    desc: 'Membilang sampai 20, penjumlahan dan pengurangan, mengenal bentuk, mengukur panjang, dan diagram.',
+    foot: 'Materi mengacu pada buku Matematika Kelas I Kurikulum Merdeka (Fase A). Narasi dibuat pendek; anak kelas 1 sebaiknya belajar ditemani orang tua atau guru.',
+    babs: K1,
+  },
   {
     no: 7,
     jenjang: 'SMP',

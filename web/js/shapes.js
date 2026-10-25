@@ -439,6 +439,17 @@ const ICONS = {
     `<g class="c-${p.c || 'ink'}"><circle cy="${-s * 0.32}" r="${s * 0.17}" fill="currentColor"/><path d="M${-s * 0.28},${s * 0.45} Q${-s * 0.28},${-s * 0.1} 0,${-s * 0.1} Q${s * 0.28},${-s * 0.1} ${s * 0.28},${s * 0.45} Z" fill="currentColor"/></g>`,
   pin: (s, p) =>
     `<g class="c-${p.c || 'neg'}"><path d="M0,${s * 0.5} C${-s * 0.1},${s * 0.2} ${-s * 0.34},${s * 0.02} ${-s * 0.34},${-s * 0.18} A${s * 0.34},${s * 0.34} 0 1 1 ${s * 0.34},${-s * 0.18} C${s * 0.34},${s * 0.02} ${s * 0.1},${s * 0.2} 0,${s * 0.5} Z" fill="currentColor"/><circle cy="${-s * 0.18}" r="${s * 0.13}" class="f-paper"/></g>`,
+  // Benda untuk berhitung (kelas 1–2)
+  apple: (s) =>
+    `<path d="M0,${-s * 0.28} C${-s * 0.2},${-s * 0.42} ${-s * 0.5},${-s * 0.34} ${-s * 0.48},${-s * 0.02} C${-s * 0.46},${s * 0.3} ${-s * 0.22},${s * 0.5} 0,${s * 0.4} C${s * 0.22},${s * 0.5} ${s * 0.46},${s * 0.3} ${s * 0.48},${-s * 0.02} C${s * 0.5},${-s * 0.34} ${s * 0.2},${-s * 0.42} 0,${-s * 0.28} Z" class="f-neg s-ink" stroke-width="1.5"/><path d="M0,${-s * 0.28} Q${s * 0.02},${-s * 0.44} ${s * 0.08},${-s * 0.5}" fill="none" class="s-ink" stroke-width="2" stroke-linecap="round"/><path d="M${s * 0.06},${-s * 0.38} Q${s * 0.26},${-s * 0.56} ${s * 0.36},${-s * 0.42} Q${s * 0.2},${-s * 0.3} ${s * 0.06},${-s * 0.38} Z" class="f-ok s-ink" stroke-width="1"/>`,
+  star: (s) => {
+    const pts = Array.from({ length: 10 }, (_, i) => {
+      const a = -Math.PI / 2 + (i * Math.PI) / 5;
+      const r = i % 2 ? s * 0.22 : s * 0.5;
+      return `${r2(r * Math.cos(a))},${r2(r * Math.sin(a) + s * 0.04)}`;
+    }).join(' ');
+    return `<polygon points="${pts}" class="f-acc s-ink" stroke-width="1.5" stroke-linejoin="round"/>`;
+  },
   check: (s) =>
     `<circle r="${s / 2}" class="f-ok s-ok" stroke-width="1"/><path d="M${-s * 0.22},0 L${-s * 0.05},${s * 0.18} L${s * 0.25},${-s * 0.18}" fill="none" class="s-onfill" stroke-width="${r2(s / 8)}" stroke-linecap="round" stroke-linejoin="round"/>`,
   cross: (s) =>
