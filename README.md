@@ -1,4 +1,4 @@
-# Easy Math · Matematika SMP dan SMA Kelas 7–11 (termasuk Tingkat Lanjut)
+# Easy Math · Matematika SMP dan SMA Kelas 7–12 (termasuk Tingkat Lanjut kelas 11)
 
 Media pembelajaran matematika berbentuk PWA: setiap materi berupa animasi
 bercerita (dimulai dari pertanyaan, dijawab dengan benda yang bisa dilihat),
@@ -10,6 +10,7 @@ diikuti soal latihan yang menjelaskan letak keliru setiap jawaban salah.
 - Kelas 10: 8 bab, 27 materi animasi, 213 soal.
 - Kelas 11 (matematika umum): 4 bab, 13 materi animasi, 103 soal.
 - Kelas 11 Tingkat Lanjut: 5 bab, 15 materi animasi, 120 soal.
+- Kelas 12 (matematika umum): 3 bab, 12 materi animasi, 93 soal.
 - Soal terdiri dari soal latihan per materi, pertanyaan "tebak dulu" di dalam
   animasi, dan soal tambahan untuk uji bab.
 - Ukuran HP, tablet, dan laptop. Tema terang dan gelap.
@@ -88,6 +89,17 @@ diikuti soal latihan yang menjelaskan letak keliru setiap jawaban salah.
 | 4. Transformasi Geometri dengan Matriks | translasi, refleksi, rotasi, dilatasi, komposisi |
 | 5. Fungsi dan Pemodelannya | grafik sinus, fungsi logaritma, fungsi rasional dan akar, memilih model |
 
+### Kelas 12 (matematika umum)
+
+Bab mengikuti buku Matematika Kelas XII Kurikulum Merdeka. Busur-juring dan
+permutasi-kombinasi dasar sudah ada di kelas 9 dan 11, jadi di sini diperdalam.
+
+| Bab | Materi |
+|---|---|
+| 1. Transformasi Fungsi | translasi, refleksi, dilatasi, rotasi, komposisi transformasi |
+| 2. Busur dan Juring Lingkaran | ukuran radian, busur dan juring dengan radian, luas tembereng |
+| 3. Kombinatorik | pengisian tempat bersyarat, permutasi siklis, segitiga Pascal dan binomial Newton, peluang dengan kombinasi |
+
 ## Menjalankan di komputer
 
 Tidak perlu build atau `npm install`. Cukup server statis untuk folder `web/`:
@@ -127,6 +139,7 @@ web/
   content/k10/         isi bab kelas 10 (kit.js: label, kurva, vektor kolom, deret kotak)
   content/k11/         isi bab kelas 11 (kit.js: diagram panah, mesin fungsi)
   content/k11l/        isi bab kelas 11 Tingkat Lanjut (kit.js: matriks)
+  content/k12/         isi bab kelas 12 (kit.js: kurva relatif titik asal untuk transformasi)
   content/helpers.js   fungsi bantu menulis materi
 tests/                 uji otomatis (Playwright)
 ig-analysis/           riset referensi video (@akalmatika, @nasrularifin26)
