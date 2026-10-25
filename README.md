@@ -1,4 +1,4 @@
-# Easy Math · Matematika SMP Kelas 7 dan 8
+# Easy Math · Matematika SMP Kelas 7, 8, dan 9
 
 Media pembelajaran matematika berbentuk PWA: setiap materi berupa animasi
 bercerita (dimulai dari pertanyaan, dijawab dengan benda yang bisa dilihat),
@@ -6,6 +6,7 @@ diikuti soal latihan yang menjelaskan letak keliru setiap jawaban salah.
 
 - Kelas 7: 9 bab, 34 materi animasi, 266 soal.
 - Kelas 8: 8 bab, 25 materi animasi, 199 soal.
+- Kelas 9: 6 bab, 18 materi animasi, 144 soal.
 - Soal terdiri dari soal latihan per materi, pertanyaan "tebak dulu" di dalam
   animasi, dan soal tambahan untuk uji bab.
 - Ukuran HP, tablet, dan laptop. Tema terang dan gelap.
@@ -40,6 +41,17 @@ diikuti soal latihan yang menjelaskan letak keliru setiap jawaban salah.
 | 6. Bangun Ruang Sisi Datar | kubus, balok, prisma, limas: jaring-jaring, luas permukaan, volume |
 | 7. Statistika | rata-rata dari tabel, rata-rata gabungan, jangkauan, kuartil, diagram kotak garis |
 | 8. Peluang | ruang sampel, peluang empiris dan teoretis, komplemen, frekuensi harapan |
+
+### Kelas 9
+
+| Bab | Materi |
+|---|---|
+| 1. Persamaan Kuadrat | bentuk umum, akar, pemfaktoran dengan ubin, rumus kuadrat, diskriminan |
+| 2. Fungsi Kuadrat | parabola, pengaruh a dan c, titik puncak, nilai maksimum |
+| 3. Transformasi Geometri | translasi, refleksi, rotasi, dilatasi |
+| 4. Kekongruenan dan Kesebangunan | syarat kongruen, sisi sebanding, faktor skala, bayangan dan maket |
+| 5. Lingkaran | unsur, keliling dan π, luas, busur, juring, sudut keliling |
+| 6. Bangun Ruang Sisi Lengkung | tabung, kerucut, bola |
 
 ## Menjalankan di komputer
 
@@ -76,6 +88,7 @@ web/
   js/speech.js         narasi suara bawaan perangkat
   content/b1.js … b9.js  isi bab kelas 7 (b1x, b8x: materi tambahan bab 1 dan 8)
   content/k8/          isi bab kelas 8 (plot.js: bidang koordinat, solid.js: bangun ruang)
+  content/k9/          isi bab kelas 9 (curve.js: parabola)
   content/helpers.js   fungsi bantu menulis materi
 tests/                 uji otomatis (Playwright)
 ig-analysis/           riset referensi video (@akalmatika, @nasrularifin26)
