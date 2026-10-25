@@ -9,6 +9,7 @@ import b7 from './b7.js';
 import b8 from './b8.js';
 import b9 from './b9.js';
 import { K1 } from './k1/index.js';
+import { K2 } from './k2/index.js';
 import { K8 } from './k8/index.js';
 import { K9 } from './k9/index.js';
 import { K10 } from './k10/index.js';
@@ -25,6 +26,14 @@ export const KELAS = [
     desc: 'Membilang sampai 20, penjumlahan dan pengurangan, mengenal bentuk, mengukur panjang, dan diagram.',
     foot: 'Materi mengacu pada buku Matematika Kelas I Kurikulum Merdeka (Fase A). Narasi dibuat pendek; anak kelas 1 sebaiknya belajar ditemani orang tua atau guru.',
     babs: K1,
+  },
+  {
+    no: 2,
+    jenjang: 'SD',
+    fase: 'A',
+    desc: 'Puluhan dan satuan sampai 100, penjumlahan dan pengurangan, bentuk, posisi dan pola, pecahan, pengukuran, dan diagram.',
+    foot: 'Materi mengacu pada buku Matematika Kelas II Kurikulum Merdeka (Fase A). Anak kelas 2 sebaiknya belajar ditemani orang tua atau guru.',
+    babs: K2,
   },
   {
     no: 7,
