@@ -11,6 +11,7 @@ import b9 from './b9.js';
 import { K8 } from './k8/index.js';
 import { K9 } from './k9/index.js';
 import { K10 } from './k10/index.js';
+import { K11 } from './k11/index.js';
 
 export const KELAS = [
   {
@@ -44,6 +45,14 @@ export const KELAS = [
     desc: 'Eksponen dan logaritma, barisan dan deret, vektor, trigonometri, sistem persamaan dan pertidaksamaan linear, fungsi kuadrat, statistika, dan peluang.',
     foot: 'Materi mengacu pada capaian pembelajaran matematika Fase E Kurikulum Merdeka (kelas 10 SMA/SMK).',
     babs: K10,
+  },
+  {
+    no: 11,
+    jenjang: 'SMA',
+    fase: 'F',
+    desc: 'Komposisi dan invers fungsi, lingkaran, statistika data dua variabel, serta permutasi, kombinasi, dan peluang bersyarat.',
+    foot: 'Materi mengacu pada capaian pembelajaran matematika umum Fase F Kurikulum Merdeka (kelas 11 SMA/SMK), belum termasuk Matematika Tingkat Lanjut.',
+    babs: K11,
   },
 ].filter((k) => k.babs.length);
 
