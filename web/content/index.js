@@ -13,6 +13,7 @@ import { K9 } from './k9/index.js';
 import { K10 } from './k10/index.js';
 import { K11 } from './k11/index.js';
 import { K11L } from './k11l/index.js';
+import { K12 } from './k12/index.js';
 
 export const KELAS = [
   {
@@ -64,6 +65,14 @@ export const KELAS = [
     desc: 'Matematika Tingkat Lanjut: bilangan kompleks, polinomial, matriks, transformasi dengan matriks, serta fungsi dan pemodelannya.',
     foot: 'Materi mengacu pada mata pelajaran pilihan Matematika Tingkat Lanjut Fase F Kurikulum Merdeka (kelas 11 SMA).',
     babs: K11L,
+  },
+  {
+    no: 12,
+    jenjang: 'SMA',
+    fase: 'F',
+    desc: 'Transformasi fungsi, busur dan juring lingkaran dengan radian, serta kombinatorik dan peluang.',
+    foot: 'Materi mengacu pada buku Matematika Kelas XII Kurikulum Merdeka (Fase F). Topik yang sudah dibahas di kelas sebelumnya diperdalam, tidak diulang.',
+    babs: K12,
   },
 ].filter((k) => k.babs.length);
 
