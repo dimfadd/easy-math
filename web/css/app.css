@@ -1,4 +1,4 @@
-/* Easy Math kelas 7
+/* Easy Math SMP
    Arah desain:
    - Kertas krem + tinta gelap: terasa seperti buku tulis, nyaman dibaca lama (warna latar).
    - Biru = positif, merah = negatif dipakai konsisten di semua materi; ini sistem makna, bukan hiasan (palet inti).
@@ -135,6 +135,16 @@ h1:focus { outline: none; }
 .map h2 { font-size: 26px; margin-bottom: 14px; }
 .bab-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
 @media (min-width: 760px) { .bab-list { grid-template-columns: 1fr 1fr; gap: 14px; } }
+.kelas-tabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin: 0 0 18px; }
+.kelas-tab {
+  display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border-radius: var(--radius-sm);
+  border: 2px solid var(--line); background: var(--paper); color: var(--ink); text-decoration: none;
+}
+.kelas-tab strong { font-size: 17px; }
+.kelas-tab span { font-size: 13px; color: var(--ink-2); line-height: 1.4; }
+.kelas-tab[aria-current="page"] { border-color: var(--ink); box-shadow: inset 0 -4px 0 var(--acc); }
+.kelas-tab:hover { border-color: var(--ink-2); }
+.kelas-tab:focus-visible { outline: 3px solid var(--acc); outline-offset: 2px; }
 .bab-link {
   display: flex; gap: 14px; align-items: flex-start; height: 100%;
   padding: 16px; border-radius: var(--radius); background: var(--paper); border: 1.5px solid var(--line);

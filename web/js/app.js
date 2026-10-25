@@ -1,4 +1,4 @@
-import { BAB, LESSONS, ORDER } from '../content/index.js';
+import { BAB, KELAS, LESSONS, ORDER, kelasOf } from '../content/index.js';
 import { Player, Stage, stageSVG, compileLesson } from './player.js';
 import { renderQuiz, shuffle } from './quiz.js';
 import { store } from './store.js';
@@ -6,6 +6,14 @@ import { spansHTML } from './shapes.js';
 
 const app = document.getElementById('app');
 let current = null; // pemutar/demo aktif yang perlu dibersihkan saat pindah halaman
+
+// Kelas yang sedang dibuka (diingat di perangkat)
+let kelasNo = kelasOf(store.settings.kelas) ? Number(store.settings.kelas) : KELAS[0].no;
+function setKelas(no) {
+  if (!kelasOf(no) || Number(no) === kelasNo) return;
+  kelasNo = Number(no);
+  store.setSetting('kelas', kelasNo);
+}
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -34,7 +42,7 @@ function topbar() {
     <a class="brand" href="#/" aria-label="Easy Math, ke beranda">
       <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><circle cx="15" cy="20" r="11" class="f-pos"/><circle cx="25" cy="20" r="11" class="f-neg" fill-opacity=".92"/><path d="M10 20h10M15 15v10" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M21.5 20h8" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>
       <span class="brand-name">Easy Math</span>
-      <span class="brand-sub">SMP Kelas 7</span>
+      <span class="brand-sub">SMP Kelas ${kelasNo}</span>
     </a>
     <button type="button" class="icon-btn" id="themeBtn" aria-label="${t === 'dark' ? 'Pakai tema terang' : 'Pakai tema gelap'}">${t === 'dark' ? THEME_ICON.light : THEME_ICON.dark}</button>
   </header>`;
@@ -70,12 +78,14 @@ function scoreBadge(id) {
 
 function nextLessonId(id) {
   const k = ORDER.indexOf(id);
-  return k >= 0 && k < ORDER.length - 1 ? ORDER[k + 1] : null;
+  const nx = k >= 0 && k < ORDER.length - 1 ? ORDER[k + 1] : null;
+  // tidak menyeberang ke kelas lain
+  return nx && LESSONS.get(nx).kelas === LESSONS.get(id).kelas ? nx : null;
 }
 
 function continueTarget() {
   const last = store.last;
-  if (last && LESSONS.has(last)) {
+  if (last && LESSONS.has(last) && LESSONS.get(last).kelas === kelasNo) {
     const done = store.isWatched(last) && store.score(last);
     if (!done) return { id: last, label: 'Lanjutkan' };
     const nx = nextLessonId(last);
@@ -85,7 +95,7 @@ function continueTarget() {
 }
 
 function setTitle(t) {
-  document.title = t ? `${t} · Easy Math Kelas 7` : 'Easy Math · Matematika SMP Kelas 7';
+  document.title = t ? `${t} · Easy Math Kelas ${kelasNo}` : `Easy Math · Matematika SMP Kelas ${kelasNo}`;
 }
 
 function focusMain() {
@@ -136,10 +146,19 @@ function mountDemo(el) {
 }
 
 // ---------- Halaman ----------
+function kelasTabs() {
+  if (KELAS.length < 2) return '';
+  return `<nav class="kelas-tabs" aria-label="Pilih kelas">${KELAS.map(
+    (k) => `<a class="kelas-tab" href="#/kelas/${k.no}"${k.no === kelasNo ? ' aria-current="page"' : ''}><strong>Kelas ${k.no}</strong><span>${k.desc}</span></a>`,
+  ).join('')}</nav>`;
+}
+
 function viewHome() {
   setTitle('');
+  const K = kelasOf(kelasNo);
+  const babs = K.babs;
   const cont = continueTarget();
-  const first = BAB[0].lessons[0];
+  const first = babs[0].lessons[0];
   const cta = cont
     ? `<a class="btn btn-primary btn-lg" href="${lessonHref(cont.id)}">${cont.label}: ${LESSONS.get(cont.id).lesson.title}</a>`
     : `<a class="btn btn-primary btn-lg" href="${lessonHref(first.id)}">Mulai dari Bab 1: ${first.title}</a>`;
@@ -148,21 +167,22 @@ function viewHome() {
     <main id="main">
       <section class="intro">
         <div class="intro-text">
-          <p class="kicker">Matematika SMP Kelas 7 · Fase D</p>
+          <p class="kicker">Matematika SMP Kelas ${kelasNo} · Fase D</p>
           <h1>Belajar matematika dengan melihat <span class="hl-word">kenapa</span>, bukan cuma menghafal caranya.</h1>
           <p class="lead">Tiap materi berupa animasi pendek yang bercerita: dimulai dari pertanyaan, lalu dijawab dengan benda yang bisa dilihat. Setelah itu ada soal latihan, dan tiap jawaban salah dijelaskan letak kelirunya.</p>
           <div class="intro-cta">${cta}<a class="btn btn-ghost btn-lg" href="#peta">Lihat semua bab</a></div>
         </div>
         <figure class="intro-demo">
           <div class="demo-stage"></div>
-          <figcaption>Contoh dari Bab 1: lima keping biru dan tiga keping merah. Sepasang biru dan merah bernilai nol.</figcaption>
+          <figcaption>Contoh dari kelas 7, Bab 1: lima keping biru dan tiga keping merah. Sepasang biru dan merah bernilai nol.</figcaption>
         </figure>
       </section>
 
       <section id="peta" class="map" aria-labelledby="peta-h">
-        <h2 id="peta-h">Peta belajar kelas 7</h2>
+        <h2 id="peta-h">Peta belajar kelas ${kelasNo}</h2>
+        ${kelasTabs()}
         <ol class="bab-list">
-          ${BAB.map((b) => {
+          ${babs.map((b) => {
             const pr = babProgress(b);
             const pct = Math.round((pr.watched / pr.total) * 100);
             return `<li class="bab-item">
@@ -181,7 +201,7 @@ function viewHome() {
       </section>
 
       <footer class="foot">
-        <p>Materi mengacu pada capaian pembelajaran matematika Fase D Kurikulum Merdeka, ditambah topik kelas 7 yang masih umum diajarkan seperti aritmetika sosial.</p>
+        <p>${K.foot}</p>
         <p>${store.persistent ? 'Progresmu tersimpan di perangkat ini saja, tanpa akun.' : 'Penyimpanan perangkat sedang tidak bisa dipakai (misalnya mode privat), jadi progres tidak tersimpan setelah halaman ditutup.'}</p>
         <button type="button" class="btn btn-ghost btn-sm" id="resetBtn">Hapus progres di perangkat ini</button>
       </footer>
@@ -203,13 +223,14 @@ function viewHome() {
 function viewBab(id) {
   const b = BAB.find((x) => x.id === id);
   if (!b) return viewNotFound();
+  setKelas(b.kelas);
   setTitle(`Bab ${b.no}: ${b.title}`);
   const uji = store.score(b.id);
-  const nextBab = BAB[BAB.indexOf(b) + 1];
+  const nextBab = kelasOf(b.kelas).babs[b.no];
   app.innerHTML = `
     ${topbar()}
     <main id="main" class="page-bab">
-      <a class="back" href="#/">← Peta belajar</a>
+      <a class="back" href="#/kelas/${b.kelas}">← Peta belajar kelas ${b.kelas}</a>
       <header class="bab-head">
         <p class="kicker">Bab ${b.no}</p>
         <h1>${b.title}</h1>
@@ -249,6 +270,7 @@ function viewMateri(id) {
   const entry = LESSONS.get(id);
   if (!entry) return viewNotFound();
   const { lesson, bab, i } = entry;
+  setKelas(bab.kelas);
   setTitle(lesson.title);
   store.setLast(id);
   app.innerHTML = `
@@ -275,6 +297,7 @@ function viewLatihan(id) {
   const entry = LESSONS.get(id);
   if (!entry) return viewNotFound();
   const { lesson, bab, i } = entry;
+  setKelas(bab.kelas);
   setTitle(`Latihan: ${lesson.title}`);
   const isLastInBab = i === bab.lessons.length - 1;
   const nx = nextLessonId(id);
@@ -304,8 +327,9 @@ function pickUji(b) {
 function viewUji(id) {
   const b = BAB.find((x) => x.id === id);
   if (!b) return viewNotFound();
+  setKelas(b.kelas);
   setTitle(`Uji Bab ${b.no}: ${b.title}`);
-  const nextBab = BAB[BAB.indexOf(b) + 1];
+  const nextBab = kelasOf(b.kelas).babs[b.no];
   app.innerHTML = `${topbar()}<main id="main" class="page-quiz"></main>`;
   bindTopbar();
   renderQuiz(app.querySelector('#main'), {
@@ -314,7 +338,7 @@ function viewUji(id) {
     backHref: `#/bab/${b.id}`,
     backLabel: `Bab ${b.no}: ${b.title}`,
     questions: pickUji(b),
-    nextHref: nextBab ? `#/bab/${nextBab.id}` : '#/',
+    nextHref: nextBab ? `#/bab/${nextBab.id}` : `#/kelas/${b.kelas}`,
     nextLabel: nextBab ? `Lanjut ke Bab ${nextBab.no}: ${nextBab.title}` : 'Kembali ke peta belajar',
     kind: 'uji bab',
   });
@@ -349,7 +373,12 @@ function route() {
   window.scrollTo({ top: 0 });
   try {
     if (!page) viewHome();
-    else if (page === 'bab') viewBab(id);
+    else if (page === 'kelas') {
+      if (!kelasOf(id)) return viewNotFound();
+      setKelas(id);
+      viewHome();
+      document.getElementById('peta')?.scrollIntoView();
+    } else if (page === 'bab') viewBab(id);
     else if (page === 'materi') viewMateri(id);
     else if (page === 'latihan') viewLatihan(id);
     else if (page === 'uji') viewUji(id);

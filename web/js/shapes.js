@@ -9,9 +9,10 @@ const esc = (s) =>
 
 // Markup warna sederhana: "{p:3} − ({n:−2})"
 // p = positif (biru), n = negatif (merah), a = aksen, g = benar (hijau), m = redup, k = tinta
+// Pangkat: "2{^:5}" (ditulis kecil di atas)
 export function parseMarkup(str) {
   const out = [];
-  const re = /\{(\w+):([^{}]*)\}/g;
+  const re = /\{([\w^]+):([^{}]*)\}/g;
   let last = 0;
   let m;
   const s = String(str);
@@ -30,13 +31,19 @@ const KEY = { p: 'pos', n: 'neg', a: 'acc', g: 'ok', m: 'mut', k: 'ink' };
 
 export function spansHTML(str) {
   return parseMarkup(str)
-    .map(([t, k]) => (k ? `<span class="mk mk-${KEY[k] || k}">${esc(t)}</span>` : esc(t)))
+    .map(([t, k]) => (k === '^' ? `<sup>${esc(t)}</sup>` : k ? `<span class="mk mk-${KEY[k] || k}">${esc(t)}</span>` : esc(t)))
     .join('');
 }
 
 function tspans(str) {
   return parseMarkup(str)
-    .map(([t, k]) => (k ? `<tspan class="c-${KEY[k] || k}">${esc(t)}</tspan>` : esc(t)))
+    .map(([t, k]) =>
+      k === '^'
+        ? `<tspan baseline-shift="super" font-size="65%">${esc(t)}</tspan>`
+        : k
+          ? `<tspan class="c-${KEY[k] || k}">${esc(t)}</tspan>`
+          : esc(t),
+    )
     .join('');
 }
 

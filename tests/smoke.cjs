@@ -54,6 +54,16 @@ async function validateContent(page) {
             if (dup.length) out.push(`${l.id}/${c.title}: id ganda dalam satu langkah: ${[...new Set(dup)].join(', ')}`);
           }
       }
+      // markup yang rusak (misalnya bertingkat) akan tampil mentah sebagai { atau }
+      const { stripMarkup } = await import('./js/shapes.js');
+      const texts = [];
+      const walk = (v) => {
+        if (typeof v === 'string') texts.push(v);
+        else if (Array.isArray(v)) v.forEach(walk);
+        else if (v && typeof v === 'object') for (const [k, x] of Object.entries(v)) if (k !== 'd') walk(x);
+      };
+      walk(b);
+      for (const t of texts) if (/[{}]/.test(stripMarkup(t))) out.push(`${b.id}: markup rusak: ${t}`);
       for (const q of b.extra || []) {
         if (q.type !== 'num' && (q.options || []).filter((o) => o.ok).length !== 1) out.push(`${b.id} extra: jumlah jawaban benar salah: ${q.q}`);
       }
