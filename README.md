@@ -1,9 +1,15 @@
-# Easy Math · Matematika SMP dan SMA Kelas 7–12 (termasuk Tingkat Lanjut)
+# Easy Math · Matematika SD, SMP, dan SMA Kelas 1–12 (termasuk Tingkat Lanjut)
 
 Media pembelajaran matematika berbentuk PWA: setiap materi berupa animasi
 bercerita (dimulai dari pertanyaan, dijawab dengan benda yang bisa dilihat),
 diikuti soal latihan yang menjelaskan letak keliru setiap jawaban salah.
 
+- Kelas 1: 8 bab, 18 materi animasi, 150 soal.
+- Kelas 2: 8 bab, 17 materi animasi, 143 soal.
+- Kelas 3: 5 bab, 13 materi animasi, 106 soal.
+- Kelas 4: 6 bab, 14 materi animasi, 116 soal.
+- Kelas 5: 6 bab, 14 materi animasi, 116 soal.
+- Kelas 6: 8 bab, 17 materi animasi, 143 soal.
 - Kelas 7: 9 bab, 34 materi animasi, 266 soal.
 - Kelas 8: 8 bab, 25 materi animasi, 199 soal.
 - Kelas 9: 6 bab, 18 materi animasi, 144 soal.
@@ -19,6 +25,89 @@ diikuti soal latihan yang menjelaskan letak keliru setiap jawaban salah.
 - Narasi tampil sebagai teks. Kalau perangkat punya suara Bahasa Indonesia
   (Web Speech API), narasi juga dibacakan.
 - Progres disimpan di perangkat (localStorage), tanpa akun dan tanpa server.
+
+### Kelas 1
+
+Urutan bab mengikuti buku Matematika Kelas I Kurikulum Merdeka sejauh bisa dilacak.
+
+| Bab | Materi |
+|---|---|
+| 1. Membilang sampai 10 | membilang 1 sampai 5, membilang 6 sampai 10, lebih banyak atau lebih sedikit |
+| 2. Penjumlahan sampai 10 | menggabungkan, menyusun dan mengurai bilangan |
+| 3. Pengurangan sampai 10 | mengambil, selisih, tambah dan kurang berpasangan |
+| 4. Mengenal Bentuk | bangun datar, bangun ruang |
+| 5. Membilang sampai 20 | sepuluh dan sekian, urutan bilangan sampai 20 |
+| 6. Penjumlahan dan Pengurangan sampai 20 | penjumlahan dengan membuat 10, pengurangan dari belasan |
+| 7. Mengukur Panjang Benda | membandingkan panjang, mengukur dengan benda |
+| 8. Mengenal Diagram | mengelompokkan dan membuat diagram, membaca diagram gambar |
+
+### Kelas 2
+
+Bab 2–8 mengikuti buku Kelas II. Judul Bab 1 tidak berhasil dipastikan, jadi diisi membilang sampai 50.
+
+| Bab | Materi |
+|---|---|
+| 1. Membilang sampai 50 | puluhan dan satuan, membandingkan dan mengurutkan |
+| 2. Penjumlahan dan Pengurangan | menjumlah puluhan dan satuan, mengurangi puluhan dan satuan, menyimpan dan meminjam |
+| 3. Bentuk di Sekitar Kita | sisi dan titik sudut, menyusun dan memecah bentuk |
+| 4. Posisi Benda dan Pola | posisi benda, pola |
+| 5. Pecahan | setengah, seperempat |
+| 6. Pengukuran | satuan harus sama, lebih berat, lebih ringan |
+| 7. Membilang sampai 100 | bilangan sampai 100, tanda lebih dari dan kurang dari |
+| 8. Berbagai Diagram | turus dan tabel, diagram batang |
+
+### Kelas 3
+
+Bab mengikuti buku Kelas III, ditambah perkalian dan pembagian di bab Kalimat Matematika.
+
+| Bab | Materi |
+|---|---|
+| 1. Bilangan Cacah sampai 1.000 | ratusan, puluhan, dan satuan, membandingkan bilangan sampai 1.000, penjumlahan dan pengurangan bersusun |
+| 2. Kalimat Matematika | kalimat matematika, perkalian, pembagian |
+| 3. Pengukuran Panjang dan Berat | mengukur dengan penggaris, meter dan sentimeter, kilogram dan gram |
+| 4. Unsur-unsur Bangun Datar | sudut siku-siku, garis sejajar dan tegak lurus |
+| 5. Penyajian Data dalam Tabel | membuat tabel, membaca tabel |
+
+### Kelas 4
+
+Bab mengikuti buku Kelas IV Kurikulum Merdeka.
+
+| Bab | Materi |
+|---|---|
+| 1. Bilangan Cacah sampai 10.000 | ribuan dan nilai tempat, membandingkan dan membulatkan, perkalian dan pembagian |
+| 2. Pecahan | pembilang dan penyebut, pecahan senilai, membandingkan pecahan |
+| 3. Pola Gambar dan Pola Bilangan | pola gambar, pola bilangan |
+| 4. Pengukuran Luas dan Volume | luas dengan persegi satuan, volume dengan kubus satuan |
+| 5. Bangun Datar | macam-macam segi empat, segitiga dan menyusun bangun |
+| 6. Piktogram dan Diagram Batang | piktogram, diagram batang dengan skala |
+
+### Kelas 5
+
+Urutan bab buku resmi belum bisa dipastikan, jadi bab disusun mengikuti elemen capaian pembelajaran Fase C.
+
+| Bab | Materi |
+|---|---|
+| 1. Bilangan Cacah sampai 1.000.000 | bilangan sampai satu juta, menjumlah dan mengurangi bilangan besar |
+| 2. KPK dan FPB | kelipatan dan KPK, faktor dan FPB |
+| 3. Pecahan dan Desimal | menjumlah pecahan berbeda penyebut, pecahan campuran, pecahan desimal |
+| 4. Keliling dan Luas Bangun Datar | keliling, luas persegi panjang dan persegi, luas segitiga |
+| 5. Sudut | mengukur sudut, jenis-jenis sudut |
+| 6. Data | tabel frekuensi dan modus, membaca dan membuat diagram batang |
+
+### Kelas 6
+
+Bab volume 2 mengikuti judul bab buku Kelas VI. Bab Besaran dan Satuan ditafsirkan sebagai kecepatan dan debit.
+
+| Bab | Materi |
+|---|---|
+| 1. Operasi Pecahan dan Persen | perkalian pecahan, pembagian pecahan, persen |
+| 2. Rasio | rasio, membagi dengan rasio |
+| 3. Volume Kubus dan Balok | volume balok, volume kubus dan liter |
+| 4. Peluang | menyusun dan memilih, peluang |
+| 5. Perbandingan Senilai dan Berbalik Nilai | perbandingan senilai, perbandingan berbalik nilai |
+| 6. Perbesaran, Perkecilan, dan Skala | perbesaran dan perkecilan, skala pada peta |
+| 7. Kecepatan dan Debit | kecepatan, debit |
+| 8. Pengolahan Data | rata-rata, median, modus, dan jangkauan |
 
 ### Kelas 7
 
@@ -147,6 +236,12 @@ web/
   js/quiz.js           latihan soal dan pemeriksa jawaban isian
   js/store.js          progres di localStorage
   js/speech.js         narasi suara bawaan perangkat
+  content/k1/          isi bab kelas 1 (kit.js: benda berjajar, bingkai sepuluh)
+  content/k2/          isi bab kelas 2 (kit.js: batang puluhan dan kubus satuan)
+  content/k3/          isi bab kelas 3 (kit.js: blok ratusan, puluhan, satuan)
+  content/k4/          isi bab kelas 4
+  content/k5/          isi bab kelas 5
+  content/k6/          isi bab kelas 6 (kit.js: petak, kubus satuan dan balok)
   content/b1.js … b9.js  isi bab kelas 7 (b1x, b8x: materi tambahan bab 1 dan 8)
   content/k8/          isi bab kelas 8 (plot.js: bidang koordinat, solid.js: bangun ruang)
   content/k9/          isi bab kelas 9 (curve.js: parabola)

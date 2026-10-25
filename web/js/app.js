@@ -126,10 +126,35 @@ const DEMO = {
   ],
 };
 
-function mountDemo(el) {
-  el.innerHTML = stageSVG('Contoh animasi: lima keping positif dan tiga keping negatif saling menghapus, sisa dua.');
+// Demo untuk kelas SD: 8 + 5 dengan membuat 10 di bingkai sepuluh
+const cellX = (i) => 110 + (i % 5) * 45;
+const cellY = (i) => 120 + Math.floor(i / 5) * 45;
+const DEMO_SD = {
+  id: 'demo-sd',
+  title: 'Contoh',
+  chapters: [
+    {
+      title: 'Contoh',
+      steps: [
+        {
+          add: [
+            { id: 'q', t: 'text', x: 200, y: 48, text: '{n:8} + {p:5} = ?', size: 34, w: 800 },
+            ...Array.from({ length: 10 }, (_, i) => ({ id: `f${i}`, t: 'rect', x: cellX(i), y: cellY(i), w: 45, h: 45, r: 0, fill: 'paper', stroke: 'ink', sw: 2 })),
+            ...Array.from({ length: 8 }, (_, i) => ({ id: `a${i}`, t: 'circle', x: cellX(i), y: cellY(i), r: 15, fill: 'neg', stroke: 'ink', sw: 1.5 })),
+          ],
+        },
+        { add: Array.from({ length: 5 }, (_, i) => ({ id: `b${i}`, t: 'circle', x: 110 + i * 45, y: 240, r: 15, fill: 'pos', stroke: 'ink', sw: 1.5 })) },
+        { set: { b0: { x: cellX(8), y: cellY(8) }, b1: { x: cellX(9), y: cellY(9) }, b2: { x: 110 }, b3: { x: 155 }, b4: { x: 200 } } },
+        { set: { q: { text: '{n:8} + {p:5} = 10 + 3 = {g:13}' } } },
+      ],
+    },
+  ],
+};
+
+function mountDemo(el, sd = false) {
+  el.innerHTML = stageSVG(sd ? 'Contoh animasi: delapan bulatan merah di bingkai sepuluh, dua dari lima bulatan biru melengkapi sepuluh, sisa tiga. Hasilnya tiga belas.' : 'Contoh animasi: lima keping positif dan tiga keping negatif saling menghapus, sisa dua.');
   const stage = new Stage(el.querySelector('svg'));
-  const frames = compileLesson(DEMO);
+  const frames = compileLesson(sd ? DEMO_SD : DEMO);
   if (reduceMotion) {
     stage.render(frames[frames.length - 1].state, { instant: true });
     return { destroy() {} };
@@ -175,7 +200,7 @@ function viewHome() {
         </div>
         <figure class="intro-demo">
           <div class="demo-stage"></div>
-          <figcaption>Contoh dari kelas 7, Bab 1: lima keping biru dan tiga keping merah. Sepasang biru dan merah bernilai nol.</figcaption>
+          <figcaption>${K.jenjang === 'SD' ? 'Contoh dari kelas 1, Bab 6: 8 + 5. Dua dari lima bulatan biru melengkapi bingkai menjadi 10, sisanya 3.' : 'Contoh dari kelas 7, Bab 1: lima keping biru dan tiga keping merah. Sepasang biru dan merah bernilai nol.'}</figcaption>
         </figure>
       </section>
 
@@ -208,7 +233,7 @@ function viewHome() {
       </footer>
     </main>`;
   bindTopbar();
-  current = mountDemo(app.querySelector('.demo-stage'));
+  current = mountDemo(app.querySelector('.demo-stage'), K.jenjang === 'SD');
   document.getElementById('resetBtn').addEventListener('click', () => {
     if (window.confirm('Hapus semua progres materi dan skor latihan di perangkat ini?')) {
       store.reset();
