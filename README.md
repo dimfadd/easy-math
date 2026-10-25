@@ -1,16 +1,20 @@
-# Easy Math · Matematika SMP Kelas 7
+# Easy Math · Matematika SMP Kelas 7 dan 8
 
 Media pembelajaran matematika berbentuk PWA: setiap materi berupa animasi
 bercerita (dimulai dari pertanyaan, dijawab dengan benda yang bisa dilihat),
 diikuti soal latihan yang menjelaskan letak keliru setiap jawaban salah.
 
-- 9 bab, 34 materi animasi, 266 soal (170 soal latihan, 68 pertanyaan "tebak dulu"
-  di dalam animasi, 28 soal tambahan untuk uji bab).
+- Kelas 7: 9 bab, 34 materi animasi, 266 soal.
+- Kelas 8: 8 bab, 25 materi animasi, 199 soal.
+- Soal terdiri dari soal latihan per materi, pertanyaan "tebak dulu" di dalam
+  animasi, dan soal tambahan untuk uji bab.
 - Ukuran HP, tablet, dan laptop. Tema terang dan gelap.
 - Bisa dipasang ke layar utama dan dipakai offline setelah kunjungan pertama.
 - Narasi tampil sebagai teks. Kalau perangkat punya suara Bahasa Indonesia
   (Web Speech API), narasi juga dibacakan.
 - Progres disimpan di perangkat (localStorage), tanpa akun dan tanpa server.
+
+### Kelas 7
 
 | Bab | Materi |
 |---|---|
@@ -23,6 +27,19 @@ diikuti soal latihan yang menjelaskan letak keliru setiap jawaban salah.
 | 7. Segitiga dan Segi Empat | jumlah sudut segitiga, keliling, luas bangun datar |
 | 8. Data dan Diagram | turus, tabel frekuensi, diagram batang, garis, lingkaran, rata-rata, median, modus |
 | 9. Aritmetika Sosial | untung dan rugi, diskon dan pajak, bunga tunggal, bruto-neto-tara |
+
+### Kelas 8
+
+| Bab | Materi |
+|---|---|
+| 1. Bilangan Berpangkat dan Bentuk Akar | arti pangkat, sifat, pangkat nol dan negatif, notasi ilmiah, bentuk akar |
+| 2. Teorema Pythagoras | persegi di sisi segitiga, mencari sisi, tripel, jenis segitiga, penerapan |
+| 3. Relasi dan Fungsi | diagram panah, pasangan berurutan, fungsi, domain-range, rumus dan grafik |
+| 4. Persamaan Garis Lurus | bidang koordinat, gradien, menyusun persamaan, sejajar dan tegak lurus |
+| 5. SPLDV | metode grafik, substitusi, eliminasi, soal cerita |
+| 6. Bangun Ruang Sisi Datar | kubus, balok, prisma, limas: jaring-jaring, luas permukaan, volume |
+| 7. Statistika | rata-rata dari tabel, rata-rata gabungan, jangkauan, kuartil, diagram kotak garis |
+| 8. Peluang | ruang sampel, peluang empiris dan teoretis, komplemen, frekuensi harapan |
 
 ## Menjalankan di komputer
 
@@ -57,7 +74,8 @@ web/
   js/quiz.js           latihan soal dan pemeriksa jawaban isian
   js/store.js          progres di localStorage
   js/speech.js         narasi suara bawaan perangkat
-  content/b1.js … b9.js  isi setiap bab (b1x, b8x: materi tambahan bab 1 dan 8)
+  content/b1.js … b9.js  isi bab kelas 7 (b1x, b8x: materi tambahan bab 1 dan 8)
+  content/k8/          isi bab kelas 8 (plot.js: bidang koordinat, solid.js: bangun ruang)
   content/helpers.js   fungsi bantu menulis materi
 tests/                 uji otomatis (Playwright)
 ig-analysis/           riset referensi video (@akalmatika, @nasrularifin26)
@@ -79,8 +97,8 @@ narasi `say` dan mengubah panggung 400 × 300 dengan `add`, `set`, `del`, atau
 ```
 
 Warna di teks: `{p:…}` biru (positif), `{n:…}` merah (negatif), `{a:…}` kuning,
-`{g:…}` hijau. Setiap opsi salah wajib punya `why`. Soal isian memakai
-`type: 'num'` dengan `ans` (bisa menerima pecahan, desimal koma, dan 112.000).
+`{g:…}` hijau. Pangkat: `2{^:5}` (tidak boleh di dalam markup warna). Setiap opsi salah wajib punya `why`. Soal isian memakai
+`type: 'num'` dengan `ans` (bisa menerima pecahan, desimal koma, 112.000, awalan Rp, dan akhiran % atau kg).
 
 Setelah mengubah isi, naikkan `VERSION` di `web/sw.js` supaya perangkat yang
 sudah memasang aplikasi mengambil versi baru.

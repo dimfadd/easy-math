@@ -119,6 +119,16 @@ async function checkFrames(page, id, vpName) {
           const oy = Math.min(A.y + A.h, B.y + B.h) - Math.max(A.y, B.y);
           if (ox > 4 && oy > 4) out.push(`langkah ${i + 1}: teks "${A.id}" dan "${B.id}" bertumpuk`);
         }
+      // label di dalam kotak (rect/circle dengan label) harus muat
+      svg.querySelectorAll('.layer > .el').forEach((g) => {
+        if (g.__removing || parseFloat(g.style.opacity || '1') < 0.05) return;
+        const shape = g.querySelector('rect, circle');
+        const txt = g.querySelector('text');
+        if (!shape || !txt || !['rect', 'circle'].includes(g.dataset.t)) return;
+        const a = shape.getBoundingClientRect();
+        const b = txt.getBoundingClientRect();
+        if (b.width > a.width + 2 / k) out.push(`langkah ${i + 1}: label "${g.dataset.id}" lebih lebar dari kotaknya`);
+      });
       // teks yang titik tengahnya di dalam kotak harus muat di dalam kotak itu
       const rects = boxes.filter((b) => b.t === 'rect');
       for (const A of texts)

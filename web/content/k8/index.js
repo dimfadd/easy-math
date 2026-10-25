@@ -5,5 +5,7 @@ import b3 from './b3.js';
 import b4 from './b4.js';
 import b5 from './b5.js';
 import b6 from './b6.js';
+import b7 from './b7.js';
+import b8 from './b8.js';
 
-export const K8 = [b1, b2, b3, b4, b5, b6];
+export const K8 = [b1, b2, b3, b4, b5, b6, b7, b8];
