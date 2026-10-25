@@ -6,11 +6,13 @@ import { T } from '../helpers.js';
 // Mengembalikan { els, at(x, y) -> [px, py], X(x), Y(y) }
 export function plane(id, cfg) {
   const { x, y, w, h, xmin, xmax, ymin, ymax, step = 1, every = 1, lsize = 11, labels = true, xl = 'x', yl = 'y' } = cfg;
+  const ystep = cfg.ystep ?? step;
+  const yevery = cfg.yevery ?? every;
   const X = (v) => x + ((v - xmin) / (xmax - xmin)) * w;
   const Y = (v) => y + h - ((v - ymin) / (ymax - ymin)) * h;
   let grid = '';
   for (let v = Math.ceil(xmin / step) * step; v <= xmax + 1e-9; v += step) grid += `M${X(v).toFixed(1)},${y} V${y + h} `;
-  for (let v = Math.ceil(ymin / step) * step; v <= ymax + 1e-9; v += step) grid += `M${x},${Y(v).toFixed(1)} H${x + w} `;
+  for (let v = Math.ceil(ymin / ystep) * ystep; v <= ymax + 1e-9; v += ystep) grid += `M${x},${Y(v).toFixed(1)} H${x + w} `;
   const ax0 = X(Math.min(Math.max(0, xmin), xmax));
   const ay0 = Y(Math.min(Math.max(0, ymin), ymax));
   const els = [
@@ -22,7 +24,7 @@ export function plane(id, cfg) {
   ];
   if (labels) {
     for (let v = Math.ceil(xmin / every) * every; v <= xmax + 1e-9; v += every) if (v !== 0) els.push(T(`${id}tx${v}`, v < 0 ? `−${-v}` : String(v), X(v), ay0 + 12, { size: lsize, c: 'mut' }));
-    for (let v = Math.ceil(ymin / every) * every; v <= ymax + 1e-9; v += every) if (v !== 0) els.push(T(`${id}ty${v}`, v < 0 ? `−${-v}` : String(v), ax0 - 9, Y(v), { size: lsize, c: 'mut' }));
+    for (let v = Math.ceil(ymin / yevery) * yevery; v <= ymax + 1e-9; v += yevery) if (v !== 0) els.push(T(`${id}ty${v}`, v < 0 ? `−${-v}` : String(v), ax0 - 9, Y(v), { size: lsize, c: 'mut' }));
     // label 0 dilewati kalau terlalu dekat dengan label −1 di sumbu y
     if (ymin >= 0 || h / (ymax - ymin) >= 28) els.push(T(`${id}t0`, '0', ax0 - 8, ay0 + 11, { size: lsize, c: 'mut' }));
   }
