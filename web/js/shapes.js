@@ -155,7 +155,7 @@ const TYPES = {
     const hs = wd * 3 + 3;
     if (p.arrow === 'end' || p.arrow === 'both') heads += arrowHead(0, 0, dx, dy, hs);
     if (p.arrow === 'start' || p.arrow === 'both') heads += arrowHead(dx, dy, 0, 0, hs);
-    return `<g class="c-${p.c || 'ink'}"><line x1="0" y1="0" x2="${dx}" y2="${dy}" stroke="currentColor" stroke-width="${wd}" stroke-linecap="round" pathLength="1"${dash} class="ln${draw}"/>${heads}</g>`;
+    return `<g class="c-${p.c || 'ink'}"><line x1="0" y1="0" x2="${dx}" y2="${dy}" stroke="currentColor" stroke-width="${wd}" stroke-linecap="round"${draw ? ' pathLength="1"' : ''}${dash} class="ln${draw}"/>${heads}</g>`;
   },
 
   // Panah lengkung untuk lompatan di garis bilangan: dari (x,y) ke (x2,y)

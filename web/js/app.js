@@ -42,7 +42,7 @@ function topbar() {
     <a class="brand" href="#/" aria-label="Easy Math, ke beranda">
       <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><circle cx="15" cy="20" r="11" class="f-pos"/><circle cx="25" cy="20" r="11" class="f-neg" fill-opacity=".92"/><path d="M10 20h10M15 15v10" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M21.5 20h8" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>
       <span class="brand-name">Easy Math</span>
-      <span class="brand-sub">SMP Kelas ${kelasNo}</span>
+      <span class="brand-sub">${kelasOf(kelasNo).jenjang} Kelas ${kelasNo}</span>
     </a>
     <button type="button" class="icon-btn" id="themeBtn" aria-label="${t === 'dark' ? 'Pakai tema terang' : 'Pakai tema gelap'}">${t === 'dark' ? THEME_ICON.light : THEME_ICON.dark}</button>
   </header>`;
@@ -95,7 +95,7 @@ function continueTarget() {
 }
 
 function setTitle(t) {
-  document.title = t ? `${t} · Easy Math Kelas ${kelasNo}` : `Easy Math · Matematika SMP Kelas ${kelasNo}`;
+  document.title = t ? `${t} · Easy Math Kelas ${kelasNo}` : `Easy Math · Matematika ${kelasOf(kelasNo).jenjang} Kelas ${kelasNo}`;
 }
 
 function focusMain() {
@@ -167,7 +167,7 @@ function viewHome() {
     <main id="main">
       <section class="intro">
         <div class="intro-text">
-          <p class="kicker">Matematika SMP Kelas ${kelasNo} · Fase D</p>
+          <p class="kicker">Matematika ${K.jenjang} Kelas ${kelasNo} · Fase ${K.fase}</p>
           <h1>Belajar matematika dengan melihat <span class="hl-word">kenapa</span>, bukan cuma menghafal caranya.</h1>
           <p class="lead">Tiap materi berupa animasi pendek yang bercerita: dimulai dari pertanyaan, lalu dijawab dengan benda yang bisa dilihat. Setelah itu ada soal latihan, dan tiap jawaban salah dijelaskan letak kelirunya.</p>
           <div class="intro-cta">${cta}<a class="btn btn-ghost btn-lg" href="#peta">Lihat semua bab</a></div>
