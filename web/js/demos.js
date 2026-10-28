@@ -102,11 +102,11 @@ const para = () => {
   return `M${pts.join(' L')}`;
 };
 const QUAD = {
-  badge: 'SMA · Kelas 10–11',
+  badge: 'SMA · Kelas 10',
   title: 'Menggeser grafik',
   cap: 'Mengganti x dengan x − 2 menggeser parabola 2 ke kanan; dikurangi 1 menurunkannya 1.',
-  href: '#/materi/k9b2-1',
-  en: { badge: 'Senior High · Grade 10–11', title: 'Shifting a graph', cap: 'Replacing x with x − 2 shifts the parabola 2 to the right; subtracting 1 moves it down 1.' },
+  href: '#/materi/k10b6-1',
+  en: { badge: 'Senior High · Grade 10', title: 'Shifting a graph', cap: 'Replacing x with x − 2 shifts the parabola 2 to the right; subtracting 1 moves it down 1.' },
   lesson: {
     id: 'demo-quad',
     chapters: [

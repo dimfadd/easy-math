@@ -187,9 +187,27 @@ async function runQuiz(page, hash, tag) {
     page.on('console', (m) => {
       if (m.type() === 'error' || m.type() === 'warning') warn(`[${vpName}] console.${m.type()}: ${m.text()}`);
     });
+    // halaman jual dan coba gratis (tanpa akun)
     await page.goto(BASE + '#/');
+    await page.waitForSelector('.hero-demo');
+    await overflow(page, `[${vpName}] halaman jual`);
+    await page.goto(BASE + '#/coba');
+    await page.waitForSelector('.free-grid');
+    await overflow(page, `[${vpName}] coba gratis`);
+    // masuk dengan akun demo berlangganan supaya semua materi terbuka
+    await page.goto(BASE + '#/masuk');
+    await page.click('.demo-acc[data-email="ortu@demo.id"]');
+    await page.waitForURL(/#\/ortu/);
+    await page.waitForSelector('.child-card');
+    await overflow(page, `[${vpName}] dasbor orang tua`);
+    for (const h of ['#/paket', '#/akun', '#/profil']) {
+      await page.goto(BASE + h);
+      await page.waitForTimeout(300);
+      await overflow(page, `[${vpName}] ${h}`);
+    }
+    await page.goto(BASE + '#/belajar');
     await page.waitForSelector('.bab-list');
-    await overflow(page, `[${vpName}] beranda`);
+    await overflow(page, `[${vpName}] peta belajar`);
     if (vpName === 'hp') await validateContent(page);
     const { ids, babs } = await page.evaluate(async () => {
       const m = await import('./content/index.js');

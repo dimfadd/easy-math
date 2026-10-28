@@ -8,7 +8,10 @@ const BASE = process.env.BASE || 'http://localhost:8765/';
   const page = await ctx.newPage();
   const errors = [];
   page.on('pageerror', (e) => errors.push(e.message));
-  await page.goto(BASE + '#/');
+  await page.goto(BASE + '#/masuk');
+  await page.click('.demo-acc[data-email="ortu@demo.id"]');
+  await page.waitForURL(/#\/ortu/);
+  await page.goto(BASE + '#/belajar');
   await page.waitForSelector('.bab-list');
   const sw = await page.evaluate(async () => {
     const reg = await navigator.serviceWorker.ready;
@@ -28,10 +31,10 @@ const BASE = process.env.BASE || 'http://localhost:8765/';
   await page.waitForTimeout(800);
   await ctx.setOffline(true);
   let offlineOk = true;
-  for (const h of ['#/', '#/materi/b1-2', '#/latihan/b1-2', '#/materi/b8-3', '#/uji/b5']) {
+  for (const h of ['#/', '#/belajar', '#/materi/b1-2', '#/latihan/b1-2', '#/materi/b8-3', '#/uji/b5']) {
     try {
       await page.goto(BASE + h, { waitUntil: 'load' });
-      await page.waitForSelector('.bab-list, .stage, .q-card', { timeout: 5000 });
+      await page.waitForSelector('.hero-demo, .bab-list, .stage, .q-card', { timeout: 5000 });
     } catch (e) {
       offlineOk = false;
       console.log('offline gagal:', h, e.message.split('\n')[0]);

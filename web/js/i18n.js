@@ -1,6 +1,7 @@
 // Bahasa antarmuka: Indonesia (id) dan Inggris (en).
 // Teks antarmuka ada di sini. Teks isi materi ada di content/ (Indonesia) dan content/en/ (terjemahan).
 import { store } from './store.js';
+import { COPY_ID, COPY_EN } from './copy.js';
 
 const ID = {
   'brand.tagline': 'Anak paham {a:kenapa}, bukan cuma hafal rumus & caranya.',
@@ -262,6 +263,8 @@ const EN = {
   'q.ans': 'Answer: {a}',
 };
 
+Object.assign(ID, COPY_ID);
+Object.assign(EN, COPY_EN);
 const DICT = { id: ID, en: EN };
 export const LANGS = ['id', 'en'];
 

@@ -21,8 +21,9 @@
   <script>
     // Terapkan tema tersimpan sebelum halaman tergambar, supaya tidak berkedip.
     try {
-      var s = JSON.parse(localStorage.getItem('easymath.k7.v1') || '{}');
-      var t = s.settings && s.settings.theme;
+      var s = JSON.parse(localStorage.getItem('easymath.settings.v1') || 'null') || (JSON.parse(localStorage.getItem('easymath.k7.v1') || '{}').settings || {});
+      var t = s.theme;
+      if (s.lang === 'en') document.documentElement.lang = 'en';
       if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
     } catch (e) {}
   </script>

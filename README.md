@@ -234,6 +234,12 @@ web/
   js/brand.js          nama produk, tagline, dan kalimat pembuka (ganti nama di sini + index.html + manifest)
   js/demos.js          contoh animasi bergantian di beranda (SD, SMP, SMA)
   js/i18n.js           teks antarmuka dua bahasa (Indonesia/Inggris) dan pemilih bahasa
+  js/copy.js           teks halaman jual, akun, paket, dan dasbor (dua bahasa)
+  js/config.js         materi gratis, harga paket, metode bayar
+  js/api.js            lapisan API (sekarang memanggil server tiruan js/mockdb.js)
+  js/auth.js, sync.js  sesi masuk dan sinkronisasi progres
+  js/ui.js             topbar, ikon, fungsi bantu tampilan
+  js/views/            halaman: landing, learn (belajar), account (akun), paket
   js/l10n.js           menerapkan terjemahan isi materi (judul, narasi, soal, teks panggung)
   js/player.js         pemutar animasi: langkah, narasi, pertanyaan di tengah materi
   js/shapes.js         bentuk SVG (teks, pecahan, keping, garis bilangan, diagram, busur, dll.)
@@ -256,10 +262,45 @@ web/
   content/k12l/        isi bab kelas 12 Tingkat Lanjut (kit.js: kurva parametrik)
   content/en/          terjemahan bahasa Inggris: catalog.js (semua judul dan deskripsi) dan terjemahan penuh per bab
   content/helpers.js   fungsi bantu menulis materi
-tests/                 uji otomatis (Playwright)
+tests/                 uji otomatis (Playwright): smoke, accounts, lang, offline, answers
 ig-analysis/           riset referensi video (@akalmatika, @nasrularifin26)
 docs/arah-produk.md    arah komersial, sistem desain, dan konsep Lab Simulasi
 ```
+
+## Akun, langganan, dan sinkronisasi (versi pengembangan)
+
+Alamat utama:
+- `#/`: halaman jual.
+- `#/coba`: 9 materi gratis (3 SD, 3 SMP, 3 SMA, diatur di `js/config.js`).
+- `#/masuk` dan `#/daftar`: masuk dan daftar.
+- `#/profil`: pilih anak yang belajar.
+- `#/belajar`: peta belajar.
+- `#/ortu`: dasbor orang tua atau guru.
+- `#/paket`: paket dan pembayaran.
+- `#/akun`: akun dan langganan.
+
+Akun demo (kata sandi `demo123`; PIN anak `1234`):
+
+| Akun | Isi |
+|---|---|
+| ortu@demo.id | orang tua, langganan Keluarga aktif, anak: raka (kelas 3), nadia (kelas 8) |
+| ortu.baru@demo.id | orang tua tanpa langganan, anak: dimas (kelas 5), untuk mencoba alur bayar |
+| siswa@demo.id | siswa SMA mandiri dalam masa uji coba |
+| guru@demo.id | guru dengan kelas 7A berisi ayu, bima, citra |
+
+Semuanya masih tiruan: "server" adalah `js/mockdb.js` yang menyimpan data di localStorage
+perangkat. Kunci materi dan kata sandi diperiksa di browser, jadi **belum aman untuk pengguna
+sungguhan**. Saat server siap, cukup ganti isi `js/api.js` dengan panggilan ke endpoint;
+halaman lain hanya memakai fungsi di file itu. Hal yang wajib dipindah ke server:
+- pemeriksaan kata sandi;
+- hak akses materi (materi berbayar tidak boleh ikut terunduh sebelum dibayar);
+- konfirmasi pembayaran lewat webhook gerbang pembayaran.
+
+Sinkronisasi dibuat offline-first (`js/sync.js`): progres ditulis ke perangkat dulu, dikirim
+sesudah jeda singkat, dan dicoba lagi saat online. Saat masuk, data perangkat dan server
+digabung (`mergeProgress` di `js/api.js`), bukan saling menimpa.
+
+Harga di `js/config.js` adalah contoh dan perlu diputuskan sendiri.
 
 ## Dua bahasa
 

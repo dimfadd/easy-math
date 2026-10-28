@@ -1,27 +1,53 @@
-// Progres belajar disimpan di perangkat (localStorage).
+// Progres belajar disimpan di perangkat (localStorage), terpisah untuk setiap profil.
+// Tamu (belum masuk) memakai kunci lama supaya progres sebelum ada akun tidak hilang.
+// Pengaturan (tema, bahasa, suara, kecepatan) berlaku untuk perangkat, bukan per profil.
 // Semua akses dibungkus try/catch: mode privat atau penyimpanan diblokir tidak boleh merusak aplikasi.
 
-const KEY = 'easymath.k7.v1';
+const GUEST_KEY = 'easymath.k7.v1';
+const SETTINGS_KEY = 'easymath.settings.v1';
+const progKey = (pid) => (pid ? `easymath.progress.${pid}` : GUEST_KEY);
 
-const empty = () => ({ watched: {}, scores: {}, settings: {}, last: null });
+const empty = () => ({ watched: {}, scores: {}, last: null, updatedAt: 0 });
 
-let data = empty();
 let persistent = true;
-
-try {
-  const raw = localStorage.getItem(KEY);
-  if (raw) data = { ...empty(), ...JSON.parse(raw) };
-} catch {
-  persistent = false;
-}
-
-function save() {
+const read = (k) => {
   try {
-    localStorage.setItem(KEY, JSON.stringify(data));
+    const raw = localStorage.getItem(k);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    persistent = false;
+    return null;
+  }
+};
+const write = (k, v) => {
+  try {
+    localStorage.setItem(k, JSON.stringify(v));
     persistent = true;
   } catch {
     persistent = false;
   }
+};
+
+// Pengaturan: pindahkan dari format lama bila perlu
+let settings = read(SETTINGS_KEY);
+if (!settings) {
+  settings = (read(GUEST_KEY) || {}).settings || {};
+  write(SETTINGS_KEY, settings);
+}
+
+let profileId = null;
+let data = { ...empty(), ...(read(GUEST_KEY) || {}) };
+delete data.settings;
+const listeners = new Set();
+
+function save() {
+  data.updatedAt = Date.now();
+  const key = progKey(profileId);
+  if (!profileId) {
+    // kunci tamu juga menyimpan pengaturan lama agar versi sebelumnya tetap terbaca
+    write(key, { ...data, settings });
+  } else write(key, data);
+  listeners.forEach((f) => f(profileId));
 }
 
 export const store = {
@@ -29,11 +55,36 @@ export const store = {
     return persistent;
   },
   get settings() {
-    return data.settings;
+    return settings;
   },
   setSetting(k, v) {
-    data.settings[k] = v;
-    save();
+    settings[k] = v;
+    write(SETTINGS_KEY, settings);
+  },
+  get profileId() {
+    return profileId;
+  },
+  // Ganti profil aktif (null = tamu). Data diambil dari salinan lokal profil itu.
+  useProfile(pid) {
+    profileId = pid || null;
+    data = { ...empty(), ...(read(progKey(profileId)) || {}) };
+    delete data.settings;
+  },
+  snapshot() {
+    return JSON.parse(JSON.stringify(data));
+  },
+  // Dipakai sinkronisasi: ganti isi dengan hasil gabungan dari server tanpa memicu kirim ulang.
+  replace(next, pid = profileId) {
+    if (pid !== profileId) {
+      write(progKey(pid), next);
+      return;
+    }
+    data = { ...empty(), ...next };
+    write(progKey(profileId), data);
+  },
+  onChange(f) {
+    listeners.add(f);
+    return () => listeners.delete(f);
   },
   isWatched(id) {
     return !!data.watched[id];
@@ -61,9 +112,7 @@ export const store = {
     return data.last;
   },
   reset() {
-    const settings = data.settings;
     data = empty();
-    data.settings = settings;
     save();
   },
 };

@@ -8,7 +8,9 @@ const BASE = process.env.BASE || 'http://localhost:8765/';
   const errs = [];
   p.on('pageerror', (e) => errs.push(`${p.url()} ${e.message}`));
   p.on('console', (m) => m.type() === 'error' && errs.push(`${p.url()} ${m.text()}`));
-  await p.goto(BASE + '#/');
+  await p.goto(BASE + '#/masuk');
+  await p.click('.demo-acc[data-email="ortu@demo.id"]');
+  await p.waitForURL(/#\/ortu/);
   await p.click('.lang-seg [data-lang="en"]');
   await p.waitForTimeout(500);
   const { ids, babs } = await p.evaluate(async () => {
