@@ -1,7 +1,7 @@
 // Service worker: aplikasi tetap bisa dibuka tanpa internet setelah kunjungan pertama.
 // Strategi: file inti di-cache saat instal; file lain di-cache saat pertama diminta,
 // lalu disajikan dari cache sambil diperbarui di latar (stale-while-revalidate).
-const VERSION = 'easymath-v71';
+const VERSION = 'easymath-v72';
 const CORE = [
   './',
   './index.html',
@@ -12,6 +12,8 @@ const CORE = [
   './js/quiz.js',
   './js/store.js',
   './js/speech.js',
+  './js/brand.js',
+  './js/demos.js',
   './content/index.js',
   './manifest.webmanifest',
   './icons/icon.svg',
@@ -20,6 +22,8 @@ const CORE = [
   './fonts/nunito-latin-700-normal.woff2',
   './fonts/nunito-latin-800-normal.woff2',
   './fonts/fraunces-latin-600-normal.woff2',
+  './fonts/fredoka-latin-500-normal.woff2',
+  './fonts/fredoka-latin-600-normal.woff2',
 ];
 
 self.addEventListener('install', (e) => {

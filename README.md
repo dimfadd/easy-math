@@ -231,6 +231,8 @@ web/
   index.html, manifest.webmanifest, sw.js
   css/app.css          tampilan, token warna terang/gelap, tata letak responsif
   js/app.js            router dan halaman (beranda, bab, materi, latihan, uji bab)
+  js/brand.js          nama produk, tagline, dan kalimat pembuka (ganti nama di sini + index.html + manifest)
+  js/demos.js          contoh animasi bergantian di beranda (SD, SMP, SMA)
   js/player.js         pemutar animasi: langkah, narasi, pertanyaan di tengah materi
   js/shapes.js         bentuk SVG (teks, pecahan, keping, garis bilangan, diagram, busur, dll.)
   js/quiz.js           latihan soal dan pemeriksa jawaban isian
@@ -253,6 +255,7 @@ web/
   content/helpers.js   fungsi bantu menulis materi
 tests/                 uji otomatis (Playwright)
 ig-analysis/           riset referensi video (@akalmatika, @nasrularifin26)
+docs/arah-produk.md    arah komersial, sistem desain, dan konsep Lab Simulasi
 ```
 
 ## Menulis atau mengubah materi

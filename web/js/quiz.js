@@ -63,7 +63,7 @@ function figHTML(q) {
 
 const ansText = (q) => (q.type === 'num' ? q.ans[0] : (q.options.find((o) => o.ok) || {}).t);
 
-export function renderQuiz(root, { id, title, backHref, backLabel, questions, nextHref, nextLabel, kind = 'latihan' }) {
+export function renderQuiz(root, { id, title, backHref, backLabel, questions, nextHref, nextLabel, kind = 'latihan', numHint }) {
   if (!questions || !questions.length) {
     root.innerHTML = `<div class="state-box"><p class="state-title">Belum ada soal di sini.</p><p>Soal untuk bagian ini belum ditulis.</p><a class="btn btn-ghost" href="${backHref}">${backLabel}</a></div>`;
     return;
@@ -96,7 +96,7 @@ export function renderQuiz(root, { id, title, backHref, backLabel, questions, ne
                  ${q.unit ? `<span class="unit">${q.unit}</span>` : ''}
                  <button class="btn btn-primary" type="submit">Periksa</button>
                </form>
-               <p id="numhint" class="muted small">${q.numHint || 'Bilangan negatif boleh ditulis dengan tanda minus, pecahan dengan garis miring, misalnya 3/4.'}</p>
+               <p id="numhint" class="muted small">${q.numHint || numHint || 'Bilangan negatif boleh ditulis dengan tanda minus, pecahan dengan garis miring, misalnya 3/4.'}</p>
                <p class="num-err" role="alert" hidden>Isi jawabanmu dulu.</p>`
             : `<div class="q-opts" role="group" aria-label="Pilihan jawaban">${q.options
                 .map((o, k) => `<button type="button" class="opt" data-k="${k}"><span class="opt-key">${'ABCDE'[k]}</span><span class="opt-t">${spansHTML(o.t)}</span></button>`)
