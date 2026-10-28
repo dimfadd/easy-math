@@ -343,7 +343,7 @@ function viewBab(id) {
           <span class="bab-progress-t">${pr.watched} dari ${pr.total} materi ditonton</span>
         </div>
       </header>
-      <ol class="path">
+      <ol class="path lesson-list">
         ${b.lessons
           .map((l, k) => {
             const done = store.isWatched(l.id);
