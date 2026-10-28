@@ -233,6 +233,8 @@ web/
   js/app.js            router dan halaman (beranda, bab, materi, latihan, uji bab)
   js/brand.js          nama produk, tagline, dan kalimat pembuka (ganti nama di sini + index.html + manifest)
   js/demos.js          contoh animasi bergantian di beranda (SD, SMP, SMA)
+  js/i18n.js           teks antarmuka dua bahasa (Indonesia/Inggris) dan pemilih bahasa
+  js/l10n.js           menerapkan terjemahan isi materi (judul, narasi, soal, teks panggung)
   js/player.js         pemutar animasi: langkah, narasi, pertanyaan di tengah materi
   js/shapes.js         bentuk SVG (teks, pecahan, keping, garis bilangan, diagram, busur, dll.)
   js/quiz.js           latihan soal dan pemeriksa jawaban isian
@@ -252,11 +254,24 @@ web/
   content/k11l/        isi bab kelas 11 Tingkat Lanjut (kit.js: matriks)
   content/k12/         isi bab kelas 12 (kit.js: kurva relatif titik asal untuk transformasi)
   content/k12l/        isi bab kelas 12 Tingkat Lanjut (kit.js: kurva parametrik)
+  content/en/          terjemahan bahasa Inggris: catalog.js (semua judul dan deskripsi) dan terjemahan penuh per bab
   content/helpers.js   fungsi bantu menulis materi
 tests/                 uji otomatis (Playwright)
 ig-analysis/           riset referensi video (@akalmatika, @nasrularifin26)
 docs/arah-produk.md    arah komersial, sistem desain, dan konsep Lab Simulasi
 ```
+
+## Dua bahasa
+
+Tombol ID/EN di kanan atas mengganti bahasa. Antarmuka dan semua judul, deskripsi, serta
+kalimat pembuka materi sudah dua bahasa. Narasi dan soal dalam bahasa Inggris baru tersedia
+untuk Kelas 1 Bab 6; materi lain diputar dalam bahasa Indonesia dengan catatan.
+
+Menerjemahkan satu bab: buat `content/en/<id-bab>.js` mengikuti contoh `content/en/k1b6.js`
+(indeks bagian, langkah, dan soal sama dengan isi aslinya), tandai materi dengan `full: true`,
+lalu daftarkan di `content/en/index.js`. Teks di panggung yang berupa kata diterjemahkan lewat
+`els: { idElemen: 'teks' }`. Kunci jawaban tidak perlu diubah: jawaban siswa berbahasa Inggris
+dibaca dengan koma ribuan dan titik desimal.
 
 ## Menulis atau mengubah materi
 

@@ -27,5 +27,14 @@ eq('rupiah spasi', toNumber('Rp 1.260.000'), 1260000);
 eq('persen', toNumber('25%'), 25);
 eq('kilogram', toNumber('49 kg'), 49);
 eq('cek kosong', checkNum({ ans: ['1'] }, '  ').empty, true);
+// Format angka bahasa Inggris: koma ribuan, titik desimal. Kunci jawaban tetap gaya Indonesia.
+eq('en ribuan', toNumber('75,000', 'en'), 75000);
+eq('en desimal', toNumber('2.5', 'en'), 2.5);
+eq('en jutaan desimal', toNumber('1,250.5', 'en'), 1250.5);
+eq('en cek uang', checkNum({ ans: ['75.000'] }, '75,000', 'en').ok, true);
+eq('en cek polos', checkNum({ ans: ['75.000'] }, '75000', 'en').ok, true);
+eq('en cek desimal', checkNum({ ans: ['3,5'] }, '3.5', 'en').ok, true);
+eq('en dolar', toNumber('$1,200', 'en'), 1200);
+eq('id tetap', checkNum({ ans: ['3,5'] }, '3,5').ok, true);
 console.log(fail ? `${fail} uji gagal` : 'Semua uji jawaban lolos.');
 process.exitCode = fail ? 1 : 0;

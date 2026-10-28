@@ -1,7 +1,7 @@
 // Service worker: aplikasi tetap bisa dibuka tanpa internet setelah kunjungan pertama.
 // Strategi: file inti di-cache saat instal; file lain di-cache saat pertama diminta,
 // lalu disajikan dari cache sambil diperbarui di latar (stale-while-revalidate).
-const VERSION = 'easymath-v72';
+const VERSION = 'easymath-v73';
 const CORE = [
   './',
   './index.html',
@@ -14,6 +14,8 @@ const CORE = [
   './js/speech.js',
   './js/brand.js',
   './js/demos.js',
+  './js/i18n.js',
+  './js/l10n.js',
   './content/index.js',
   './manifest.webmanifest',
   './icons/icon.svg',

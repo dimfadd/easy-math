@@ -6,6 +6,7 @@
 import { innerSVG, shapeKey, spansHTML, stripMarkup, VIEW } from './shapes.js';
 import { speech } from './speech.js';
 import { store } from './store.js';
+import { t, t as T } from './i18n.js';
 
 const ns = 'http://www.w3.org/2000/svg';
 
@@ -176,7 +177,9 @@ function estDuration(text) {
 }
 
 export class Player {
-  constructor(root, lesson, { onComplete, practiceHref, nextHref, nextLabel } = {}) {
+  constructor(root, lesson, { onComplete, practiceHref, nextHref, nextLabel, lang = 'id' } = {}) {
+    this.lang = lang;
+    speech.setLang(lang);
     this.root = root;
     this.lesson = lesson;
     this.frames = compileLesson(lesson);
@@ -216,42 +219,42 @@ export class Player {
         <div class="stage-col">
           <div class="chap-row"><p class="chap-title" aria-live="polite"></p><p class="chap-count"></p></div>
           <div class="stage-wrap">
-            ${stageSVG(`Animasi: ${L.title}`)}
+            ${stageSVG(t('pl.anim', { title: L.title }))}
           </div>
-          <div class="segbar" role="group" aria-label="Bagian materi">
+          <div class="segbar" role="group" aria-label="${t('pl.parts')}">
             ${chapters
-              .map((c, i) => `<button type="button" class="seg" data-ci="${i}" style="flex-grow:${c.steps.length}" aria-label="Bagian ${i + 1}: ${c.title}"><span class="seg-fill"></span></button>`)
+              .map((c, i) => `<button type="button" class="seg" data-ci="${i}" style="flex-grow:${c.steps.length}" aria-label="${t('pl.part', { n: i + 1, title: c.title })}"><span class="seg-fill"></span></button>`)
               .join('')}
           </div>
           <div class="caption" aria-live="polite"><p class="cap-text"></p></div>
           <div class="ask" hidden></div>
           <div class="endcard" hidden>
-            <p class="end-title">Materi selesai.</p>
-            <p class="end-sub">Sekarang uji pemahamanmu dengan soal latihan. Setiap jawaban salah ada penjelasannya.</p>
+            <p class="end-title">${t('pl.doneTitle')}</p>
+            <p class="end-sub">${t('pl.doneSub')}</p>
             <div class="end-actions">
-              <a class="btn btn-primary" href="${this.practiceHref}">Kerjakan ${L.quiz?.length || 0} soal latihan</a>
-              <button type="button" class="btn btn-ghost" data-act="restart">${ICON.replay}<span>Ulang animasi</span></button>
+              <a class="btn btn-primary" href="${this.practiceHref}">${t('pl.doPractice', { n: L.quiz?.length || 0 })}</a>
+              <button type="button" class="btn btn-ghost" data-act="restart">${ICON.replay}<span>${t('pl.replay')}</span></button>
             </div>
           </div>
           <div class="controls">
-            <button type="button" class="ctl" data-act="prev" aria-label="Langkah sebelumnya">${ICON.prev}</button>
-            <button type="button" class="ctl ctl-main" data-act="toggle" aria-label="Putar">${ICON.play}</button>
-            <button type="button" class="ctl" data-act="next" aria-label="Langkah berikutnya">${ICON.next}</button>
+            <button type="button" class="ctl" data-act="prev" aria-label="${t('pl.prev')}">${ICON.prev}</button>
+            <button type="button" class="ctl ctl-main" data-act="toggle" aria-label="${t('pl.play')}">${ICON.play}</button>
+            <button type="button" class="ctl" data-act="next" aria-label="${t('pl.next')}">${ICON.next}</button>
             <span class="ctl-sep" aria-hidden="true"></span>
-            <button type="button" class="ctl ctl-text" data-act="speed" aria-label="Kecepatan">${this.speed}×</button>
-            <button type="button" class="ctl" data-act="sound" aria-label="Suara"></button>
+            <button type="button" class="ctl ctl-text" data-act="speed" aria-label="${t('pl.speed')}">${this.speed}×</button>
+            <button type="button" class="ctl" data-act="sound" aria-label="${t('pl.sound')}"></button>
             <span class="step-count" aria-live="off"></span>
           </div>
           <p class="sound-note" hidden></p>
         </div>
-        <aside class="outline" aria-label="Daftar bagian">
+        <aside class="outline" aria-label="${t('pl.outline')}">
           <details class="outline-box" ${window.matchMedia('(min-width: 1080px)').matches ? 'open' : ''}>
-            <summary>Daftar bagian <span class="muted">(${chapters.length})</span></summary>
+            <summary>${t('pl.outline')} <span class="muted">(${chapters.length})</span></summary>
             <ol class="outline-list">
               ${chapters.map((c, i) => `<li><button type="button" class="ol-item" data-ci="${i}"><span class="ol-no">${i + 1}</span><span>${c.title}</span></button></li>`).join('')}
             </ol>
           </details>
-          <p class="hint muted">Tombol keyboard: Spasi untuk putar atau jeda, panah kiri dan kanan untuk pindah langkah.</p>
+          <p class="hint muted">${t('pl.keys')}</p>
         </aside>
       </div>`;
     this.$ = (s) => this.root.querySelector(s);
@@ -278,13 +281,13 @@ export class Player {
     if (!speech.available) {
       b.innerHTML = ICON.soundOff;
       b.disabled = true;
-      b.setAttribute('aria-label', 'Suara tidak tersedia');
+      b.setAttribute('aria-label', t('pl.soundNA'));
       note.hidden = false;
-      note.textContent = 'Perangkat ini tidak punya suara Bahasa Indonesia, jadi narasi tampil sebagai teks saja.';
+      note.textContent = this.lang === 'en' ? t('pl.noVoiceEn') : t('pl.noVoice');
     } else {
       b.disabled = false;
       b.innerHTML = this.soundOn ? ICON.soundOn : ICON.soundOff;
-      b.setAttribute('aria-label', this.soundOn ? 'Matikan suara' : 'Nyalakan suara');
+      b.setAttribute('aria-label', this.soundOn ? t('pl.soundOff') : t('pl.soundOn'));
       b.setAttribute('aria-pressed', this.soundOn ? 'true' : 'false');
       note.hidden = true;
     }
@@ -328,7 +331,7 @@ export class Player {
     this.stage.render(f.state, { instant: instant || jump, hl: [].concat(st.hl || []), pulse: [].concat(st.pulse || []), focus: st.focus ? [].concat(st.focus) : null });
 
     const ch = this.lesson.chapters[f.ci];
-    this.$('.chap-count').textContent = `Bagian ${f.ci + 1} dari ${this.lesson.chapters.length}`;
+    this.$('.chap-count').textContent = t('pl.partOf', { n: f.ci + 1, t: this.lesson.chapters.length });
     const ct = this.$('.chap-title');
     if (ct.textContent !== ch.title) {
       ct.textContent = ch.title;
@@ -408,7 +411,7 @@ export class Player {
     this.$('.step-count').textContent = `${this.idx + 1}/${this.frames.length}`;
     const t = this.$('[data-act="toggle"]');
     t.innerHTML = this.playing ? ICON.pause : ICON.play;
-    t.setAttribute('aria-label', this.playing ? 'Jeda' : 'Putar');
+    t.setAttribute('aria-label', this.playing ? T('pl.pause') : T('pl.play'));
     this.$('[data-act="prev"]').disabled = this.idx === 0;
     this.$('[data-act="next"]').disabled = this.idx === this.frames.length - 1;
   }
@@ -559,7 +562,7 @@ export class Player {
     const opts = ask.options || [];
     box.hidden = false;
     box.innerHTML = `
-      <p class="ask-q">${spansHTML(ask.q || 'Coba jawab dulu sebelum lanjut.')}</p>
+      <p class="ask-q">${spansHTML(ask.q || t('pl.askDefault'))}</p>
       <div class="ask-opts">${opts
         .map((o, i) => `<button type="button" class="opt" data-i="${i}"><span class="opt-key">${'ABCD'[i]}</span><span class="opt-t">${spansHTML(o.t)}</span></button>`)
         .join('')}</div>
@@ -577,7 +580,7 @@ export class Player {
         const fb = box.querySelector('.ask-fb');
         fb.hidden = false;
         fb.className = `ask-fb ${o.ok ? 'fb-ok' : 'fb-bad'}`;
-        fb.innerHTML = `<p><strong>${o.ok ? 'Tepat.' : 'Belum tepat.'}</strong> ${spansHTML(o.why || (o.ok ? 'Lanjutkan untuk melihat penjelasannya.' : ''))}</p><button type="button" class="btn btn-primary btn-sm" data-cont>Lanjutkan penjelasan</button>`;
+        fb.innerHTML = `<p><strong>${o.ok ? t('pl.right') : t('pl.wrong')}</strong> ${spansHTML(o.why || (o.ok ? t('pl.rightMore') : ''))}</p><button type="button" class="btn btn-primary btn-sm" data-cont>${t('pl.cont')}</button>`;
         fb.querySelector('[data-cont]').addEventListener('click', () => {
           this.hideAsk();
           if (resume) {

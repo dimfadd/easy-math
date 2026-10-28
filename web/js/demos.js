@@ -9,6 +9,7 @@ const SD = {
   title: 'Membuat 10',
   cap: 'Dua dari lima bulatan biru melengkapi bingkai menjadi 10, sisanya 3.',
   href: '#/materi/k1b6-1',
+  en: { badge: 'Primary · Grade 1', title: 'Making 10', cap: 'Two of the five blue dots fill the frame to make 10, leaving 3.' },
   lesson: {
     id: 'demo-sd',
     chapters: [
@@ -38,6 +39,7 @@ const INT = {
   title: 'Bilangan bulat',
   cap: 'Sepasang keping biru (+1) dan merah (−1) bernilai nol. Yang tersisa adalah jawabannya.',
   href: '#/materi/b1-2',
+  en: { badge: 'Junior High · Grade 7', title: 'Integers', cap: 'A blue (+1) and a red (−1) counter make zero. What is left is the answer.' },
   lesson: {
     id: 'demo-int',
     chapters: [
@@ -64,6 +66,7 @@ const ALG = {
   title: 'Suku sejenis',
   cap: 'Ubin x hanya bisa digabung dengan ubin x, ubin satuan dengan satuan.',
   href: '#/materi/b3-2',
+  en: { badge: 'Junior High · Grade 7', title: 'Like terms', cap: 'x tiles combine only with x tiles, unit tiles only with unit tiles.' },
   lesson: {
     id: 'demo-alg',
     chapters: [
@@ -103,6 +106,7 @@ const QUAD = {
   title: 'Menggeser grafik',
   cap: 'Mengganti x dengan x − 2 menggeser parabola 2 ke kanan; dikurangi 1 menurunkannya 1.',
   href: '#/materi/k9b2-1',
+  en: { badge: 'Senior High · Grade 10–11', title: 'Shifting a graph', cap: 'Replacing x with x − 2 shifts the parabola 2 to the right; subtracting 1 moves it down 1.' },
   lesson: {
     id: 'demo-quad',
     chapters: [

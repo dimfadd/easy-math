@@ -3,6 +3,7 @@
 
 import { spansHTML, staticSVG } from './shapes.js';
 import { store } from './store.js';
+import { t, getLang } from './i18n.js';
 
 export function shuffle(arr, rnd = Math.random) {
   const a = arr.slice();
@@ -13,12 +14,16 @@ export function shuffle(arr, rnd = Math.random) {
   return a;
 }
 
-export function normalize(s) {
-  // awalan "Rp" dan akhiran satuan (%, kg) boleh ikut diketik
-  let t = String(s ?? '').trim().replace(/^rp\.?\s*/i, '').replace(/\s*(%|kg)$/i, '');
-  // Titik sebagai pemisah ribuan (gaya Indonesia): 112.000 atau 1.250.000
-  if (/^[−–-]?\d{1,3}(\.\d{3})+(,\d+)?$/.test(t.replace(/\s+/g, ''))) t = t.replace(/\./g, '');
-  return t
+// Format angka: 'id' = titik ribuan dan koma desimal (1.250,5); 'en' = koma ribuan dan titik desimal (1,250.5).
+// Kunci jawaban di isi materi selalu ditulis gaya Indonesia; jawaban siswa dibaca sesuai bahasa yang dipakai.
+export function normalize(s, fmt = 'id') {
+  // awalan "Rp"/"$" dan akhiran satuan (%, kg) boleh ikut diketik
+  let x = String(s ?? '').trim().replace(/^(rp\.?|\$)\s*/i, '').replace(/\s*(%|kg)$/i, '');
+  const bare = x.replace(/\s+/g, '');
+  if (fmt === 'en') {
+    if (/^[−–-]?\d{1,3}(,\d{3})+(\.\d+)?$/.test(bare)) x = x.replace(/,/g, '');
+  } else if (/^[−–-]?\d{1,3}(\.\d{3})+(,\d+)?$/.test(bare)) x = x.replace(/\./g, '');
+  return x
     .toLowerCase()
     .replace(/\s+/g, '')
     .replace(/[−–—]/g, '-')
@@ -26,21 +31,21 @@ export function normalize(s) {
     .replace(/°$/, '');
 }
 
-export function toNumber(s) {
+export function toNumber(s, fmt = 'id') {
   // pecahan campuran "1 1/2" dicek dari teks asli, sebelum spasi dibuang
   let m = String(s ?? '').trim().replace(/[−–]/g, '-').match(/^(-?)(\d+)\s+(\d+)\/(\d+)$/);
   if (m && +m[4] !== 0) return (m[1] ? -1 : 1) * (+m[2] + +m[3] / +m[4]);
-  const t = normalize(s);
-  if (/^-?\d+(\.\d+)?$/.test(t)) return parseFloat(t);
-  m = t.match(/^(-?)(\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)$/);
+  const v = normalize(s, fmt);
+  if (/^-?\d+(\.\d+)?$/.test(v)) return parseFloat(v);
+  m = v.match(/^(-?)(\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)$/);
   if (m && +m[3] !== 0) return (m[1] ? -1 : 1) * (+m[2] / +m[3]);
   return null;
 }
 
-export function checkNum(q, input) {
-  const val = normalize(input);
+export function checkNum(q, input, fmt = 'id') {
+  const val = normalize(input, fmt);
   if (!val) return { empty: true };
-  const asNum = toNumber(input);
+  const asNum = toNumber(input, fmt);
   for (const a of q.ans) {
     if (normalize(a) === val) return { ok: true };
     const an = toNumber(a);
@@ -52,20 +57,29 @@ export function checkNum(q, input) {
     if (normalize(k) === val || (kn !== null && asNum !== null && Math.abs(kn - asNum) < 1e-9)) return { ok: false, why };
   }
   if (q.exact && asNum !== null && q.ans.some((a) => toNumber(a) !== null && Math.abs(toNumber(a) - asNum) < 1e-9))
-    return { ok: false, why: q.exactWhy || 'Nilainya sudah sama, tapi bentuknya belum paling sederhana.' };
+    return { ok: false, why: q.exactWhy || t('q.exactWhy') };
   return { ok: false, why: q.hint || '' };
 }
 
 function figHTML(q) {
   if (!q.fig) return '';
-  return `<div class="q-fig">${staticSVG(q.fig, { viewBox: q.viewBox, label: q.figLabel || 'Gambar untuk soal ini' })}</div>`;
+  return `<div class="q-fig">${staticSVG(q.fig, { viewBox: q.viewBox, label: q.figLabel || t('q.fig') })}</div>`;
 }
 
-const ansText = (q) => (q.type === 'num' ? q.ans[0] : (q.options.find((o) => o.ok) || {}).t);
+// Kunci jawaban ditulis gaya Indonesia; saat bahasa Inggris, angkanya ditampilkan gaya Inggris.
+function showNum(a) {
+  if (getLang() !== 'en') return a;
+  const s = String(a);
+  if (/^[−-]?\d{1,3}(\.\d{3})+$/.test(s)) return Number(s.replace(/\./g, '').replace('−', '-')).toLocaleString('en-US').replace('-', '−');
+  if (/^[−-]?\d+,\d+$/.test(s)) return s.replace(',', '.');
+  return s;
+}
+const ansText = (q) => (q.type === 'num' ? showNum(q.ans[0]) : (q.options.find((o) => o.ok) || {}).t);
 
-export function renderQuiz(root, { id, title, backHref, backLabel, questions, nextHref, nextLabel, kind = 'latihan', numHint }) {
+export function renderQuiz(root, opts) {
+  const { id, title, backHref, backLabel, questions, nextHref, nextLabel, kind = t('q.kindLatihan'), numHint } = opts;
   if (!questions || !questions.length) {
-    root.innerHTML = `<div class="state-box"><p class="state-title">Belum ada soal di sini.</p><p>Soal untuk bagian ini belum ditulis.</p><a class="btn btn-ghost" href="${backHref}">${backLabel}</a></div>`;
+    root.innerHTML = `<div class="state-box"><p class="state-title">${t('q.none')}</p><p>${t('q.noneBody')}</p><a class="btn btn-ghost" href="${backHref}">${backLabel}</a></div>`;
     return;
   }
   const qs = questions.map((q) => (q.type === 'num' ? q : { ...q, options: q.fixed ? q.options : shuffle(q.options) }));
@@ -85,20 +99,20 @@ export function renderQuiz(root, { id, title, backHref, backLabel, questions, ne
     root.innerHTML = `
       ${head()}
       <section class="q-card" aria-labelledby="qtext">
-        <p class="q-count">Soal ${i + 1} dari ${qs.length}</p>
+        <p class="q-count">${t('q.count', { n: i + 1, t: qs.length })}</p>
         <h2 id="qtext" class="q-text">${spansHTML(q.q)}</h2>
         ${figHTML(q)}
         ${
           isNum
             ? `<form class="q-num" autocomplete="off">
-                 <label for="ans" class="sr-only">Jawabanmu</label>
-                 <input id="ans" name="ans" inputmode="${q.inputmode || 'text'}" placeholder="${q.placeholder || 'Tulis jawabanmu'}" aria-describedby="numhint">
+                 <label for="ans" class="sr-only">${t('q.yourAns')}</label>
+                 <input id="ans" name="ans" inputmode="${q.inputmode || 'text'}" placeholder="${q.placeholder || t('q.placeholder')}" aria-describedby="numhint">
                  ${q.unit ? `<span class="unit">${q.unit}</span>` : ''}
-                 <button class="btn btn-primary" type="submit">Periksa</button>
+                 <button class="btn btn-primary" type="submit">${t('q.check')}</button>
                </form>
-               <p id="numhint" class="muted small">${q.numHint || numHint || 'Bilangan negatif boleh ditulis dengan tanda minus, pecahan dengan garis miring, misalnya 3/4.'}</p>
-               <p class="num-err" role="alert" hidden>Isi jawabanmu dulu.</p>`
-            : `<div class="q-opts" role="group" aria-label="Pilihan jawaban">${q.options
+               <p id="numhint" class="muted small">${q.numHint || numHint || t('hint.default')}</p>
+               <p class="num-err" role="alert" hidden>${t('q.empty')}</p>`
+            : `<div class="q-opts" role="group" aria-label="${t('q.opts')}">${q.options
                 .map((o, k) => `<button type="button" class="opt" data-k="${k}"><span class="opt-key">${'ABCDE'[k]}</span><span class="opt-t">${spansHTML(o.t)}</span></button>`)
                 .join('')}</div>`
         }
@@ -110,7 +124,7 @@ export function renderQuiz(root, { id, title, backHref, backLabel, questions, ne
       input.focus({ preventScroll: true });
       form.addEventListener('submit', (e) => {
         e.preventDefault();
-        const r = checkNum(q, input.value);
+        const r = checkNum(q, input.value, getLang());
         if (r.empty) {
           root.querySelector('.num-err').hidden = false;
           return;
@@ -143,9 +157,9 @@ export function renderQuiz(root, { id, title, backHref, backLabel, questions, ne
     fb.className = `q-fb ${ok ? 'fb-ok' : 'fb-bad'}`;
     const last = i === qs.length - 1;
     fb.innerHTML = `
-      <p class="fb-head"><strong>${ok ? 'Benar.' : 'Belum tepat.'}</strong> ${ok ? spansHTML(q.okWhy || '') : `${spansHTML(why || '')} ${q.type === 'num' ? `Jawaban yang benar: <strong>${spansHTML(ansText(q))}</strong>.` : ''}`}</p>
-      ${q.steps && q.steps.length ? `<details class="steps" ${ok ? '' : 'open'}><summary>Lihat pembahasan</summary><ol>${q.steps.map((s) => `<li>${spansHTML(s)}</li>`).join('')}</ol></details>` : ''}
-      <button type="button" class="btn btn-primary" data-next>${last ? 'Lihat hasil' : 'Soal berikutnya'}</button>`;
+      <p class="fb-head"><strong>${ok ? t('q.right') : t('q.wrong')}</strong> ${ok ? spansHTML(q.okWhy || '') : `${spansHTML(why || '')} ${q.type === 'num' ? t('q.correctIs', { a: spansHTML(ansText(q)) }) : ''}`}</p>
+      ${q.steps && q.steps.length ? `<details class="steps" ${ok ? '' : 'open'}><summary>${t('q.steps')}</summary><ol>${q.steps.map((s) => `<li>${spansHTML(s)}</li>`).join('')}</ol></details>` : ''}
+      <button type="button" class="btn btn-primary" data-next>${last ? t('q.result') : t('q.next')}</button>`;
     root.querySelector('.quiz-dots').outerHTML = head().match(/<div class="quiz-dots"[\s\S]*?<\/div>/)[0];
     const nb = fb.querySelector('[data-next]');
     nb.addEventListener('click', () => {
@@ -166,32 +180,32 @@ export function renderQuiz(root, { id, title, backHref, backLabel, questions, ne
     const pct = correct / qs.length;
     const msg =
       pct === 1
-        ? 'Semua benar. Kamu siap lanjut.'
+        ? t('q.all')
         : pct >= 0.6
-          ? 'Sebagian besar sudah benar. Cek lagi soal yang salah di bawah.'
-          : 'Masih banyak yang belum tepat. Tonton ulang materinya, lalu coba lagi.';
+          ? t('q.most')
+          : t('q.few');
     root.innerHTML = `
       ${head()}
       <section class="result">
-        <p class="result-score"><span class="big">${correct}</span><span class="of">dari ${qs.length} benar</span></p>
+        <p class="result-score"><span class="big">${correct}</span><span class="of">${t('q.of', { t: qs.length })}</span></p>
         <p class="result-msg">${msg}</p>
-        ${best && best.best > correct ? `<p class="muted">Skor terbaikmu: ${best.best} dari ${best.total}.</p>` : ''}
+        ${best && best.best > correct ? `<p class="muted">${t('q.best', { b: best.best, t: best.total })}</p>` : ''}
         <div class="end-actions">
           ${nextHref && pct >= 0.6 ? `<a class="btn btn-primary" href="${nextHref}">${nextLabel}</a>` : ''}
-          <button type="button" class="btn ${nextHref && pct >= 0.6 ? 'btn-ghost' : 'btn-primary'}" data-retry>Ulangi ${kind}</button>
+          <button type="button" class="btn ${nextHref && pct >= 0.6 ? 'btn-ghost' : 'btn-primary'}" data-retry>${t('q.retry', { kind })}</button>
           <a class="btn btn-ghost" href="${backHref}">${backLabel}</a>
         </div>
-        <h2 class="review-title">Ringkasan jawaban</h2>
+        <h2 class="review-title">${t('q.review')}</h2>
         <ol class="review">
           ${qs
             .map(
-              (q, k) => `<li class="${results[k] ? 'r-ok' : 'r-bad'}"><span class="r-mark">${results[k] ? 'Benar' : 'Salah'}</span><span class="r-q">${spansHTML(q.q)}</span><span class="r-a">Jawaban: ${spansHTML(ansText(q))}</span></li>`,
+              (q, k) => `<li class="${results[k] ? 'r-ok' : 'r-bad'}"><span class="r-mark">${results[k] ? t('q.ok') : t('q.bad')}</span><span class="r-q">${spansHTML(q.q)}</span><span class="r-a">${t('q.ans', { a: spansHTML(ansText(q)) })}</span></li>`,
             )
             .join('')}
         </ol>
       </section>`;
     root.querySelector('[data-retry]').addEventListener('click', () => {
-      renderQuiz(root, { id, title, backHref, backLabel, questions, nextHref, nextLabel, kind });
+      renderQuiz(root, opts);
       window.scrollTo({ top: 0 });
     });
     root.querySelector('.result-score').focus?.();
