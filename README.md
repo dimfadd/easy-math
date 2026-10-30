@@ -297,6 +297,19 @@ Interaksi lain:
 - Capie disentuh: ia bereaksi bergiliran (mengedip, bersorak, melambai).
 - Tidak ada aktivitas 40 detik: Capie tertidur, lalu kaget saat dibangunkan.
 
+Efek gerak ada di `web/js/fx.js`:
+
+- debu mendarat;
+- percikan jawaban benar;
+- konfeti;
+- hati;
+- garis kecepatan.
+
+Efeknya digambar di satu kanvas transparan yang hanya aktif selama ada efek.
+Rumusnya diadaptasi dari
+[claude-animation-skill](https://github.com/buildwithhanif/claude-animation-skill)
+(MIT, lisensi di `web/licenses/`).
+
 Bila pengguna memilih "kurangi gerakan", Capie tidak terbang dan tampil diam.
 
 Tempat Capie muncul dan aturan pemakaiannya ada di `docs/arah-produk.md`

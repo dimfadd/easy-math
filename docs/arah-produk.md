@@ -420,3 +420,35 @@ Interaksi tambahan:
   diam pada pose yang paling mewakili.
 - **Hanya satu Capie pemandu.** Etalase di halaman jual (`guide: false`) adalah
   pengecualian, karena tugasnya memperkenalkan.
+
+### 10.5 Skill animasi (claude-animation-skill) dan cara memakainya
+
+[claude-animation-skill](https://github.com/buildwithhanif/claude-animation-skill)
+(MIT) membuat **video MP4** di Node (`@napi-rs/canvas` + ffmpeg). Skill itu
+sendiri menyatakan bukan untuk interaksi antarmuka.
+
+**Yang diambil:**
+- **Rumus efeknya, dibawa ke browser** (`web/js/fx.js`, lisensi di
+  `web/licenses/`):
+  - debu saat mendarat;
+  - percikan dan cincin saat jawaban benar;
+  - konfeti saat nilai sempurna, materi selesai, dan pembayaran berhasil;
+  - hati saat Capie disentuh;
+  - garis kecepatan saat Capie terbang.
+- **Prinsip geraknya (`references/motion.md`), dipakai di Capie dan panggung:**
+  - antisipasi: jongkok sebelum lepas landas;
+  - memanjang di udara, gepeng lalu memantul saat mendarat;
+  - perubahan cepat lalu diam;
+  - kelompok benda muncul bertahap.
+
+**Yang sengaja tidak dipakai di aplikasi:**
+- **Mengubah materi menjadi video.** Materi interaktif (bisa dijeda, diulang per
+  langkah, dijawab di tengah, diterjemahkan) adalah kekuatan produk ini. Video
+  juga jauh lebih berat untuk diunduh dan untuk mode offline [Kemungkinan Besar].
+
+**Pemakaian yang masuk akal ke depan:**
+- **Video promosi pendek untuk iklan dan Reels/TikTok.** Contohnya Capie
+  menjelaskan satu konsep dalam 15–30 detik, dirender dari kode yang sama
+  setiap kali materi berubah.
+- **Video "intro bab"** opsional untuk media sosial sekolah.
+

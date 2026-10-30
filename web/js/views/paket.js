@@ -7,6 +7,7 @@ import { auth } from '../auth.js';
 import { PLANS, PAY_METHODS, TRIAL_DAYS, MAX_CHILDREN, rupiah } from '../config.js';
 import { app, topbar, bindTopbar, ICON, setTitle, fmtDate, esc } from '../ui.js';
 import { capie } from '../capie.js';
+import { fx } from '../fx.js';
 
 const perMonth = (p) => Math.round(p.price / p.months);
 const saving = () => {
@@ -138,6 +139,11 @@ export function viewPaket(params = {}) {
     }
     st.busy = false;
     render();
+    const box = st.done && app.querySelector('.success-box');
+    if (box) {
+      const r = box.getBoundingClientRect();
+      fx.confetti(r.left + r.width / 2, r.top + 40);
+    }
   };
 
   const bind = () => {

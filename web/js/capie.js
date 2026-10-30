@@ -14,6 +14,7 @@
 //   capie('think', { guide: false })             → Capie diam di tempat (misalnya etalase)
 //   setMood(el, 'yes')                           → ganti suasana hati Capie
 import { t } from './i18n.js';
+import { fx } from './fx.js';
 
 const COLS = 8;
 const ROWS = 4;
@@ -251,31 +252,65 @@ function flyTo(slot) {
   a.style.width = `${to.w}px`;
   const s0 = start.w / to.w;
   const lift = Math.min(170, 50 + dist * 0.3);
-  const dur = Math.min(1100, Math.max(520, dist * 1.1));
+  const fly = Math.min(1050, Math.max(480, dist * 1.05));
+  // Antisipasi (jongkok sebentar) hanya bila Capie berangkat dari tempat yang terlihat.
+  const onScreen = from && from.y > -from.w && from.y < innerHeight && from.x > -from.w && from.x < innerWidth;
+  const ant = onScreen ? 130 : 0;
+  const dur = fly + ant;
+  const A = ant / dur;
   const dir = dx < -4 ? -1 : 1;
   const tilt = Math.max(-14, Math.min(14, dx / 30));
   // lintasan melengkung: titik kontrol di atas garis lurus
   const cx = start.x + dx / 2;
   const cy = Math.min(start.y, to.y) - lift;
-  const N = 14;
+  const ease = (k) => (k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
+  const at = (q) => ({
+    x: (1 - q) ** 2 * start.x + 2 * (1 - q) * q * cx + q * q * to.x,
+    y: (1 - q) ** 2 * start.y + 2 * (1 - q) * q * cy + q * q * to.y,
+  });
   const frames = [];
+  if (ant) {
+    frames.push({ offset: 0, transform: `translate(${start.x}px, ${start.y}px) scale(${s0})` });
+    frames.push({ offset: A * 0.7, transform: `translate(${start.x}px, ${start.y}px) scale(${s0 * 1.14}, ${s0 * 0.82})` });
+  }
+  const N = 16;
   for (let i = 0; i <= N; i++) {
     const p = i / N;
-    const x = (1 - p) ** 2 * start.x + 2 * (1 - p) * p * cx + p * p * to.x;
-    const y = (1 - p) ** 2 * start.y + 2 * (1 - p) * p * cy + p * p * to.y;
-    const s = s0 + (1 - s0) * p;
+    const q = ease(p);
+    const { x, y } = at(q);
+    const s = s0 + (1 - s0) * q;
+    // memanjang di udara (bentuk tetap: lebar × tinggi ≈ sama), kembali normal saat tiba
+    const st = 1 + 0.12 * Math.sin(Math.PI * Math.min(1, p * 1.15));
     const r = tilt * Math.sin(Math.PI * p);
-    frames.push({ transform: `translate(${x}px, ${y}px) rotate(${r}deg) scale(${s})` });
+    frames.push({ offset: A + (1 - A) * p, transform: `translate(${x}px, ${y}px) rotate(${r}deg) scale(${s / st}, ${s * st})` });
   }
   G.frame.style.transform = `scaleX(${dir})`;
+  G.frame.style.backgroundPosition = pos(ant ? P.stand : FLY[0]);
   let k = 0;
-  G.frame.style.backgroundPosition = pos(FLY[0]);
-  const flap = setInterval(() => (G.frame.style.backgroundPosition = pos(FLY[++k % FLY.length])), 110);
-  const anim = a.animate(frames, { duration: dur, easing: 'cubic-bezier(.45,.05,.25,1)', fill: 'forwards' });
+  let flap = null;
+  const startFlap = () => {
+    G.frame.style.backgroundPosition = pos(FLY[0]);
+    flap = setInterval(() => (G.frame.style.backgroundPosition = pos(FLY[++k % FLY.length])), 110);
+  };
+  const flapTimer = setTimeout(startFlap, ant);
+  if (ant) fx.land(start.x + start.w / 2, start.y + start.w * (232 / 176), start.w / 90);
+  const anim = a.animate(frames, { duration: dur, easing: 'linear', fill: 'forwards' });
+  // garis kecepatan mengikuti Capie selama terbang
+  let prevPos = null;
+  fx.trail(() => {
+    if (G.flying?.anim !== anim) return null;
+    const r = a.getBoundingClientRect();
+    const c = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+    const v = prevPos ? { vx: c.x - prevPos.x, vy: c.y - prevPos.y } : { vx: 0, vy: 0 };
+    prevPos = c;
+    return { ...c, ...v, s: Math.max(0.6, Math.min(1.4, to.w / 84)) };
+  }, (dur + 200) / 1000);
   let landTimer = null;
   G.flying = {
     to: slot,
+    anim,
     cancel() {
+      clearTimeout(flapTimer);
       clearInterval(flap);
       clearTimeout(landTimer);
       anim.cancel();
@@ -291,17 +326,25 @@ function flyTo(slot) {
     }
     // posisi akhir dikunci ke tempat hinggap (bisa bergeser bila halaman digulir saat terbang)
     const end = rectOf(slot);
-    a.style.transform = `translate(${end.x}px, ${end.y}px)`;
+    const T = `translate(${end.x}px, ${end.y}px)`;
+    a.style.transform = T;
     anim.cancel();
     G.frame.style.transform = '';
+    // gepeng saat menyentuh tanah, memantul sedikit, lalu diam
+    a.animate(
+      [
+        { transform: `${T} scale(1.3, 0.74)` },
+        { transform: `${T} scale(0.94, 1.07)`, offset: 0.5 },
+        { transform: T },
+      ],
+      { duration: 280, easing: 'cubic-bezier(.3,1.4,.5,1)' },
+    );
+    fx.land(end.x + end.w / 2, end.y + end.h - 2, end.w / 84);
     let j = 0;
     const land = () => {
       if (j < LAND.length) {
         G.frame.style.backgroundPosition = pos(LAND[j++]);
-        G.frame.classList.remove('capie-pop');
-        void G.frame.offsetWidth;
-        G.frame.classList.add('capie-pop');
-        landTimer = setTimeout(land, 120);
+        landTimer = setTimeout(land, 110);
         return;
       }
       G.flying = null;
@@ -358,6 +401,8 @@ if (BROWSER) {
     void fig.offsetWidth;
     fig.classList.add('capie-hop');
     react(fig, POKES[pokeN++ % POKES.length]);
+    const r = fig.getBoundingClientRect();
+    fx.heart(r.left + r.width * 0.72, r.top + r.height * 0.12, Math.max(0.6, r.width / 90));
   });
 
   // Tidak ada aktivitas 40 detik: Capie tertidur. Aktivitas apa pun membangunkannya.

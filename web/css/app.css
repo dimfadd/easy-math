@@ -785,8 +785,12 @@ h1 .mk-acc { background: color-mix(in srgb, var(--acc) 45%, var(--paper)); borde
 
 /* Balon ucapan: garis tinta tebal + ekor ke arah Capie, motif yang dipakai di semua halaman */
 .capie-say-row { display: flex; align-items: flex-end; gap: 10px; }
-.capie-bubble { position: relative; background: var(--paper); color: var(--ink); border: 2px solid var(--ink); border-radius: 18px 18px 18px 6px; padding: 10px 14px; font-weight: 700; line-height: 1.4; max-width: 34ch; margin-bottom: 40px; box-shadow: 3px 3px 0 var(--ink); }
-.capie-bubble::before { content: ''; position: absolute; left: -11px; bottom: 8px; width: 14px; height: 14px; background: var(--paper); border-left: 2px solid var(--ink); border-bottom: 2px solid var(--ink); transform: skewY(-35deg); }
+.capie-bubble { position: relative; background: var(--paper); color: var(--ink); border: 2px solid var(--ink); border-radius: 18px; padding: 10px 14px; font-weight: 700; line-height: 1.4; max-width: 34ch; margin-bottom: 40px; filter: drop-shadow(3px 3px 0 var(--ink)); }
+/* Ekor balon: segitiga tinta di belakang, segitiga kertas di depan menutup garis tepi balon,
+   sehingga garis ekor menyambung mulus dengan garis balon. Bayangan ikut lewat drop-shadow. */
+.capie-bubble::before, .capie-bubble::after { content: ''; position: absolute; width: 0; height: 0; border-style: solid; }
+.capie-bubble::before { left: -15px; bottom: 12px; border-width: 9px 13px 9px 0; border-color: transparent var(--ink) transparent transparent; }
+.capie-bubble::after { left: -11.5px; bottom: 13px; border-width: 8px 11.5px 8px 0; border-color: transparent var(--paper) transparent transparent; }
 .capie-bubble-in { animation: bubbleIn .28s cubic-bezier(.3, 1.4, .5, 1); }
 @keyframes bubbleIn { from { opacity: 0; transform: translateY(6px) scale(.96); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .capie-bubble-in { animation: none; } }
@@ -834,7 +838,12 @@ h1 .mk-acc { background: color-mix(in srgb, var(--acc) 45%, var(--paper)); borde
 .capie[data-guide] { cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .capie-hop { animation: capieHop .42s cubic-bezier(.3, 1.4, .5, 1); }
 @keyframes capieHop { 0%, 100% { transform: none; } 40% { transform: translateY(-12px) rotate(-4deg); } 70% { transform: translateY(0) scale(1.04, .95); } }
-.capie-actor { position: fixed; left: 0; top: 0; z-index: 80; display: none; aspect-ratio: 176 / 232; pointer-events: none; will-change: transform; transform-origin: 50% 50%; }
+.capie-actor { position: fixed; left: 0; top: 0; z-index: 80; display: none; aspect-ratio: 176 / 232; pointer-events: none; will-change: transform; transform-origin: 50% 100%; }
+.fx-layer { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 79; }
+/* jawaban keliru: goyang kecil, bukan hukuman */
+.nudge { animation: nudge .36s cubic-bezier(.36, .07, .19, .97); }
+@keyframes nudge { 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
+@media (prefers-reduced-motion: reduce) { .nudge { animation: none; } }
 .capie-actor .capie-f { animation: none; background: url('../img/capie.webp') no-repeat; background-size: 800% 400%; filter: drop-shadow(0 10px 8px rgba(21, 33, 59, .18)); }
 .capie-actor .capie-f.capie-pop { animation: capiePop .26s cubic-bezier(.3, 1.6, .5, 1); }
 .q-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; min-height: 61px; margin-top: -8px; }

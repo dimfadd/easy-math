@@ -5,6 +5,13 @@ import { spansHTML, staticSVG } from './shapes.js';
 import { store } from './store.js';
 import { t, getLang } from './i18n.js';
 import { capie } from './capie.js';
+import { fx } from './fx.js';
+
+const mid = (el) => {
+  const r = el?.getBoundingClientRect();
+  return r ? [r.left + r.width / 2, r.top + r.height / 2] : [innerWidth / 2, innerHeight / 3];
+};
+
 
 export function shuffle(arr, rnd = Math.random) {
   const a = arr.slice();
@@ -133,6 +140,8 @@ export function renderQuiz(root, opts) {
         input.readOnly = true;
         form.querySelector('button').disabled = true;
         input.classList.add(r.ok ? 'is-ok' : 'is-bad');
+        if (r.ok) fx.sparkle(...mid(input));
+        else input.classList.add('nudge');
         answer(r.ok, r.why);
       });
     } else {
@@ -143,7 +152,8 @@ export function renderQuiz(root, opts) {
             x.disabled = true;
             if (q.options[+x.dataset.k].ok) x.classList.add('is-ok');
           });
-          if (!o.ok) b.classList.add('is-bad');
+          if (!o.ok) b.classList.add('is-bad', 'nudge');
+          else fx.sparkle(...mid(b));
           answer(!!o.ok, o.why);
         }),
       );
@@ -211,6 +221,9 @@ export function renderQuiz(root, opts) {
       window.scrollTo({ top: 0 });
     });
     root.querySelector('.result-score').focus?.();
+    const sc = mid(root.querySelector('.result-score'));
+    if (pct === 1) fx.confetti(sc[0], sc[1]);
+    else if (pct >= 0.6) fx.sparkle(sc[0], sc[1], 1.3);
   }
 
   renderQ();

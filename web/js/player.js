@@ -8,6 +8,7 @@ import { speech } from './speech.js';
 import { store } from './store.js';
 import { t, t as T } from './i18n.js';
 import { capie, setMood } from './capie.js';
+import { fx } from './fx.js';
 
 const ns = 'http://www.w3.org/2000/svg';
 
@@ -571,6 +572,8 @@ export class Player {
     const end = this.$('.endcard');
     this.mood('cheer');
     end.hidden = false;
+    const er = end.getBoundingClientRect();
+    if (er.width) fx.confetti(er.left + er.width / 2, er.top + 10);
     end.querySelector('a, button')?.focus({ preventScroll: true });
   }
 
@@ -596,7 +599,9 @@ export class Player {
           const oo = opts[+x.dataset.i];
           if (oo.ok) x.classList.add('is-ok');
         });
-        if (!o.ok) b.classList.add('is-bad');
+        const br = b.getBoundingClientRect();
+        if (!o.ok) b.classList.add('is-bad', 'nudge');
+        else fx.sparkle(br.left + br.width / 2, br.top + br.height / 2);
         const fb = box.querySelector('.ask-fb');
         fb.hidden = false;
         fb.className = `ask-fb ${o.ok ? 'fb-ok' : 'fb-bad'}`;
