@@ -100,7 +100,7 @@ export function renderQuiz(root, opts) {
     root.innerHTML = `
       ${head()}
       <section class="q-card" aria-labelledby="qtext">
-        <p class="q-count">${t('q.count', { n: i + 1, t: qs.length })}</p>
+        <div class="q-top"><p class="q-count">${t('q.count', { n: i + 1, t: qs.length })}</p>${capie('think', { size: 'xs', cls: 'q-capie' })}</div>
         <h2 id="qtext" class="q-text">${spansHTML(q.q)}</h2>
         ${figHTML(q)}
         ${

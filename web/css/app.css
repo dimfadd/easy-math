@@ -827,3 +827,17 @@ h1 .mk-acc { background: color-mix(in srgb, var(--acc) 45%, var(--paper)); borde
 .nf-wrap .state-box { margin-top: 10px; }
 .pay-capie { margin-bottom: -4px; }
 .capie-line { font-weight: 800; color: var(--ink); }
+
+/* Pemandu yang terbang (js/capie.js) */
+.capie-away { visibility: hidden; }
+.capie-away ~ .capie-bubble { visibility: hidden; }
+.capie[data-guide] { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.capie-hop { animation: capieHop .42s cubic-bezier(.3, 1.4, .5, 1); }
+@keyframes capieHop { 0%, 100% { transform: none; } 40% { transform: translateY(-12px) rotate(-4deg); } 70% { transform: translateY(0) scale(1.04, .95); } }
+.capie-actor { position: fixed; left: 0; top: 0; z-index: 80; display: none; aspect-ratio: 176 / 232; pointer-events: none; will-change: transform; transform-origin: 50% 50%; }
+.capie-actor .capie-f { animation: none; background: url('../img/capie.webp') no-repeat; background-size: 800% 400%; filter: drop-shadow(0 10px 8px rgba(21, 33, 59, .18)); }
+.capie-actor .capie-f.capie-pop { animation: capiePop .26s cubic-bezier(.3, 1.6, .5, 1); }
+.q-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; min-height: 61px; margin-top: -8px; }
+.ask-top { display: flex; gap: 10px; align-items: flex-end; margin-bottom: 10px; }
+.ask-top .ask-q { margin-bottom: 4px; }
+@media (prefers-reduced-motion: reduce) { .capie-hop { animation: none; } }

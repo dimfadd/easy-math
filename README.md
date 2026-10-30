@@ -283,7 +283,21 @@ dan `setMood(el, mood)` mengganti reaksinya. Suasana hati yang tersedia:
 - `worried`, `surprised`, `sleepy`;
 - `yesLoop`, `noLoop` (versi berulang untuk etalase di halaman jual).
 
-Bila pengguna memilih "kurangi gerakan", Capie tampil diam.
+**Capie sebagai pemandu.** Setiap `capie()` adalah tempat hinggap, kecuali yang
+diberi `guide: false`. Hanya ada satu Capie, dan ia berpindah begini:
+
+- Capie terbang melengkung (pose terbang, menghadap arah tujuan) ke tempat hinggap
+  terbaru yang terlihat di layar.
+- Ia mendarat dengan pose debu, lalu balon ucapannya muncul.
+- Ini berlaku di halaman yang sama (misalnya dari soal ke kotak umpan balik), saat
+  halaman digulir, maupun saat pindah halaman.
+
+Interaksi lain:
+
+- Capie disentuh: ia bereaksi bergiliran (mengedip, bersorak, melambai).
+- Tidak ada aktivitas 40 detik: Capie tertidur, lalu kaget saat dibangunkan.
+
+Bila pengguna memilih "kurangi gerakan", Capie tidak terbang dan tampil diam.
 
 Tempat Capie muncul dan aturan pemakaiannya ada di `docs/arah-produk.md`
 bagian 10.

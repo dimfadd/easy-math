@@ -553,8 +553,7 @@ export class Player {
 
   // Capie di samping narasi ikut bereaksi; hanya diganti bila suasananya berubah
   mood(m) {
-    const el = this.root.querySelector('.narr-capie [data-capie]');
-    if (el && el.dataset.capie !== m) setMood(el, m);
+    this.root.querySelectorAll('.narr-capie [data-capie], .ask-capie [data-capie]').forEach((el) => el.dataset.capie !== m && setMood(el, m));
   }
 
   markDone() {
@@ -582,7 +581,7 @@ export class Player {
     const opts = ask.options || [];
     box.hidden = false;
     box.innerHTML = `
-      <p class="ask-q">${spansHTML(ask.q || t('pl.askDefault'))}</p>
+      <div class="ask-top">${capie('think', { size: 'xs', cls: 'ask-capie' })}<p class="ask-q">${spansHTML(ask.q || t('pl.askDefault'))}</p></div>
       <div class="ask-opts">${opts
         .map((o, i) => `<button type="button" class="opt" data-i="${i}"><span class="opt-key">${'ABCD'[i]}</span><span class="opt-t">${spansHTML(o.t)}</span></button>`)
         .join('')}</div>

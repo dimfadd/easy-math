@@ -203,7 +203,7 @@ export function viewLanding() {
             ['yesLoop', 2],
             ['noLoop', 3],
           ]
-            .map(([m, n]) => `<li class="meet-${n}">${capie(m, { size: 'sm' })}<div><h3>${t(`capie.m${n}.t`)}</h3><p>${t(`capie.m${n}.b`)}</p></div></li>`)
+            .map(([m, n]) => `<li class="meet-${n}">${capie(m, { size: 'sm', guide: false })}<div><h3>${t(`capie.m${n}.t`)}</h3><p>${t(`capie.m${n}.b`)}</p></div></li>`)
             .join('')}
         </ul>
       </section>

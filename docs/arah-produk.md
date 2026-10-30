@@ -397,6 +397,19 @@ Catatan pelaksanaan:
 | Pembayaran berhasil | terbang | "Semua materi terbuka" |
 | Halaman tidak ada | jatuh (mata X) | "Aku nyasar" |
 
+Capie adalah **satu pemandu yang berpindah**, bukan banyak salinan:
+
+- Ia terbang dari tempat terakhirnya ke tempat berikutnya. Ini terjadi di halaman
+  yang sama, saat halaman digulir, dan saat pindah halaman.
+- Ia mendarat sebelum balonnya muncul.
+- Tempat yang ditinggalkan kosong, supaya anak merasa Capie benar-benar
+  mengikuti mereka.
+
+Interaksi tambahan:
+
+- Capie bereaksi saat disentuh.
+- Capie tertidur setelah 40 detik tanpa aktivitas.
+
 ### 10.4 Aturan pemakaian
 
 - **Capie tidak pernah mengejek jawaban salah.** Pose mata X hanya dipakai di
@@ -405,5 +418,5 @@ Catatan pelaksanaan:
   kesalahan formulir tetap ditulis di bawah kolom isian.
 - **Gerak dimatikan bila pengguna memilih "kurangi gerakan".** Capie tampil
   diam pada pose yang paling mewakili.
-- **Di aplikasi, satu Capie per layar.** Halaman jual boleh lebih, karena
-  tugasnya memperkenalkan.
+- **Hanya satu Capie pemandu.** Etalase di halaman jual (`guide: false`) adalah
+  pengecualian, karena tugasnya memperkenalkan.
