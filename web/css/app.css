@@ -1,4 +1,4 @@
-/* Easy Math
+/* Capie
    Arah desain (lihat docs/arah-produk.md):
    - Latar terang biru keabuan + kartu putih: bersih dan ramah anak, tetap tenang untuk orang tua.
    - Biru utama untuk tindakan dan posisi saat ini, kuning matahari untuk hadiah dan sorotan,
@@ -122,7 +122,6 @@ h1:focus { outline: none; }
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
 }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); min-height: 44px; }
-.brand-mark { width: 34px; height: 34px; flex: none; }
 .brand-name { font-family: var(--font-head); font-size: 22px; font-weight: 600; white-space: nowrap; }
 @media (max-width: 420px) { .brand-name { font-size: 19px; } .top-actions { gap: 6px; } .is-guest #themeBtn { display: none; } }
 .brand-sub { font-size: 13px; font-weight: 800; color: var(--ink-2); border-left: 2px solid var(--line); padding-left: 10px; }
@@ -333,7 +332,7 @@ h1 .mk-acc { background: color-mix(in srgb, var(--acc) 45%, var(--paper)); borde
 .seg-fill { position: absolute; left: 0; right: 0; top: 9px; height: 8px; border-radius: 99px; background: var(--pri); transform-origin: left; transform: scaleX(0); transition: transform .4s ease; }
 .seg.cur::before { background: color-mix(in srgb, var(--pri) 18%, var(--mut-soft)); }
 
-.caption, .ask, .endcard, .controls, .sound-note { width: var(--stage-w); min-width: min(100%, 300px); margin-left: auto; margin-right: auto; }
+.narr, .ask, .endcard, .controls, .sound-note { width: var(--stage-w); min-width: min(100%, 300px); margin-left: auto; margin-right: auto; }
 .caption { min-height: 5.4em; padding: 8px 2px 4px; }
 .cap-text { font-size: clamp(18px, 2.6vw, 22px); font-weight: 700; line-height: 1.45; }
 .cap-text .w { color: var(--ink-2); transition: color .2s ease; }
@@ -572,10 +571,9 @@ h1 .mk-acc { background: color-mix(in srgb, var(--acc) 45%, var(--paper)); borde
 .sec-lead { font-size: 18px; color: var(--ink-2); margin-top: 12px; max-width: 62ch; }
 .grid3 { display: grid; gap: 14px; margin-top: 26px; }
 @media (min-width: 760px) { .grid3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-.pain, .feat { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
-.pain h3, .feat h3 { font-family: var(--font); font-weight: 800; font-size: 19px; margin-bottom: 6px; }
-.pain p, .feat p { color: var(--ink-2); }
-.pain { border-top: 4px solid var(--coral); }
+.feat { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+.feat h3 { font-family: var(--font); font-weight: 800; font-size: 19px; margin-bottom: 6px; }
+.feat p { color: var(--ink-2); }
 .feat-ic { width: 48px; height: 48px; border-radius: 15px; display: grid; place-items: center; background: var(--pri-soft); color: var(--pri); margin-bottom: 14px; }
 .feat-ic svg { width: 26px; height: 26px; }
 .steps3 { list-style: none; margin: 26px 0 0; padding: 0; display: grid; gap: 14px; }
@@ -754,3 +752,78 @@ h1 .mk-acc { background: color-mix(in srgb, var(--acc) 45%, var(--paper)); borde
 .acc-sec h3 { font-family: var(--font); font-weight: 800; font-size: 16px; margin-top: 8px; }
 .inv-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
 .inv-list li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 12px; padding: 10px 12px; border-radius: 12px; background: var(--bg); font-size: 15px; }
+
+
+/* ---------- Bagian masalah: daftar bergaris tipis, bukan kartu ----------
+   Tiga gejala dibaca seperti catatan guru: judul tebal, penjelasan di bawahnya, dipisah garis.
+   Tanda koral kecil di kiri menandai "ini masalahnya" tanpa membuat tiga kotak seragam. */
+.sec-problem { display: grid; gap: 22px; }
+@media (min-width: 900px) { .sec-problem { grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; } }
+.pains { list-style: none; margin: 0; padding: 0; }
+.pains li { position: relative; padding: 18px 0 18px 26px; border-bottom: 1px solid var(--line); }
+.pains li:first-child { border-top: 1px solid var(--line); }
+@media (min-width: 900px) { .pains li:first-child { border-top: 0; padding-top: 4px; } .pains li:first-child::before { top: 13px; } }
+.pains li::before { content: ''; position: absolute; left: 2px; top: 27px; width: 10px; height: 10px; border-radius: 3px; background: var(--coral); transform: rotate(45deg); }
+.pains h3 { font-family: var(--font); font-weight: 800; font-size: 19px; margin-bottom: 4px; }
+.pains p { color: var(--ink-2); }
+
+/* ---------- Capie ----------
+   Satu atlas 8×4; posisi latar dipilih lewat JS (js/capie.js).
+   Gerak napas halus saat diam, pantulan kecil saat ganti pose, melayang saat terbang. */
+.capie { --capie-w: 112px; display: inline-block; width: var(--capie-w); aspect-ratio: 176 / 232; flex: none; position: relative; }
+.capie-xs { --capie-w: 46px; }
+.capie-sm { --capie-w: 84px; }
+.capie-md { --capie-w: 112px; }
+.capie-lg { --capie-w: 140px; }
+.capie-f { position: absolute; inset: 0; background: url('../img/capie.webp') no-repeat; background-size: 800% 400%; transform-origin: 50% 100%; animation: capieBreath 3.2s ease-in-out infinite; }
+.capie-f.capie-pop { animation: capiePop .32s cubic-bezier(.3, 1.6, .5, 1), capieBreath 3.2s ease-in-out .32s infinite; }
+.capie-flying .capie-f { animation: capieHover 1.1s ease-in-out infinite; }
+@keyframes capieBreath { 0%, 100% { transform: translateY(0) scale(1, 1); } 50% { transform: translateY(-2px) scale(1.012, .988); } }
+@keyframes capiePop { 0% { transform: scale(1.06, .92); } 60% { transform: scale(.97, 1.04); } 100% { transform: none; } }
+@keyframes capieHover { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+@media (prefers-reduced-motion: reduce) { .capie-f, .capie-f.capie-pop, .capie-flying .capie-f { animation: none; } }
+
+/* Balon ucapan: garis tinta tebal + ekor ke arah Capie, motif yang dipakai di semua halaman */
+.capie-say-row { display: flex; align-items: flex-end; gap: 10px; }
+.capie-bubble { position: relative; background: var(--paper); color: var(--ink); border: 2px solid var(--ink); border-radius: 18px 18px 18px 6px; padding: 10px 14px; font-weight: 700; line-height: 1.4; max-width: 34ch; margin-bottom: 40px; box-shadow: 3px 3px 0 var(--ink); }
+.capie-bubble::before { content: ''; position: absolute; left: -11px; bottom: 8px; width: 14px; height: 14px; background: var(--paper); border-left: 2px solid var(--ink); border-bottom: 2px solid var(--ink); transform: skewY(-35deg); }
+.capie-bubble-in { animation: bubbleIn .28s cubic-bezier(.3, 1.4, .5, 1); }
+@keyframes bubbleIn { from { opacity: 0; transform: translateY(6px) scale(.96); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .capie-bubble-in { animation: none; } }
+.capie-say-row .capie-md ~ .capie-bubble { margin-bottom: 64px; }
+.capie-say-row .capie-sm ~ .capie-bubble { margin-bottom: 46px; }
+.capie-say-row .capie-xs ~ .capie-bubble { margin-bottom: 10px; }
+
+/* Halaman jual */
+.hero-side { display: grid; gap: 4px; min-width: 0; }
+.hero-capie { margin-left: 4px; margin-bottom: -18px; position: relative; z-index: 1; }
+.final-capie { display: block; margin: -8px auto 2px; }
+.meet { list-style: none; padding: 0; margin: 26px 0 0; display: grid; gap: 14px; }
+@media (min-width: 860px) { .meet { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; } }
+.meet li { display: flex; gap: 14px; align-items: flex-start; padding: 18px 18px 18px 10px; border-radius: var(--radius); background: var(--paper); border: 1px solid var(--line); }
+.meet-1 { background: var(--acc-soft) !important; border-color: transparent !important; }
+.meet-2 { background: var(--ok-soft) !important; border-color: transparent !important; }
+.meet-3 { background: var(--pri-soft) !important; border-color: transparent !important; }
+.meet h3 { font-family: var(--font); font-weight: 800; font-size: 18px; margin-bottom: 4px; }
+.meet p { color: var(--ink-2); }
+@media (min-width: 860px) { .meet li { flex-direction: column; align-items: flex-start; padding: 20px; } .meet li:nth-child(2) { transform: translateY(18px); } }
+
+/* Logo */
+.brand-mark { width: 40px; height: 40px; flex: none; border-radius: 12px; background: var(--pri-soft); object-fit: cover; }
+
+/* Capie di aplikasi */
+.narr { display: flex; gap: 10px; align-items: flex-start; }
+.narr .caption { flex: 1; min-width: 0; }
+.narr-capie { padding-top: 6px; }
+.q-fb { position: relative; }
+.fb-capie { position: absolute; right: 10px; top: 8px; pointer-events: none; }
+.q-fb .fb-head { padding-right: 52px; min-height: 52px; }
+.result-capie { margin: 6px 0 4px; }
+.result-capie .capie-bubble { font-size: 18px; }
+.auth-capie { margin-bottom: -4px; }
+.learn-capie { margin: -6px 0 14px; }
+.lock-capie { margin-bottom: 2px; }
+.nf-wrap { max-width: 560px; margin: 28px auto 0; }
+.nf-wrap .state-box { margin-top: 10px; }
+.pay-capie { margin-bottom: -4px; }
+.capie-line { font-weight: 800; color: var(--ink); }

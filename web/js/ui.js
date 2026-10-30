@@ -74,7 +74,7 @@ export const FLAG = {
   en: '<svg class="flag" viewBox="0 0 60 40" aria-hidden="true"><clipPath id="fgb"><rect width="60" height="40"/></clipPath><g clip-path="url(#fgb)"><rect width="60" height="40" fill="#012169"/><path d="M0 0l60 40M60 0L0 40" stroke="#fff" stroke-width="8"/><path d="M0 0l60 40M60 0L0 40" stroke="#C8102E" stroke-width="3"/><path d="M30 0v40M0 20h60" stroke="#fff" stroke-width="12"/><path d="M30 0v40M0 20h60" stroke="#C8102E" stroke-width="7"/></g></svg>',
 };
 
-const BRAND_MARK = '<svg class="brand-mark" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="10" fill="#2D5BE3"/><circle cx="12" cy="17" r="5" fill="#FFC22E"/><path d="M20 17h7M23.5 13.5v7" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></svg>';
+const BRAND_MARK = '<img class="brand-mark" src="./img/capie-head.webp" alt="" width="40" height="40">';
 
 export const initials = (name = '?') => name.trim().charAt(0).toUpperCase();
 export const avatar = (p, size = 36) =>

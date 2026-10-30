@@ -7,6 +7,7 @@ import { innerSVG, shapeKey, spansHTML, stripMarkup, VIEW } from './shapes.js';
 import { speech } from './speech.js';
 import { store } from './store.js';
 import { t, t as T } from './i18n.js';
+import { capie, setMood } from './capie.js';
 
 const ns = 'http://www.w3.org/2000/svg';
 
@@ -65,6 +66,8 @@ export class Stage {
 
     const items = [...state.values()].sort((a, b) => (a.z || 0) - (b.z || 0));
     const order = [];
+    // benda yang muncul bersamaan diberi jeda bertahap supaya terlihat "dihitung" satu per satu
+    let born = 0;
     for (const p of items) {
       let node = this.nodes.get(p.id);
       const key = shapeKey(p);
@@ -74,7 +77,16 @@ export class Stage {
       }
       if (!node) {
         node = this.create(p, key, instant);
-      } else if (node.key !== key) {
+        if (!instant && node.fx.classList.contains('pop')) {
+          const d = `${Math.min(born++ * 55, 440)}ms`;
+          node.fx.style.animationDelay = d;
+          node.g.style.transitionDelay = d;
+        }
+      } else if (node.g.style.transitionDelay) {
+        node.g.style.transitionDelay = '';
+        node.fx.style.animationDelay = '';
+      }
+      if (node.key !== key) {
         node.fx.innerHTML = innerSVG(instant ? { ...p, draw: false } : p);
         node.g.setAttribute('data-t', p.t || 'text');
         node.key = key;
@@ -226,7 +238,7 @@ export class Player {
               .map((c, i) => `<button type="button" class="seg" data-ci="${i}" style="flex-grow:${c.steps.length}" aria-label="${t('pl.part', { n: i + 1, title: c.title })}"><span class="seg-fill"></span></button>`)
               .join('')}
           </div>
-          <div class="caption" aria-live="polite"><p class="cap-text"></p></div>
+          <div class="narr">${capie('talk', { size: 'xs', cls: 'narr-capie' })}<div class="caption" aria-live="polite"><p class="cap-text"></p></div></div>
           <div class="ask" hidden></div>
           <div class="endcard" hidden>
             <p class="end-title">${t('pl.doneTitle')}</p>
@@ -409,6 +421,7 @@ export class Player {
       else b.removeAttribute('aria-current');
     });
     this.$('.step-count').textContent = `${this.idx + 1}/${this.frames.length}`;
+    if (!this.asking && !this.ended) this.mood(this.playing ? 'talk' : 'idle');
     const t = this.$('[data-act="toggle"]');
     t.innerHTML = this.playing ? ICON.pause : ICON.play;
     t.setAttribute('aria-label', this.playing ? T('pl.pause') : T('pl.play'));
@@ -538,6 +551,12 @@ export class Player {
     }
   }
 
+  // Capie di samping narasi ikut bereaksi; hanya diganti bila suasananya berubah
+  mood(m) {
+    const el = this.root.querySelector('.narr-capie [data-capie]');
+    if (el && el.dataset.capie !== m) setMood(el, m);
+  }
+
   markDone() {
     if (this.doneMarked) return;
     this.doneMarked = true;
@@ -551,6 +570,7 @@ export class Player {
     this.markDone();
     this.updateProgress();
     const end = this.$('.endcard');
+    this.mood('cheer');
     end.hidden = false;
     end.querySelector('a, button')?.focus({ preventScroll: true });
   }
@@ -568,6 +588,7 @@ export class Player {
         .join('')}</div>
       <div class="ask-fb" hidden></div>`;
     box.querySelector('.opt')?.focus({ preventScroll: true });
+    this.mood('think');
     box.querySelectorAll('.opt').forEach((b) =>
       b.addEventListener('click', () => {
         const o = opts[+b.dataset.i];
@@ -580,6 +601,7 @@ export class Player {
         const fb = box.querySelector('.ask-fb');
         fb.hidden = false;
         fb.className = `ask-fb ${o.ok ? 'fb-ok' : 'fb-bad'}`;
+        this.mood(o.ok ? 'yes' : 'no');
         fb.innerHTML = `<p><strong>${o.ok ? t('pl.right') : t('pl.wrong')}</strong> ${spansHTML(o.why || (o.ok ? t('pl.rightMore') : ''))}</p><button type="button" class="btn btn-primary btn-sm" data-cont>${t('pl.cont')}</button>`;
         fb.querySelector('[data-cont]').addEventListener('click', () => {
           this.hideAsk();

@@ -1,7 +1,8 @@
-# Arah Produk Easy Math: Komersial, UI/UX, dan Lab Simulasi
+# Arah Produk Capie: Komersial, UI/UX, Maskot, dan Lab Simulasi
 
 Status: rancangan untuk diputuskan. Prototipe layar ada di kanvas desain
-"Easy Math — Arah UI/UX" (artifact pribadi pemilik repo).
+"Easy Math — Arah UI/UX" (artifact pribadi pemilik repo; dibuat sebelum nama berubah
+menjadi Capie).
 
 Label keyakinan: **[Pasti]** bukti kuat, **[Kemungkinan Besar]** inferensi kuat,
 **[Menebak]** mengisi celah informasi.
@@ -260,6 +261,53 @@ Kriteria urutan:
 Angka target diisi setelah ada data awal [Menebak untuk angka apa pun
 sekarang].
 
+### 7.7 Lab Sains: Fisika dan Biologi (setelah matematika)
+
+Nama Capie dipilih supaya produk bisa melebar ke sains tanpa ganti merek.
+Tetapi **sains sebaiknya baru dikerjakan setelah matematika laku**, karena
+setiap mata pelajaran baru menggandakan pekerjaan konten, terjemahan, dan uji
+[Kemungkinan Besar].
+
+| Mata pelajaran | Bentuk | Alasan |
+|---|---|---|
+| Fisika | **Animasi dan simulasi 2D** (SVG/Canvas, penggeser, grafik langsung) | Yang dipelajari adalah vektor, grafik, dan hubungan antarbesaran. Di 2D semua itu terbaca jelas; di 3D anak sibuk memutar kamera. |
+| Biologi | **Model 3D interaktif** (Three.js + glTF) | Bentuk dan letak organ, sel, dan jaringan memang ruang. Memutar dan membuka lapisan menjelaskan hal yang gambar datar tidak bisa. |
+
+Contoh urutan awal:
+
+- **Fisika 2D:**
+  1. gerak lurus (jejak posisi dan grafik v–t yang tergambar bersamaan);
+  2. gaya dan hukum Newton (panah gaya yang bisa ditarik);
+  3. bidang miring dan gesekan;
+  4. pegas dan bandul;
+  5. gelombang;
+  6. cermin dan lensa (sinar istimewa yang bisa digeser);
+  7. rangkaian listrik seri/paralel.
+- **Biologi 3D:**
+  1. sel hewan dan sel tumbuhan (ketuk bagian → nama dan fungsi);
+  2. sistem pencernaan (makanan bergerak sepanjang saluran);
+  3. jantung dan peredaran darah;
+  4. kerangka dan sendi;
+  5. daun dan fotosintesis.
+
+Catatan pelaksanaan:
+
+- **Biaya terbesar Biologi adalah model 3D, bukan kodenya.** Model perlu
+  dibuat oleh seniman 3D atau dibeli/dilisensikan. Lisensi tiap model wajib
+  dicek, misalnya CC-BY yang mewajibkan atribusi. Satu model sebaiknya di
+  bawah 2–3 MB setelah kompresi Draco [Menebak: angka awal].
+- **Fisika bisa dimulai lebih cepat** karena memakai ulang mesin panggung yang
+  sudah ada (`player.js`, `shapes.js`) ditambah penggeser [Kemungkinan Besar].
+- **Pemetaan kurikulum:**
+  - SD Kurikulum Merdeka memakai mata pelajaran gabungan IPAS;
+  - SMP memakai IPA terpadu;
+  - SMA memisahkan Fisika dan Biologi.
+
+  Katalog Lab sebaiknya disaring per jenjang dengan nama mata pelajaran yang
+  sesuai [Kemungkinan Besar; cek ulang dokumen capaian pembelajaran terbaru].
+- **Capie ikut masuk Lab** sebagai pemandu "Tebak → Coba → Jelaskan". Capie
+  bertanya sebelum simulasi dibuka, lalu bereaksi pada hasil coba anak.
+
 ---
 
 ## 8. Peta jalan
@@ -270,6 +318,7 @@ sekarang].
 | 1 · Bisa dijual | Akun orang tua + profil anak, sinkronisasi, paywall Bab 2+, pembayaran, halaman jual, privasi. Analitik. | Pembayaran pertama dari pengguna sungguhan |
 | 2 · Alasan tetap berlangganan | Dasbor orang tua, laporan mingguan via email/WA, misi harian, Lab simulasi 1–5 (2D). | Retensi bulan ke-2 terukur |
 | 3 · Pembeda | Lab 3D (6, 7, 9), paket Sekolah dan mode guru, aplikasi Play Store (TWA). | Kontrak sekolah pertama |
+| 4 · Lab Sains | Lab Fisika 2D lebih dulu (memakai ulang mesin panggung), lalu Lab Biologi 3D. Lihat bagian 7.7. | Matematika SD–SMA sudah lengkap dan laku |
 
 ---
 
@@ -285,5 +334,76 @@ sekarang].
   dicek ulang.
 - **Mengejar tampilan Astra (gelap, 3D mewah) bisa salah sasaran.** Astra
   menyasar remaja dan mahasiswa dengan tutor AI ([Bittime](https://www.bittime.com/blog/review-astra-ai-ai-tutor-selain-pelajarinai),
-  [Parse](https://parse.gl/brands/astra-ai-co)). Pembeli Easy Math SD adalah
+  [Parse](https://parse.gl/brands/astra-ai-co)). Pembeli Capie SD adalah
   orang tua.
+
+---
+
+## 10. Merek Capie dan maskot
+
+### 10.1 Nama
+
+- Nama "Easy Math" diganti menjadi **Capie**, karena produk akan melebar ke
+  sains. Nama ada di satu tempat: `web/js/brand.js` (plus `<title>` dan
+  manifest).
+- **Belum dicek: ketersediaan merek dagang dan domain** [Menebak].
+  - Sebelum membeli domain atau mencetak materi promosi, cari "Capie" di
+    pangkalan data merek DJKI (PDKI), terutama kelas 9 (perangkat lunak) dan
+    kelas 41 (pendidikan).
+  - Nama pendek yang mudah diucapkan sering sudah dipakai.
+- Kunci penyimpanan lokal tetap memakai awalan `easymath.` supaya progres
+  pengguna lama tidak hilang. Ini tidak terlihat oleh pengguna.
+
+### 10.2 Aset maskot
+
+- Semua pose ada di satu atlas: `web/img/capie.webp`.
+  - Atlas berisi 32 pose dalam grid 8 × 4, ukuran sel 176 × 232 px, sekitar
+    270 KB.
+  - Pose dipotong dari lembar pose yang diberikan pemilik produk, lalu latar
+    belakangnya dihapus.
+  - Kepala untuk logo ada di `web/img/capie-head.webp`.
+- **Batas mutu:**
+  - Setiap pose aslinya kira-kira 200 px. Tampilan tajam sampai lebar sekitar
+    110 px di layar ponsel, lebih besar dari itu mulai buram.
+  - Untuk hero yang besar atau materi cetak, perlu sumber resolusi tinggi atau
+    vektor.
+- **Animasinya pose-ke-pose, bukan animasi halus.**
+  - Lembar sumber adalah kumpulan pose, bukan frame berurutan. Bentuk telinga
+    dan antena sedikit berbeda antarpose.
+  - Pergantian pose diberi efek pantul dan gerak napas supaya tetap hidup.
+  - Untuk animasi halus (berkedip, berbicara, transisi antar-emosi), mintalah
+    desainer membuat rig di **Rive** atau Lottie [Kemungkinan Besar]. State
+    machine Rive cocok untuk diam/benar/salah/berpikir.
+- **Hak cipta:**
+  - Jika lembar pose dibuat dengan generator gambar AI, kepemilikan hak
+    ciptanya bisa lemah di beberapa negara.
+  - Untuk maskot yang akan didaftarkan sebagai merek, sebaiknya desainer
+    menggambar ulang versi final, dan berkas sumbernya dimiliki perusahaan
+    [Kemungkinan Besar].
+
+### 10.3 Di mana Capie muncul
+
+| Tempat | Suasana | Isi balon |
+|---|---|---|
+| Halaman jual: hero | menyapa | perkenalan |
+| Halaman jual: "Kenalan dengan Capie" | berpikir, benar, keliru (berulang) | 3 peran Capie dalam belajar |
+| Halaman jual: ajakan terakhir | terbang | |
+| Masuk / Daftar | menyapa → berpikir saat memeriksa → cemas saat gagal | arahan isi formulir |
+| Pilih profil | menyapa / berpikir | "Siapa yang belajar…" |
+| Peta belajar | berbicara / menyapa | ajakan lanjut atau mulai |
+| Pemutar materi | berbicara saat diputar, berpikir saat pertanyaan, benar/keliru setelah dijawab, bersorak di akhir | (narasi di sampingnya) |
+| Latihan soal | benar/keliru di kotak umpan balik; terbang/bersorak/cemas di hasil | pesan hasil |
+| Materi terkunci | cemas | ajakan coba yang gratis |
+| Pembayaran berhasil | terbang | "Semua materi terbuka" |
+| Halaman tidak ada | jatuh (mata X) | "Aku nyasar" |
+
+### 10.4 Aturan pemakaian
+
+- **Capie tidak pernah mengejek jawaban salah.** Pose mata X hanya dipakai di
+  halaman 404, tidak di soal.
+- **Balon Capie tidak menjadi satu-satunya pembawa informasi penting.** Pesan
+  kesalahan formulir tetap ditulis di bawah kolom isian.
+- **Gerak dimatikan bila pengguna memilih "kurangi gerakan".** Capie tampil
+  diam pada pose yang paling mewakili.
+- **Di aplikasi, satu Capie per layar.** Halaman jual boleh lebih, karena
+  tugasnya memperkenalkan.

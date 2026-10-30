@@ -1,6 +1,6 @@
 {
-  "name": "Easy Math · Matematika SD, SMP & SMA",
-  "short_name": "Easy Math",
+  "name": "Capie · Matematika SD, SMP & SMA",
+  "short_name": "Capie",
   "description": "Materi matematika SD, SMP, dan SMA kelas 1 sampai 12 (termasuk Matematika Tingkat Lanjut) dalam animasi bercerita, dengan soal latihan dan pembahasan.",
   "lang": "id",
   "start_url": "./",
@@ -13,7 +13,6 @@
   "icons": [
     { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "./icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
-    { "src": "./icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+    { "src": "./icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }

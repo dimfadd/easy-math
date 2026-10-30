@@ -1,8 +1,10 @@
-# Easy Math · Matematika SD, SMP, dan SMA Kelas 1–12 (termasuk Tingkat Lanjut)
+# Capie · Matematika SD, SMP, dan SMA Kelas 1–12 (termasuk Tingkat Lanjut)
 
 Media pembelajaran matematika berbentuk PWA: setiap materi berupa animasi
 bercerita (dimulai dari pertanyaan, dijawab dengan benda yang bisa dilihat),
 diikuti soal latihan yang menjelaskan letak keliru setiap jawaban salah.
+Anak ditemani maskot robot **Capie** dari daftar akun sampai latihan soal.
+(Nama lama produk ini: Easy Math.)
 
 - Kelas 1: 8 bab, 18 materi animasi, 150 soal.
 - Kelas 2: 8 bab, 17 materi animasi, 143 soal.
@@ -239,6 +241,8 @@ web/
   js/api.js            lapisan API (sekarang memanggil server tiruan js/mockdb.js)
   js/auth.js, sync.js  sesi masuk dan sinkronisasi progres
   js/ui.js             topbar, ikon, fungsi bantu tampilan
+  js/capie.js          maskot Capie: pose, suasana hati (menyapa, benar, keliru, berpikir, terbang), balon ucapan
+  img/capie.webp       atlas 32 pose Capie (8 × 4); img/capie-head.webp untuk logo
   js/views/            halaman: landing, learn (belajar), account (akun), paket
   js/l10n.js           menerapkan terjemahan isi materi (judul, narasi, soal, teks panggung)
   js/player.js         pemutar animasi: langkah, narasi, pertanyaan di tengah materi
@@ -266,6 +270,23 @@ tests/                 uji otomatis (Playwright): smoke, accounts, lang, offline
 ig-analysis/           riset referensi video (@akalmatika, @nasrularifin26)
 docs/arah-produk.md    arah komersial, sistem desain, dan konsep Lab Simulasi
 ```
+
+## Maskot Capie
+
+`capie(mood, { size, say })` di `web/js/capie.js` menghasilkan HTML Capie, dengan
+atau tanpa balon ucapan. Capie yang masuk ke halaman langsung bergerak sendiri,
+dan `setMood(el, mood)` mengganti reaksinya. Suasana hati yang tersedia:
+
+- `idle`, `hi`, `talk`, `think`;
+- `yes`, `no`, `cheer`;
+- `fly`, `land`, `oops`;
+- `worried`, `surprised`, `sleepy`;
+- `yesLoop`, `noLoop` (versi berulang untuk etalase di halaman jual).
+
+Bila pengguna memilih "kurangi gerakan", Capie tampil diam.
+
+Tempat Capie muncul dan aturan pemakaiannya ada di `docs/arah-produk.md`
+bagian 10.
 
 ## Akun, langganan, dan sinkronisasi (versi pengembangan)
 

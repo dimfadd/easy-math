@@ -10,6 +10,7 @@ import { FREE, TRIAL_DAYS } from '../config.js';
 import { auth } from '../auth.js';
 import { app, topbar, bindTopbar, setCurrent, reduceMotion, ICON, lessonHref, practiceHref, setTitle, contentFacts, fmt } from '../ui.js';
 import { planCards } from './paket.js';
+import { capie } from '../capie.js';
 
 const demoText = (D) => (getLang() === 'en' && D.en ? { ...D, ...D.en } : D);
 
@@ -158,7 +159,10 @@ export function viewLanding() {
             <li>${ICON.check}${t('land.trust3')}</li>
           </ul>
         </div>
-        ${demoFigure()}
+        <div class="hero-side">
+          ${capie('hi', { size: 'md', say: t('capie.hero'), cls: 'hero-capie' })}
+          ${demoFigure()}
+        </div>
       </section>
 
       <section class="facts" aria-label="${t('home.factsAria')}">
@@ -169,13 +173,13 @@ export function viewLanding() {
       </section>
 
       <section class="sec sec-problem" aria-labelledby="masalah-h">
-        <h2 id="masalah-h">${t('land.probH')}</h2>
-        <p class="sec-lead">${t('land.probLead')}</p>
-        <div class="grid3">
-          <article class="pain"><h3>${t('land.pain1.t')}</h3><p>${t('land.pain1.b')}</p></article>
-          <article class="pain"><h3>${t('land.pain2.t')}</h3><p>${t('land.pain2.b')}</p></article>
-          <article class="pain"><h3>${t('land.pain3.t')}</h3><p>${t('land.pain3.b')}</p></article>
+        <div class="prob-text">
+          <h2 id="masalah-h">${t('land.probH')}</h2>
+          <p class="sec-lead">${t('land.probLead')}</p>
         </div>
+        <ul class="pains">
+          ${[1, 2, 3].map((n) => `<li><h3>${t(`land.pain${n}.t`)}</h3><p>${t(`land.pain${n}.b`)}</p></li>`).join('')}
+        </ul>
       </section>
 
       <section id="cara" class="sec" aria-labelledby="cara-h">
@@ -187,6 +191,21 @@ export function viewLanding() {
           <li><span class="step-no">2</span><h3>${t('land.step2.t')}</h3><p>${t('land.step2.b')}</p></li>
           <li><span class="step-no">3</span><h3>${t('land.step3.t')}</h3><p>${t('land.step3.b')}</p></li>
         </ol>
+      </section>
+
+      <section id="capie" class="sec sec-meet" aria-labelledby="capie-h">
+        <p class="kicker">${t('capie.meetKicker')}</p>
+        <h2 id="capie-h">${t('capie.meetH')}</h2>
+        <p class="sec-lead">${t('capie.meetLead')}</p>
+        <ul class="meet">
+          ${[
+            ['think', 1],
+            ['yesLoop', 2],
+            ['noLoop', 3],
+          ]
+            .map(([m, n]) => `<li class="meet-${n}">${capie(m, { size: 'sm' })}<div><h3>${t(`capie.m${n}.t`)}</h3><p>${t(`capie.m${n}.b`)}</p></div></li>`)
+            .join('')}
+        </ul>
       </section>
 
       <section id="unggul" class="sec" aria-labelledby="unggul-h">
@@ -254,6 +273,7 @@ export function viewLanding() {
       </section>
 
       <section class="final-cta">
+        ${capie('fly', { size: 'sm', cls: 'final-capie' })}
         <h2>${t('land.finalH')}</h2>
         <p>${t('land.finalB')}</p>
         <div class="hero-cta">${ctaMain}<a class="btn btn-ghost btn-lg" href="#/daftar">${t('land.finalSignup')}</a></div>

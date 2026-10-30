@@ -6,6 +6,7 @@ import { t } from '../i18n.js';
 import { auth } from '../auth.js';
 import { PLANS, PAY_METHODS, TRIAL_DAYS, MAX_CHILDREN, rupiah } from '../config.js';
 import { app, topbar, bindTopbar, ICON, setTitle, fmtDate, esc } from '../ui.js';
+import { capie } from '../capie.js';
 
 const perMonth = (p) => Math.round(p.price / p.months);
 const saving = () => {
@@ -83,7 +84,7 @@ export function viewPaket(params = {}) {
     } else if (auth.role === 'anak') {
       body = `<div class="state-box"><h2 class="state-title">${t('pay.kidH')}</h2><p>${t('pay.kidB')}</p></div>`;
     } else if (st.done) {
-      body = `<div class="state-box success-box"><span class="ok-ic" aria-hidden="true">${ICON.check}</span><h2 class="state-title">${t('pay.okH')}</h2><p>${t('pay.okB', { date: fmtDate(a.plan.until) })}</p><div class="end-actions"><a class="btn btn-primary btn-lg" href="${a.role === 'ortu' ? '#/profil' : '#/belajar'}">${t('pay.okCta')}</a><a class="btn btn-ghost" href="#/akun">${t('pay.okAcc')}</a></div></div>`;
+      body = `<div class="state-box success-box">${capie('fly', { size: 'md', cls: 'pay-capie' })}<h2 class="state-title">${t('pay.okH')}</h2><p class="capie-line">${t('capie.paid')}</p><p>${t('pay.okB', { date: fmtDate(a.plan.until) })}</p><div class="end-actions"><a class="btn btn-primary btn-lg" href="${a.role === 'ortu' ? '#/profil' : '#/belajar'}">${t('pay.okCta')}</a><a class="btn btn-ghost" href="#/akun">${t('pay.okAcc')}</a></div></div>`;
     } else if (st.invoice) {
       const inv = st.invoice;
       body = `<section class="invoice" aria-labelledby="inv-h">

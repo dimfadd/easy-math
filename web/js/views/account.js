@@ -8,6 +8,7 @@ import { auth } from '../auth.js';
 import { sync } from '../sync.js';
 import { MAX_CHILDREN, PLANS, rupiah } from '../config.js';
 import { app, topbar, bindTopbar, ICON, avatar, setTitle, setKelas, fmtDate, esc, lessonHref, stateBox } from '../ui.js';
+import { capie } from '../capie.js';
 
 const go = (h) => {
   location.hash = h;
@@ -28,6 +29,8 @@ function afterLogin(next) {
 }
 
 // ---------- Masuk ----------
+const guide = (mood, say) => capie(mood, { size: 'sm', say, cls: 'auth-capie' });
+
 export function viewMasuk(params = {}) {
   setTitle(t('login.h'));
   const st = { tab: params.tab === 'anak' ? 'anak' : 'akun', busy: false, err: '' };
@@ -35,6 +38,7 @@ export function viewMasuk(params = {}) {
     app.innerHTML = `${topbar('landing')}<main id="main" class="page-auth">
       <div class="auth-wrap">
         <section class="auth-card" aria-labelledby="login-h">
+          ${guide(st.err ? 'no' : st.busy ? 'think' : 'hi', st.err ? t('capie.oops') : st.busy ? t('capie.busy') : st.tab === 'anak' ? t('capie.loginKid') : t('capie.login'))}
           <h1 id="login-h">${t('login.h')}</h1>
           <div class="seg" role="tablist" aria-label="${t('login.who')}">
             <button type="button" role="tab" aria-selected="${st.tab === 'akun'}" data-tab="akun">${t('login.tabAcc')}</button>
@@ -153,6 +157,7 @@ export function viewDaftar(params = {}) {
     app.innerHTML = `${topbar('landing')}<main id="main" class="page-auth">
       <div class="auth-wrap single">
         <section class="auth-card" aria-labelledby="su-h">
+          ${guide(st.err ? 'no' : st.busy ? 'think' : 'hi', st.err ? t('capie.oops') : st.busy ? t('capie.busy') : t('capie.signup'))}
           <h1 id="su-h">${t('signup.h')}</h1>
           <p class="muted">${t('signup.lead')}</p>
           <form class="form" id="f-su" novalidate>
@@ -222,6 +227,7 @@ export async function viewProfil() {
   const canAdd = auth.role === 'ortu' && profiles.length < MAX_CHILDREN;
   const render = () => {
     app.innerHTML = `${topbar('app')}<main id="main" class="page-profil">
+      ${guide(profiles.length ? 'hi' : 'think', profiles.length ? t('capie.profile') : t('capie.profileEmpty'))}
       <h1>${t('prof.h')}</h1>
       <p class="lead">${profiles.length ? t('prof.lead') : t('prof.empty')}</p>
       <ul class="prof-grid">

@@ -4,6 +4,7 @@
 import { spansHTML, staticSVG } from './shapes.js';
 import { store } from './store.js';
 import { t, getLang } from './i18n.js';
+import { capie } from './capie.js';
 
 export function shuffle(arr, rnd = Math.random) {
   const a = arr.slice();
@@ -157,6 +158,7 @@ export function renderQuiz(root, opts) {
     fb.className = `q-fb ${ok ? 'fb-ok' : 'fb-bad'}`;
     const last = i === qs.length - 1;
     fb.innerHTML = `
+      ${capie(ok ? 'yes' : 'no', { size: 'xs', cls: 'fb-capie' })}
       <p class="fb-head"><strong>${ok ? t('q.right') : t('q.wrong')}</strong> ${ok ? spansHTML(q.okWhy || '') : `${spansHTML(why || '')} ${q.type === 'num' ? t('q.correctIs', { a: spansHTML(ansText(q)) }) : ''}`}</p>
       ${q.steps && q.steps.length ? `<details class="steps" ${ok ? '' : 'open'}><summary>${t('q.steps')}</summary><ol>${q.steps.map((s) => `<li>${spansHTML(s)}</li>`).join('')}</ol></details>` : ''}
       <button type="button" class="btn btn-primary" data-next>${last ? t('q.result') : t('q.next')}</button>`;
@@ -188,7 +190,7 @@ export function renderQuiz(root, opts) {
       ${head()}
       <section class="result">
         <p class="result-score"><span class="big">${correct}</span><span class="of">${t('q.of', { t: qs.length })}</span></p>
-        <p class="result-msg">${msg}</p>
+        ${capie(pct === 1 ? 'fly' : pct >= 0.6 ? 'cheer' : 'worried', { size: 'md', say: msg, cls: 'result-capie', tag: 'div' })}
         ${best && best.best > correct ? `<p class="muted">${t('q.best', { b: best.best, t: best.total })}</p>` : ''}
         <div class="end-actions">
           ${nextHref && pct >= 0.6 ? `<a class="btn btn-primary" href="${nextHref}">${nextLabel}</a>` : ''}

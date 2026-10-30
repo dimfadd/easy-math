@@ -12,6 +12,7 @@ import {
   app, topbar, bindTopbar, setCurrent, kelasNo, setKelas, kName, ICON, avatar,
   lessonHref, practiceHref, isFree, babProgress, scoreBadge, nextLessonId, continueTarget, setTitle, stateBox,
 } from '../ui.js';
+import { capie } from '../capie.js';
 
 // ---------- Pemilih kelas ----------
 const JENJANG = ['SD', 'SMP', 'SMA'];
@@ -60,6 +61,7 @@ export function viewBelajar() {
             : `<h1>${t('map.title')}</h1>`
         }
       </header>
+      ${capie(contEntry ? 'talk' : 'hi', { size: 'sm', say: !auth.loggedIn ? t('capie.homeGuest') : contEntry ? t('capie.home') : t('capie.homeNew'), cls: 'learn-capie' })}
       ${needProfile ? `<div class="banner"><div><strong>${t('learn.pickTitle')}</strong><p>${t('learn.pickBody')}</p></div><div class="banner-act"><a class="btn btn-primary" href="#/profil">${t('learn.pick')}</a></div></div>` : ''}
       ${accessBanner()}
       ${
@@ -196,7 +198,7 @@ function lockView(kind) {
     ${topbar('app')}
     <main id="main">
       <div class="state-box lock-box">
-        <span class="lock-ic" aria-hidden="true">${ICON.lock}</span>
+        ${capie('worried', { size: 'sm', say: kid ? t('capie.lockKid') : t('capie.lock'), cls: 'lock-capie' })}
         <h1 class="state-title">${kind === 'uji' ? t('lock.ujiTitle') : t('lock.title')}</h1>
         <p>${kid ? t('lock.kidBody') : guest ? t('lock.guestBody') : t('lock.planBody')}</p>
         ${actions ? `<div class="end-actions">${actions}</div>` : ''}
@@ -308,6 +310,6 @@ export function viewUji(id) {
 
 export function viewNotFound() {
   setTitle(t('nf.title'));
-  app.innerHTML = `${topbar('app')}<main id="main">${stateBox(t('nf.title'), t('nf.body'), `<a class="btn btn-primary" href="#/">${t('nf.back')}</a>`)}</main>`;
+  app.innerHTML = `${topbar('app')}<main id="main"><div class="nf-wrap">${capie('oops', { size: 'md', say: t('capie.nf'), cls: 'nf-capie' })}${stateBox(t('nf.title'), t('nf.body'), `<a class="btn btn-primary" href="#/">${t('nf.back')}</a>`)}</div></main>`;
   bindTopbar();
 }
