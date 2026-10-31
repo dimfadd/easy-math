@@ -9,6 +9,7 @@ import { store } from './store.js';
 import { t, t as T } from './i18n.js';
 import { capie, setMood } from './capie.js';
 import { fx } from './fx.js';
+import { sfxButton } from './sfx.js';
 
 const ns = 'http://www.w3.org/2000/svg';
 
@@ -256,6 +257,7 @@ export class Player {
             <span class="ctl-sep" aria-hidden="true"></span>
             <button type="button" class="ctl ctl-text" data-act="speed" aria-label="${t('pl.speed')}">${this.speed}×</button>
             <button type="button" class="ctl" data-act="sound" aria-label="${t('pl.sound')}"></button>
+            ${sfxButton('ctl')}
             <span class="step-count" aria-live="off"></span>
           </div>
           <p class="sound-note" hidden></p>

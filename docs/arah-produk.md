@@ -410,6 +410,12 @@ Interaksi tambahan:
 - Capie bereaksi saat disentuh.
 - Capie tertidur setelah 40 detik tanpa aktivitas.
 
+Efek suara:
+
+- Bunyi robot 8-bit hanya saat Capie berpindah di materi dan latihan.
+- Bisa dimatikan lewat tombol robot. Sebagian anak dan orang tua tidak suka
+  suara, dan aplikasi ini juga dipakai di kelas.
+
 ### 10.4 Aturan pemakaian
 
 - **Capie tidak pernah mengejek jawaban salah.** Pose mata X hanya dipakai di
@@ -445,6 +451,13 @@ sendiri menyatakan bukan untuk interaksi antarmuka.
 - **Mengubah materi menjadi video.** Materi interaktif (bisa dijeda, diulang per
   langkah, dijawab di tengah, diterjemahkan) adalah kekuatan produk ini. Video
   juga jauh lebih berat untuk diunduh dan untuk mode offline [Kemungkinan Besar].
+
+**Pesan "matematika di balik AI" di halaman jual:**
+- Setiap klaim dikaitkan ke materi yang memang ada (peluang, vektor/matriks,
+  gradien/turunan).
+- Tidak ada janji "anak jadi ahli AI". Isinya hanya hubungan konsep yang benar:
+  model bahasa memakai peluang, data diwakili vektor dan diolah dengan matriks,
+  dan pelatihan memakai turunan untuk memperkecil galat [Pasti].
 
 **Pemakaian yang masuk akal ke depan:**
 - **Video promosi pendek untuk iklan dan Reels/TikTok.** Contohnya Capie

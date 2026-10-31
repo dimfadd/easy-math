@@ -137,6 +137,19 @@ function bindFreeTabs(id = 'free') {
   });
 }
 
+
+// Matematika di balik AI: topik → contoh notasi → materi yang benar-benar ada di katalog
+const AI_ROWS = [
+  { math: { id: 'P(kata | kalimat)', en: 'P(word | sentence)' }, lessons: ['k8b8-1', 'k11b4-3', 'k11b3-2'] },
+  { math: { id: '[0,8 &nbsp;−1,2 &nbsp;3,5]', en: '[0.8 &nbsp;−1.2 &nbsp;3.5]' }, lessons: ['k10b3-1', 'k11lb3-2'] },
+  { math: { id: 'f′(x) = 0', en: 'f′(x) = 0' }, lessons: ['k8b4-2', 'k12lb3-1'] },
+];
+const aiChip = (id) => {
+  const e = LESSONS.get(id);
+  if (!e) return '';
+  return `<span class="ai-chip">${kelasName(kelasOf(e.kelas))} · ${lessonTitle(e.lesson)}</span>`;
+};
+
 const feat = (icon, key) => `<article class="feat"><span class="feat-ic" aria-hidden="true">${ICON[icon]}</span><h3>${t(`feat.${key}.t`)}</h3><p>${t(`feat.${key}.b`)}</p></article>`;
 
 export function viewLanding() {
@@ -180,6 +193,22 @@ export function viewLanding() {
         <ul class="pains">
           ${[1, 2, 3].map((n) => `<li><h3>${t(`land.pain${n}.t`)}</h3><p>${t(`land.pain${n}.b`)}</p></li>`).join('')}
         </ul>
+      </section>
+
+      <section id="ai" class="sec sec-ai" aria-labelledby="ai-h">
+        <p class="kicker">${t('ai.kicker')}</p>
+        <h2 id="ai-h">${t('ai.h')}</h2>
+        <p class="sec-lead">${t('ai.lead')}</p>
+        <ol class="ai-rows">
+          ${AI_ROWS.map(
+            (r, n) => `<li>
+              <span class="ai-math" aria-hidden="true">${r.math[getLang()] || r.math.id}</span>
+              <div><h3>${t(`ai.r${n + 1}.t`)}</h3><p>${t(`ai.r${n + 1}.b`)}</p>
+              <p class="ai-where"><span>${t('ai.where')}</span> ${r.lessons.map((id) => aiChip(id)).join('')}</p></div>
+            </li>`,
+          ).join('')}
+        </ol>
+        <p class="ai-next">${t('ai.next')}</p>
       </section>
 
       <section id="cara" class="sec" aria-labelledby="cara-h">

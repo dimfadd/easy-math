@@ -486,8 +486,8 @@ h1 .mk-acc { background: color-mix(in srgb, var(--acc) 45%, var(--paper)); borde
 .result-msg { font-size: 18px; font-weight: 700; }
 .review-title { font-size: 20px; margin-top: 10px; }
 .review { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
-.review li { display: grid; gap: 2px; padding: 10px 12px; border-radius: 10px; border-left: 5px solid var(--ok); background: var(--bg); }
-.review li.r-bad { border-left-color: var(--neg); }
+.review li { display: grid; gap: 2px; padding: 10px 14px; border-radius: 14px; border: 2px solid var(--ok); background: color-mix(in srgb, var(--ok-soft) 45%, var(--paper)); }
+.review li.r-bad { border-color: var(--neg); background: color-mix(in srgb, var(--neg-soft) 45%, var(--paper)); }
 .r-mark { font-size: 13px; font-weight: 800; color: var(--ok); }
 .r-bad .r-mark { color: var(--neg); }
 .r-q { font-weight: 700; }
@@ -850,3 +850,26 @@ h1 .mk-acc { background: color-mix(in srgb, var(--acc) 45%, var(--paper)); borde
 .ask-top { display: flex; gap: 10px; align-items: flex-end; margin-bottom: 10px; }
 .ask-top .ask-q { margin-bottom: 4px; }
 @media (prefers-reduced-motion: reduce) { .capie-hop { animation: none; } }
+
+/* tombol efek suara Capie */
+.quiz-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.sfx-btn[aria-pressed="false"] { color: var(--ink-2); }
+.sfx-btn svg { width: 22px; height: 22px; }
+
+/* Matematika di balik AI: panel tinta gelap supaya ritme halaman berubah; notasi di kiri jadi motif */
+.sec-ai { margin-top: 56px; padding: 32px 22px; border-radius: 28px; background: #15213B; color: #EEF1FA; }
+:root[data-theme="dark"] .sec-ai { background: #1B2257; border: 1px solid var(--line); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .sec-ai { background: #1B2257; border: 1px solid var(--line); } }
+.sec-ai .kicker { color: #FFC22E; }
+.sec-ai h2 { color: inherit; }
+.sec-ai .sec-lead { color: #C9D0E6; }
+.ai-rows { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 0; }
+.ai-rows li { display: grid; gap: 10px; padding: 18px 0; border-top: 1px solid rgba(238, 241, 250, .16); }
+@media (min-width: 760px) { .ai-rows li { grid-template-columns: 220px 1fr; gap: 24px; align-items: start; } .sec-ai { padding: 44px 40px; } }
+.ai-math { font-family: var(--font-serif); font-size: 22px; color: #FFC22E; white-space: nowrap; }
+.ai-rows h3 { font-family: var(--font); font-weight: 800; font-size: 19px; margin-bottom: 4px; color: #FFFFFF; }
+.ai-rows p { color: #C9D0E6; }
+.ai-where { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 14px; }
+.ai-where > span:first-child { font-weight: 800; color: #EEF1FA; }
+.ai-chip { display: inline-block; padding: 3px 10px; border-radius: 8px; background: rgba(238, 241, 250, .1); color: #EEF1FA; font-weight: 700; font-size: 13px; }
+.ai-next { margin-top: 14px; padding-top: 16px; border-top: 1px solid rgba(238, 241, 250, .16); font-weight: 700; color: #FFFFFF; }

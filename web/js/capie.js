@@ -15,6 +15,7 @@
 //   setMood(el, 'yes')                           → ganti suasana hati Capie
 import { t } from './i18n.js';
 import { fx } from './fx.js';
+import { sfx } from './sfx.js';
 
 const COLS = 8;
 const ROWS = 4;
@@ -292,7 +293,10 @@ function flyTo(slot) {
     G.frame.style.backgroundPosition = pos(FLY[0]);
     flap = setInterval(() => (G.frame.style.backgroundPosition = pos(FLY[++k % FLY.length])), 110);
   };
-  const flapTimer = setTimeout(startFlap, ant);
+  const flapTimer = setTimeout(() => {
+    startFlap();
+    sfx.takeoff();
+  }, ant);
   if (ant) fx.land(start.x + start.w / 2, start.y + start.w * (232 / 176), start.w / 90);
   const anim = a.animate(frames, { duration: dur, easing: 'linear', fill: 'forwards' });
   // garis kecepatan mengikuti Capie selama terbang
@@ -340,6 +344,7 @@ function flyTo(slot) {
       { duration: 280, easing: 'cubic-bezier(.3,1.4,.5,1)' },
     );
     fx.land(end.x + end.w / 2, end.y + end.h - 2, end.w / 84);
+    sfx.land();
     let j = 0;
     const land = () => {
       if (j < LAND.length) {

@@ -6,6 +6,7 @@ import { store } from './store.js';
 import { t, getLang } from './i18n.js';
 import { capie } from './capie.js';
 import { fx } from './fx.js';
+import { sfxButton } from './sfx.js';
 
 const mid = (el) => {
   const r = el?.getBoundingClientRect();
@@ -98,7 +99,7 @@ export function renderQuiz(root, opts) {
     <header class="quiz-head">
       <a class="back" href="${backHref}">← ${backLabel}</a>
       <h1 class="quiz-title">${title}</h1>
-      <div class="quiz-dots" aria-hidden="true">${qs.map((_, k) => `<span class="dot ${k < results.length ? (results[k] ? 'd-ok' : 'd-bad') : k === i ? 'd-cur' : ''}"></span>`).join('')}</div>
+      <div class="quiz-bar"><div class="quiz-dots" aria-hidden="true">${qs.map((_, k) => `<span class="dot ${k < results.length ? (results[k] ? 'd-ok' : 'd-bad') : k === i ? 'd-cur' : ''}"></span>`).join('')}</div>${sfxButton('icon-btn')}</div>
     </header>`;
 
   function renderQ() {

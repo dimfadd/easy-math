@@ -312,6 +312,14 @@ Rumusnya diadaptasi dari
 
 Bila pengguna memilih "kurangi gerakan", Capie tidak terbang dan tampil diam.
 
+**Efek suara Capie** (`web/js/sfx.js`):
+
+- Bunyi robot 8-bit saat Capie lepas landas dan mendarat. Bunyinya disintesis
+  dengan Web Audio, tanpa berkas audio.
+- Hanya berbunyi di halaman materi, latihan, dan uji bab.
+- Tombol robot di kontrol pemutar materi dan di kepala latihan menyalakan atau
+  mematikan efek suara. Pilihan disimpan di perangkat (`settings.sfx`).
+
 Tempat Capie muncul dan aturan pemakaiannya ada di `docs/arah-produk.md`
 bagian 10.
 
