@@ -41,3 +41,19 @@ export function grid(p, name, n, cx, cy, { cols = 5, dx = 50, dy = 50, size = 38
 }
 
 export const txt = (id, text, x, y, o = {}) => ({ id, t: 'text', text, x, y, size: 26, w: 800, ...o });
+
+// Angka untuk kunci jawaban: gaya Indonesia (koma desimal, tanpa pemisah ribuan), sisa galat float dibuang.
+// Contoh: D(2.5) = '2,5', D(-0.1 + 0.3) = '0,2', D(1250) = '1250'
+export const D = (n, dp = 6) => {
+  const v = Math.round(n * 10 ** dp) / 10 ** dp;
+  return String(Object.is(v, -0) ? 0 : v).replace('.', ',');
+};
+// Angka untuk teks soal sesuai bahasa: 2,5 (id) atau 2.5 (en)
+export const N = (lang, n, dp = 6) => (lang === 'en' ? D(n, dp).replace(',', '.') : D(n, dp));
+export const gcd = (a, b) => (b ? gcd(b, a % b) : Math.abs(a));
+// Pecahan paling sederhana sebagai teks: F(6, 8) = '3/4', F(4, 2) = '2', F(-3, 6) = '-1/2'
+export const F = (p, q) => {
+  if (q < 0) [p, q] = [-p, -q];
+  const g = gcd(p, q) || 1;
+  return q / g === 1 ? String(p / g) : `${p / g}/${q / g}`;
+};
