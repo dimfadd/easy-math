@@ -17,6 +17,7 @@ import { viewLanding, viewCoba } from './views/landing.js';
 import { viewBelajar, viewBab, viewMateri, viewLatihan, viewUji, viewNotFound } from './views/learn.js';
 import { viewMasuk, viewDaftar, viewProfil, viewOrtu, viewAkun } from './views/account.js';
 import { viewPaket } from './views/paket.js';
+import { viewGuru } from './views/guru.js';
 
 function parse() {
   const raw = location.hash.replace(/^#\/?/, '');
@@ -72,7 +73,8 @@ async function route({ keepScroll = false } = {}) {
         viewUji(id);
         break;
       case 'ortu':
-        await viewOrtu();
+        if (auth.role === 'guru') await viewGuru(params);
+        else await viewOrtu();
         break;
       case 'paket':
         viewPaket(params);

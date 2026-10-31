@@ -9,6 +9,7 @@ import { sync } from '../sync.js';
 import { MAX_CHILDREN, PLANS, rupiah } from '../config.js';
 import { app, topbar, bindTopbar, ICON, avatar, setTitle, setKelas, fmtDate, esc, lessonHref, stateBox } from '../ui.js';
 import { capie } from '../capie.js';
+import { streak, weekDays, taskStatus, taskTitle } from '../habits.js';
 
 const go = (h) => {
   location.hash = h;
@@ -320,8 +321,27 @@ function childStats(profile, progress) {
   return { watched: Object.keys(w).length, avg, days, lastAt, babs, attention };
 }
 
-function childCard(profile, progress, role) {
+// Ringkasan mingguan untuk dikirim lewat WhatsApp (teks biasa, tanpa data sensitif)
+function waText(profile, S, wk, goal, open) {
+  const lines = [
+    t('wa.title', { name: profile.name }),
+    t('wa.days', { wk, goal }),
+    t('wa.stats', { w: S.watched, avg: S.avg === null ? '-' : `${S.avg}%` }),
+  ];
+  if (S.attention.length) lines.push(t('wa.attention', { title: lessonTitle(S.attention[0].e.lesson) }));
+  if (open) lines.push(t('wa.tasks', { n: open }));
+  lines.push(t('wa.footer'));
+  return `https://wa.me/?text=${encodeURIComponent(lines.join('\n'))}`;
+}
+
+function childCard(profile, progress, role, tasks = []) {
   const S = childStats(profile, progress);
+  const goal = profile.goal || 3;
+  const wk = weekDays(progress.days || {});
+  const stk = streak(progress.days || {});
+  const now = Date.now();
+  const tk = tasks.map((x) => ({ x, s: taskStatus(x, progress, now) }));
+  const openTasks = tk.filter((r) => !r.s.done);
   const max = Math.max(1, ...S.days.map((d) => d.n));
   const dayName = (ms) => new Date(ms).toLocaleDateString(t('locale'), { weekday: 'short' });
   const shown = S.babs.filter((x) => x.state !== 'todo').concat(S.babs.filter((x) => x.state === 'todo').slice(0, 1)).slice(0, 5);
@@ -332,6 +352,11 @@ function childCard(profile, progress, role) {
       <div><strong>${S.watched}</strong><span>${t('dash.watched')}</span></div>
       <div><strong>${S.avg === null ? '–' : `${S.avg}%`}</strong><span>${t('dash.avg')}</span></div>
       <div><strong>${S.days.reduce((a, d) => a + d.n, 0)}</strong><span>${t('dash.week')}</span></div>
+    </div>
+    <div class="goal-row">
+      <div class="goal-ring" style="--p:${Math.min(1, wk / goal)}" aria-hidden="true"><span>${wk}/${goal}</span></div>
+      <div class="goal-txt"><strong>${wk >= goal ? t('goal.done') : t('goal.left', { n: goal - wk })}</strong><span>${t('goal.streak', { n: stk })}</span></div>
+      ${role === 'ortu' ? `<label class="goal-set">${t('goal.set')} <select data-goal="${profile.id}">${[1, 2, 3, 4, 5, 6, 7].map((n) => `<option value="${n}" ${n === goal ? 'selected' : ''}>${t('goal.opt', { n })}</option>`).join('')}</select></label>` : ''}
     </div>
     <div class="week" role="img" aria-label="${t('dash.weekAria')}: ${S.days.map((d) => `${dayName(d.from)} ${d.n}`).join(', ')}">
       ${S.days.map((d) => `<div class="wk"><span class="wk-bar${d.n ? '' : ' zero'}" style="height:${d.n ? Math.max(10, (d.n / max) * 64) : 4}px"></span><span class="wk-d">${dayName(d.from)}</span></div>`).join('')}
@@ -348,8 +373,18 @@ function childCard(profile, progress, role) {
             .join('')}</ul></div>`
         : `<p class="all-good">${ICON.check}${t('dash.allGood')}</p>`
     }
+    ${
+      tasks.length
+        ? `<div class="kid-tasks"><h3>${t('goal.tasks', { cls: esc(tasks[0].className) })}</h3><ul>${tk
+            .slice(0, 4)
+            .map(({ x, s }) => `<li class="${s.done ? 'is-done' : s.overdue ? 'is-overdue' : ''}">${s.done ? ICON.check : ''}<span>${esc(taskTitle(x))}</span><span class="muted small">${s.done ? (s.score ? `${s.score.ok}/${s.score.total}` : t('guru.done')) : s.overdue ? t('guru.missing') : t('guru.due', { date: fmtDate(x.due) })}</span></li>`)
+            .join('')}</ul></div>`
+        : ''
+    }
     <div class="child-act">
       ${role === 'ortu' ? `<button type="button" class="btn btn-primary btn-sm" data-learn="${profile.id}">${t('dash.learnAs', { name: esc(profile.name) })}</button>` : ''}
+      ${role === 'ortu' ? `<a class="btn btn-ghost btn-sm" href="${waText(profile, S, wk, goal, openTasks.length)}" target="_blank" rel="noopener">${t('wa.send')}</a>` : ''}
+      ${role === 'ortu' ? `<details class="kid-login"><summary>${t('join.forChild')}</summary><form class="join-form" data-join="${profile.id}"><label class="sr-only" for="jc-${profile.id}">${t('join.code')}</label><input id="jc-${profile.id}" placeholder="${t('join.ph')}" autocomplete="off" autocapitalize="characters" maxlength="8"><button class="btn btn-ghost btn-sm" type="submit">${t('join.go')}</button></form><p class="join-msg muted small" role="status"></p></details>` : ''}
       <details class="kid-login"><summary>${t('dash.kidLogin')}</summary><p>${t('dash.kidLoginB')}</p><p class="kid-cred"><span>${t('login.uname')}: <strong>${esc(profile.username)}</strong></span><span>PIN: <strong>${esc(profile.pin)}</strong></span></p></details>
     </div>
   </article>`;
@@ -382,9 +417,32 @@ export async function viewOrtu() {
         : `<div class="banner"><div><strong>${t('learn.noPlanTitle')}</strong><p>${t('dash.noPlan')}</p></div><div class="banner-act"><a class="btn btn-primary" href="#/paket">${t('learn.seePlans')}</a></div></div>`
     }
     ${offline ? `<div class="banner"><div><strong>${t('err.offline')}</strong></div></div>` : ''}
-    ${rows.length ? `<div class="child-grid">${rows.map((r) => childCard(r.profile, r.progress, a.role)).join('')}</div>` : stateBox(t('dash.noKids'), t('dash.noKidsB'), `<a class="btn btn-primary" href="#/profil">${t('prof.add')}</a>`)}
+    ${rows.length ? `<div class="child-grid">${rows.map((r) => childCard(r.profile, r.progress, a.role, r.assignments || [])).join('')}</div>` : stateBox(t('dash.noKids'), t('dash.noKidsB'), `<a class="btn btn-primary" href="#/profil">${t('prof.add')}</a>`)}
   </main>`;
   bindTopbar();
+  app.querySelectorAll('[data-goal]').forEach((sel) =>
+    sel.addEventListener('change', async () => {
+      try {
+        await api.setGoal(sel.dataset.goal, sel.value);
+      } catch {
+        /* offline: pilihan dicoba lagi saat halaman dibuka ulang */
+      }
+      viewOrtu();
+    }),
+  );
+  app.querySelectorAll('[data-join]').forEach((f) =>
+    f.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const msg = f.parentElement.querySelector('.join-msg');
+      try {
+        const r = await api.joinClass(f.dataset.join, f.querySelector('input').value);
+        msg.textContent = t('join.ok', { cls: r.cls.name, teacher: r.cls.teacher });
+        setTimeout(viewOrtu, 900);
+      } catch (err) {
+        msg.textContent = err?.code === 'bad_code' ? t('join.bad') : t('err.generic');
+      }
+    }),
+  );
   app.querySelectorAll('[data-learn]').forEach((b) =>
     b.addEventListener('click', async () => {
       await auth.selectProfile(b.dataset.learn);
@@ -438,6 +496,17 @@ export function viewAkun() {
           : ''
       }
 
+      ${
+        auth.profile && (auth.role === 'anak' || auth.role === 'siswa')
+          ? `<section class="acc-sec" aria-labelledby="acc-cls">
+              <h2 id="acc-cls">${t('join.h')}</h2>
+              <p class="muted small">${t('join.b')}</p>
+              <form class="join-form" id="f-join"><label class="sr-only" for="jc">${t('join.code')}</label><input id="jc" placeholder="${t('join.ph')}" autocomplete="off" autocapitalize="characters" maxlength="8"><button class="btn btn-primary btn-sm" type="submit">${t('join.go')}</button></form>
+              <p class="join-msg muted small" role="status"></p>
+            </section>`
+          : ''
+      }
+
       <section class="acc-sec" aria-labelledby="acc-nav">
         <h2 id="acc-nav">${t('acc.more')}</h2>
         <div class="end-actions">
@@ -452,6 +521,17 @@ export function viewAkun() {
     app.querySelector('[data-act="logout"]').addEventListener('click', () => {
       auth.logout();
       go('#/');
+    });
+    app.querySelector('#f-join')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const msg = app.querySelector('.join-msg');
+      try {
+        const r = await api.joinClass(auth.profile.id, app.querySelector('#jc').value);
+        auth.setProfile?.(r.profile);
+        msg.textContent = t('join.ok', { cls: r.cls.name, teacher: r.cls.teacher });
+      } catch (err) {
+        msg.textContent = err?.code === 'bad_code' ? t('join.bad') : err?.code === 'offline' ? t('err.offline') : t('err.generic');
+      }
     });
     app.querySelector('[data-act="sync"]')?.addEventListener('click', async () => {
       await sync.pull(auth.profile.id);

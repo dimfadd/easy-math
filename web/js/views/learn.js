@@ -11,9 +11,11 @@ import { auth } from '../auth.js';
 import { FREE } from '../config.js';
 import {
   app, topbar, bindTopbar, setCurrent, kelasNo, setKelas, kName, ICON, avatar,
-  lessonHref, practiceHref, isFree, babProgress, scoreBadge, nextLessonId, continueTarget, setTitle, stateBox,
+  lessonHref, practiceHref, isFree, babProgress, scoreBadge, nextLessonId, continueTarget, setTitle, stateBox, esc, fmtDate,
 } from '../ui.js';
 import { capie } from '../capie.js';
+import * as api from '../api.js';
+import { streak, weekDays, taskStatus, taskTitle, taskHref } from '../habits.js';
 
 // ---------- Pemilih kelas ----------
 const JENJANG = ['SD', 'SMP', 'SMA'];
@@ -77,6 +79,8 @@ export function viewBelajar() {
             </a>`
           : ''
       }
+      ${auth.profile ? habitCard() : ''}
+      <div id="tasks-slot"></div>
       <section id="peta" class="map" aria-labelledby="peta-h">
         <div class="map-head">
           <h2 id="peta-h">${auth.profile ? t('map.title') : t('map.pick')}</h2>
@@ -110,6 +114,53 @@ export function viewBelajar() {
       <footer class="foot"><p>${kelasFoot(K)}</p></footer>
     </main>`;
   bindTopbar();
+  if (auth.profile) fillTasks(auth.profile.id);
+}
+
+// Runtutan hari belajar dan target minggu ini (target diatur orang tua; bawaan 3 hari)
+function habitCard() {
+  const days = store.days;
+  const s = streak(days);
+  const goal = auth.profile.goal || 3;
+  const wk = weekDays(days);
+  const pct = Math.min(1, wk / goal);
+  return `<section class="habit" aria-label="${t('habit.aria')}">
+    <div class="habit-item"><span class="habit-ic" aria-hidden="true">${ICON.star}</span><div><strong>${t('habit.streak', { n: s })}</strong><span>${s ? t('habit.streakB') : t('habit.streak0')}</span></div></div>
+    <div class="habit-item"><div class="habit-ring" style="--p:${pct}" aria-hidden="true"><span>${wk}/${goal}</span></div><div><strong>${t('habit.goal', { n: goal })}</strong><span>${wk >= goal ? t('habit.goalDone') : t('habit.goalLeft', { n: goal - wk })}</span></div></div>
+  </section>`;
+}
+
+// Tugas dari guru (diambil dari server; bila offline, bagian ini tidak tampil)
+async function fillTasks(pid) {
+  const slot = document.getElementById('tasks-slot');
+  if (!slot) return;
+  let list = [];
+  try {
+    list = await api.assignmentsFor(pid);
+  } catch {
+    return;
+  }
+  if (!list.length || !document.body.contains(slot)) return;
+  const prog = store.snapshot();
+  const now = Date.now();
+  const rows = list.map((tk) => ({ tk, s: taskStatus(tk, prog, now) }));
+  const open = rows.filter((r) => !r.s.done).sort((a, b) => a.tk.due - b.tk.due);
+  const done = rows.filter((r) => r.s.done);
+  slot.innerHTML = `<section class="tasks" aria-labelledby="tasks-h">
+    <h2 id="tasks-h">${t('task.h')} <span class="muted">· ${esc(list[0].className)}</span></h2>
+    <ul class="task-list">
+      ${open
+        .map(
+          ({ tk, s }) => `<li class="task-row${s.overdue ? ' is-overdue' : ''}">
+          <div class="task-main"><span class="task-kind k-${tk.kind}">${t(`task.kind.${tk.kind}`)}</span><strong>${esc(taskTitle(tk))}</strong>
+          <span class="muted small">${s.overdue ? t('task.overdue', { date: fmtDate(tk.due) }) : t('guru.due', { date: fmtDate(tk.due) })} · ${esc(tk.teacher)}</span></div>
+          <a class="btn btn-primary btn-sm" href="${taskHref(tk)}">${t('task.do')}</a>
+        </li>`,
+        )
+        .join('')}
+      ${done.length ? `<li class="task-done-sum">${ICON.check}${t('task.doneN', { n: done.length })}</li>` : ''}
+    </ul>
+  </section>`;
 }
 
 export function viewBab(id) {

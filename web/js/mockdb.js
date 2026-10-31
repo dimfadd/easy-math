@@ -13,7 +13,7 @@ export const DEMO_ACCOUNTS = [
   { email: 'ortu@demo.id', role: 'ortu', note: 'Orang tua, langganan Keluarga aktif, 2 anak' },
   { email: 'ortu.baru@demo.id', role: 'ortu', note: 'Orang tua tanpa langganan (untuk mencoba alur bayar)' },
   { email: 'siswa@demo.id', role: 'siswa', note: 'Siswa SMA mandiri, masa uji coba' },
-  { email: 'guru@demo.id', role: 'guru', note: 'Guru dengan satu kelas berisi 3 siswa' },
+  { email: 'guru@demo.id', role: 'guru', note: 'Guru Kelas 7A: 3 siswa, 4 tugas, kode kelas HRP7A2' },
 ];
 export const DEMO_KIDS = [
   { username: 'raka', note: 'Anak dari ortu@demo.id, kelas 3' },
@@ -21,22 +21,32 @@ export const DEMO_KIDS = [
   { username: 'dimas', note: 'Anak dari ortu.baru@demo.id, kelas 5 (belum berlangganan)' },
 ];
 
-function prog(now, list) {
+const dk = (ms) => {
+  const d = new Date(ms);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+};
+function prog(now, list, items = {}) {
   // list: [id, hariLalu, skorBenar?, total?]
   const watched = {};
   const scores = {};
+  const days = {};
+  const recent = {};
   let last = null;
   let lastAt = 0;
   for (const [id, daysAgo, best, total] of list) {
     const at = now - daysAgo * DAY - Math.round(Math.random() * 6) * 3600000;
     watched[id] = at;
-    if (best !== undefined) scores[id] = { best, total, last: best, at: at + 600000 };
+    days[dk(at)] = (days[dk(at)] || 0) + 1 + (best ?? 0);
+    if (best !== undefined) {
+      scores[id] = { best, total, last: best, at: at + 600000 };
+      recent[id] = Array.from({ length: total }, (_, i) => (i < best ? 1 : 0));
+    }
     if (at > lastAt) {
       lastAt = at;
       last = id;
     }
   }
-  return { watched, scores, last, updatedAt: now };
+  return { watched, scores, recent, seen: {}, items, days, last, updatedAt: now };
 }
 
 function seed() {
@@ -62,11 +72,22 @@ function seed() {
     p_nadia: prog(now, [['k8b1-1', 12, 5, 5], ['k8b1-2', 11, 4, 5], ['k8b1-3', 7, 4, 5], ['k8b1-4', 5, 3, 5], ['k8b2-1', 3, 5, 5], ['k8b2-2', 0, 2, 5]]),
     p_dimas: prog(now, [['k5b1-1', 3, 4, 5]]),
     p_kevin: prog(now, [['k11b1-1', 2, 4, 5], ['k11b1-2', 1, 3, 5]]),
-    p_ayu: prog(now, [['b1-1', 6, 5, 5], ['b1-2', 5, 5, 5], ['b1-3', 3, 4, 5], ['b1-4', 1, 4, 5]]),
-    p_bima: prog(now, [['b1-1', 6, 3, 5], ['b1-2', 4, 2, 5]]),
-    p_citra: prog(now, [['b1-1', 2, 5, 5]]),
+    p_ayu: prog(now, [['b1-1', 6, 5, 5], ['b1-2', 5, 5, 5], ['b1-3', 3, 4, 5], ['b1-4', 1, 4, 5]], { 'b1-1#0': [1, 0], 'b1-2#1': [1, 0], 'b1-2#3': [1, 0], 'b1-3#2': [1, 1], 'b1-4#4': [1, 1] }),
+    p_bima: prog(now, [['b1-1', 6, 3, 5], ['b1-2', 4, 2, 5]], { 'b1-1#0': [1, 1], 'b1-1#3': [1, 1], 'b1-2#1': [1, 1], 'b1-2#3': [1, 1], 'b1-2#0': [1, 0] }),
+    p_citra: prog(now, [['b1-1', 2, 5, 5]], { 'b1-1#0': [1, 0], 'b1-1#3': [1, 1], 'b1-1#2': [1, 0] }),
   };
-  return { v: 1, accounts, profiles, progress };
+  profiles.p_raka.goal = 4;
+  profiles.p_nadia.goal = 3;
+  for (const pid of ['p_ayu', 'p_bima', 'p_citra']) profiles[pid].classes = ['c_7a'];
+  // Kelas guru dan tugasnya. Tugas dianggap selesai bila dikerjakan setelah tugas dibuat.
+  const classes = { c_7a: { id: 'c_7a', ownerId: 'a_ratna', name: 'Kelas 7A', kelas: '7', code: 'HRP7A2', students: ['p_ayu', 'p_bima', 'p_citra'] } };
+  const assignments = {
+    t_1: { id: 't_1', classId: 'c_7a', kind: 'materi', target: 'b1-1', createdAt: now - 8 * DAY, due: now - 4 * DAY },
+    t_2: { id: 't_2', classId: 'c_7a', kind: 'latihan', target: 'b1-2', createdAt: now - 7 * DAY, due: now - 1 * DAY },
+    t_3: { id: 't_3', classId: 'c_7a', kind: 'latihan', target: 'b1-3', createdAt: now - 4 * DAY, due: now + 2 * DAY },
+    t_4: { id: 't_4', classId: 'c_7a', kind: 'uji', target: 'b1', createdAt: now - 1 * DAY, due: now + 5 * DAY },
+  };
+  return { v: 2, accounts, profiles, progress, classes, assignments };
 }
 
 let db = null;
@@ -78,7 +99,7 @@ export function load() {
   } catch {
     db = null;
   }
-  if (!db || db.v !== 1) {
+  if (!db || db.v !== 2) {
     db = seed();
     save();
   }

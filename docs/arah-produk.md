@@ -148,25 +148,59 @@ Angka harga, lama uji coba, dan batas profil sengaja dibiarkan sebagai
 
 ---
 
-## 6. Model bisnis (usulan awal)
+## 6. Model bisnis
 
 - **Gratis:**
-  - Bab 1 setiap kelas;
-  - latihan dengan pembahasan;
+  - 9 materi contoh (3 per jenjang), lengkap dengan latihan dan pembahasan;
   - progres di satu perangkat.
-- **Keluarga (bulanan/tahunan):**
+- **Keluarga (sampai 4 anak):**
   - semua kelas;
-  - beberapa profil anak;
-  - laporan orang tua;
-  - Lab;
-  - sinkronisasi.
+  - latihan dan uji bab dengan pembahasan (soal baru setiap kali: Kelas 1 sekarang, kelas lain menyusul);
+  - laporan orang tua, target mingguan, dan ringkasan WhatsApp;
+  - sinkronisasi;
+  - Lab (nanti).
 - **Sekolah (per siswa per tahun):**
-  - kelas dan tugas dari guru;
-  - rekap nilai;
-  - mode proyektor.
-- **Cara menentukan harga:** uji 2–3 titik harga di halaman paket dengan pengunjung
-  sungguhan, ukur rasio "lihat paket → mulai uji coba → bayar". Jangan menetapkan
-  dari tebakan [Menebak tentang angka mana pun sebelum uji].
+  - kode kelas;
+  - tugas bertenggat;
+  - matriks nilai;
+  - soal yang paling sering salah;
+  - ekspor CSV.
+
+### 6.1 Harga (riset Oktober 2026)
+
+| Produk | Isi | Harga yang ditemukan | Per bulan (setara) |
+|---|---|---|---|
+| Ruangguru ruangbelajar | Semua mapel, video, per siswa | SD 6 bulan Rp550.000; bulanan sekitar Rp250.000 (situs ulasan) | Rp92.000–250.000 |
+| Zenius Premium | Semua mapel, per siswa | 1 bulan Rp175.000; 12 bulan Rp450.000 | Rp37.500 (tahunan) |
+| Astra AI Plus | Tutor AI, per orang | Rp115.000/bulan; Rp575.000/tahun (App Store ID) | Rp48.000 (tahunan) |
+| KooBits | Matematika SD, per anak | SGD 17,99/bulan ditagih tahunan (Singapura); ₱750 (Filipina); RM54,75 (Malaysia) | ± Rp200.000+ [Menebak: kurs kasar] |
+| **Capie** | Matematika SD–SMA, animasi, **sampai 4 anak** | Rp99.000/bulan · Rp399.000/semester · Rp699.000/tahun | Rp58.000 (tahunan) |
+
+Sumber:
+- [Blog Ruangguru](https://www.ruangguru.com/blog/informasi-produk-ruangguru-yang-jadi-unggulan) dan [Studiliv](https://studiliv.com/harga-paket-ruang-guru/)
+- [Zenius: halaman paket](https://www.zenius.net/payment/package)
+- [Astra AI di App Store Indonesia](https://apps.apple.com/id/app/astra-ai-siap-ujian/id6751030141?l=id)
+- [KooBits Singapura](https://www.koobits.com/plans/sg), [KooBits Filipina](https://www.koobits.com/plans/ph), [KooBits Malaysia](https://www.koobits.com/plans/my)
+
+Harga bisa berubah, dan sebagian hanya dari satu sumber.
+
+Alasan angka Capie:
+- **Satu mata pelajaran tidak bisa dihargai setara Ruangguru semua mapel.** Tetapi
+  paket Capie berlaku untuk satu keluarga: untuk 2 anak, Rp699.000/tahun berarti
+  sekitar Rp29.000 per anak per bulan [Pasti, hitungan].
+- **Posisi:** di atas Zenius (yang lebih murah tetapi berbasis video biasa), setara
+  Astra AI per orang, dan jauh di bawah KooBits.
+- **Paket semester** mengikuti cara orang tua membeli bimbel per tahun ajaran.
+- **Paket Sekolah (usulan):** Rp60.000–90.000 per siswa per tahun [Menebak]. Belum
+  ditampilkan di halaman paket sebelum ada percakapan dengan sekolah.
+
+Kebenaran yang tidak enak:
+- **Harga naik tanpa bukti menurunkan konversi.** Ini terjadi selama belum ada
+  testimoni nyata, belum ada data hasil belajar, dan baru Kelas 1 yang punya soal
+  tak terbatas [Kemungkinan Besar].
+- **Sebelum peluncuran, jalankan survei harga ke 30–50 orang tua.** Pakai metode
+  Van Westendorp (empat pertanyaan "terlalu murah / murah / mahal / terlalu mahal"),
+  lalu uji A/B dua titik harga di halaman paket.
 
 ---
 
@@ -464,4 +498,61 @@ sendiri menyatakan bukan untuk interaksi antarmuka.
   menjelaskan satu konsep dalam 15–30 detik, dirender dari kode yang sama
   setiap kali materi berubah.
 - **Video "intro bab"** opsional untuk media sosial sekolah.
+
+---
+
+## 11. Berapa banyak latihan yang ideal?
+
+Patokan yang dipakai di aplikasi (`web/js/practice.js`):
+
+| | SD 1–2 | SD 3–6 | SMP/SMA |
+|---|---|---|---|
+| Satu sesi latihan | 6 soal | 8 soal | 10 soal |
+| Uji bab | 15 soal | 15 soal | 20 soal |
+| "Dikuasai" | 8 benar dari 10 jawaban terakhir | sama | sama |
+| Bank per materi (target) | ≥ 20 soal atau generator | ≥ 24 atau generator | ≥ 30 atau generator |
+
+Alasan:
+- **Sesi pendek tetapi sering** lebih efektif daripada satu sesi panjang (efek
+  latihan mengingat dan latihan berjarak). Satu sesi sekitar 5–12 menit masih
+  dalam rentang fokus anak SD [Kemungkinan Besar].
+- **"Dikuasai" mirip ambang "proficient" 80 di IXL** ([IXL SmartScore Guide](https://www.ixl.com/materials/SmartScore_Guide.pdf)).
+  IXL menyebut minimal sekitar 28 soal untuk mencapai skor 100 pada kebanyakan
+  keterampilan. Jadi bank 20–30 soal per materi adalah batas bawah yang wajar
+  [Kemungkinan Besar].
+- **Yang membuat orang tua merasa "cuma segitu" bukan jumlah per sesi**, tetapi
+  soal yang sama muncul lagi saat diulang. Karena itu sumbernya adalah generator:
+  angka diacak, penjelasan jawaban keliru dihitung otomatis, dan setiap
+  "Latihan lagi" berisi soal baru.
+
+Status:
+- **Kelas 1:** 18 materi, semuanya punya generator (24 jenis soal). `tests/gen.mjs`
+  memeriksa ribuan soal hasil generator setiap kali dijalankan.
+- **Kelas 2–12:** masih 5 soal bank per materi.
+  - Sesi latihan memakai yang ada (maksimal 5).
+  - Uji bab memakai soal bank ditambah soal tambahan bab.
+  - Ini pekerjaan konten berikutnya, berurutan: SD 2–6, lalu SMP, lalu SMA.
+- **Materi konseptual** (misalnya membaca pernyataan, memilih alasan) tetap butuh
+  soal tulisan tangan. Targetnya +10 soal per materi.
+
+---
+
+## 12. Sistem peran: orang tua, siswa, guru
+
+| Peran | Fitur |
+|---|---|
+| Orang tua | Sampai 4 profil anak, dasbor per anak (aktivitas 7 hari, penguasaan bab, materi yang perlu diulang), **target mingguan** (1–7 hari), runtutan, tugas dari guru anak, **ringkasan WhatsApp**, gabungkan anak ke kelas guru dengan kode |
+| Siswa / anak | Masuk dengan email (siswa mandiri) atau nama pengguna + PIN (anak), **runtutan hari belajar**, **target minggu ini**, **daftar tugas dari guru** dengan tenggat, label "Dikuasai" per materi, gabung kelas dengan kode |
+| Guru | Banyak kelas, **kode kelas**, tambah siswa (nama pengguna + PIN dibuat otomatis), **tugas bertenggat** (tonton / latihan / uji bab), **matriks siswa × tugas** (selesai, terlambat, belum), rata-rata nilai per tugas, **soal yang paling sering salah** per kelas, **ekspor CSV** |
+
+Yang belum ada dan dibutuhkan untuk penjualan ke sekolah:
+- **Akun sekolah dengan admin** yang membuat akun guru, plus impor daftar siswa dari
+  Excel.
+- **Laporan otomatis ke orang tua dari guru** (WhatsApp/email) dan notifikasi tugas
+  baru. Ini butuh server.
+- **Persetujuan orang tua** saat anak bergabung ke kelas. Saat ini kode kelas
+  langsung diterima.
+- **Semua data di atas masih di server tiruan (localStorage)** [Pasti]. Kode kelas
+  dan tugas baru benar-benar berbagi antar-perangkat setelah `web/js/api.js`
+  disambungkan ke server sungguhan.
 

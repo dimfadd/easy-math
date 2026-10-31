@@ -245,7 +245,146 @@ export async function familyReport(accountId) {
   const db = mock.load();
   const a = db.accounts[accountId];
   if (!a) return [];
-  return a.profiles.map((pid) => ({ profile: clone(db.profiles[pid]), progress: clone(db.progress[pid]) || { watched: {}, scores: {} } }));
+  return a.profiles.map((pid) => ({ profile: clone(db.profiles[pid]), progress: clone(db.progress[pid]) || { watched: {}, scores: {} }, assignments: assignmentsOf(db, pid) }));
+}
+
+// ---------- Kelas, tugas, dan target (guru, siswa, orang tua) ----------
+const MAX_STUDENTS = 40;
+function classesOfDb(db) {
+  db.classes = db.classes || {};
+  db.assignments = db.assignments || {};
+  return db;
+}
+function assignmentsOf(db, pid) {
+  classesOfDb(db);
+  const p = db.profiles[pid];
+  const cls = (p?.classes || []).map((c) => db.classes[c]).filter(Boolean);
+  return Object.values(db.assignments)
+    .filter((t) => cls.some((c) => c.id === t.classId))
+    .map((t) => {
+      const c = db.classes[t.classId];
+      return { ...clone(t), className: c.name, teacher: db.accounts[c.ownerId]?.name || '' };
+    })
+    .sort((x, y) => x.due - y.due);
+}
+const newCode = (db) => {
+  const A = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let c;
+  do c = Array.from({ length: 6 }, () => A[Math.floor(Math.random() * A.length)]).join('');
+  while (Object.values(db.classes).some((x) => x.code === c));
+  return c;
+};
+function ownClass(db, accountId, classId) {
+  const c = classesOfDb(db).classes[classId];
+  if (!c || c.ownerId !== accountId) throw new ApiError('no_class');
+  return c;
+}
+
+export async function listClasses(accountId) {
+  await wait(80);
+  const db = classesOfDb(mock.load());
+  return Object.values(db.classes)
+    .filter((c) => c.ownerId === accountId)
+    .map(clone);
+}
+
+export async function createClass(accountId, { name, kelas }) {
+  await wait();
+  requireOnline();
+  const db = classesOfDb(mock.load());
+  const a = db.accounts[accountId];
+  if (!a || a.role !== 'guru') throw new ApiError('no_account');
+  if (!String(name || '').trim()) throw new ApiError('missing');
+  const id = `c_${Date.now().toString(36)}`;
+  db.classes[id] = { id, ownerId: accountId, name: String(name).trim(), kelas: String(kelas || '7'), code: newCode(db), students: [] };
+  mock.save();
+  return clone(db.classes[id]);
+}
+
+// Guru menambah siswa langsung (paket Sekolah): profil baru milik akun guru, masuk dengan nama pengguna + PIN
+export async function addStudent(accountId, classId, name) {
+  await wait();
+  requireOnline();
+  const db = classesOfDb(mock.load());
+  const c = ownClass(db, accountId, classId);
+  if (!String(name || '').trim()) throw new ApiError('missing');
+  if (c.students.length >= MAX_STUDENTS) throw new ApiError('too_many');
+  const p = newProfile(db, accountId, name, c.kelas);
+  p.classes = [c.id];
+  db.accounts[accountId].profiles.push(p.id);
+  c.students.push(p.id);
+  mock.save();
+  return clone(p);
+}
+
+// Siswa (atau anak dari akun keluarga) bergabung ke kelas dengan kode dari guru
+export async function joinClass(pid, code) {
+  await wait();
+  requireOnline();
+  const db = classesOfDb(mock.load());
+  const p = db.profiles[pid];
+  if (!p) throw new ApiError('no_profile');
+  const c = Object.values(db.classes).find((x) => x.code === String(code || '').trim().toUpperCase());
+  if (!c) throw new ApiError('bad_code');
+  p.classes = [...new Set([...(p.classes || []), c.id])];
+  if (!c.students.includes(pid)) c.students.push(pid);
+  mock.save();
+  return { profile: clone(p), cls: { id: c.id, name: c.name, teacher: db.accounts[c.ownerId]?.name || '' } };
+}
+
+export async function classReport(accountId, classId) {
+  await wait(160);
+  requireOnline();
+  const db = classesOfDb(mock.load());
+  const c = ownClass(db, accountId, classId);
+  return {
+    cls: clone(c),
+    students: c.students.map((pid) => ({ profile: clone(db.profiles[pid]), progress: clone(db.progress[pid]) || { watched: {}, scores: {} } })).filter((x) => x.profile),
+    assignments: Object.values(db.assignments)
+      .filter((t) => t.classId === classId)
+      .sort((x, y) => y.createdAt - x.createdAt)
+      .map(clone),
+  };
+}
+
+export async function createAssignment(accountId, { classId, kind, target, due }) {
+  await wait();
+  requireOnline();
+  const db = classesOfDb(mock.load());
+  ownClass(db, accountId, classId);
+  if (!['materi', 'latihan', 'uji'].includes(kind) || !target) throw new ApiError('missing');
+  const id = `t_${Date.now().toString(36)}`;
+  db.assignments[id] = { id, classId, kind, target, createdAt: Date.now(), due: Number(due) || Date.now() + 7 * DAY };
+  mock.save();
+  return clone(db.assignments[id]);
+}
+
+export async function deleteAssignment(accountId, id) {
+  await wait(120);
+  requireOnline();
+  const db = classesOfDb(mock.load());
+  const t = db.assignments[id];
+  if (!t) return;
+  ownClass(db, accountId, t.classId);
+  delete db.assignments[id];
+  mock.save();
+}
+
+export async function assignmentsFor(pid) {
+  await wait(80);
+  return assignmentsOf(mock.load(), pid);
+}
+
+// Target belajar mingguan per anak (banyak hari belajar per minggu), diatur orang tua
+export async function setGoal(pid, days) {
+  await wait(80);
+  requireOnline();
+  const db = mock.load();
+  const p = db.profiles[pid];
+  if (!p) throw new ApiError('no_profile');
+  p.goal = Math.max(1, Math.min(7, Number(days) || 3));
+  mock.save();
+  return clone(p);
 }
 
 export function resetDemo() {

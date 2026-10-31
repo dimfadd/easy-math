@@ -892,3 +892,78 @@ h1 .mk-acc { background: color-mix(in srgb, var(--acc) 45%, var(--paper)); borde
 .mastery-line.is-mastered .meter > span { background: var(--ok); }
 .mastery-line p { font-weight: 700; font-size: 15px; }
 .tag-mastered { background: var(--ok); color: var(--onfill); }
+
+/* ---------- Kebiasaan belajar (siswa) ---------- */
+.habit { display: grid; gap: 10px; margin: 0 0 18px; }
+@media (min-width: 640px) { .habit { grid-template-columns: 1fr 1fr; } }
+.habit-item { display: flex; gap: 14px; align-items: center; padding: 14px 16px; border-radius: var(--radius-sm); background: var(--paper); border: 1px solid var(--line); }
+.habit-item strong { display: block; font-size: 17px; }
+.habit-item span { color: var(--ink-2); font-size: 14px; }
+.habit-ic { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; background: var(--acc-soft); color: var(--acc-ink); flex: none; }
+.habit-ic svg { width: 24px; height: 24px; }
+.habit-ring, .goal-ring { --p: 0; width: 52px; height: 52px; border-radius: 50%; flex: none; display: grid; place-items: center; background: conic-gradient(var(--ok) calc(var(--p) * 360deg), var(--mut-soft) 0); }
+.habit-ring span, .goal-ring span { width: 40px; height: 40px; border-radius: 50%; background: var(--paper); display: grid; place-items: center; font-weight: 800; font-size: 13px; color: var(--ink) !important; }
+
+/* ---------- Tugas ---------- */
+.tasks { margin: 0 0 22px; }
+.tasks h2 { font-size: 20px; margin-bottom: 10px; }
+.task-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.task-row { display: flex; gap: 12px; align-items: center; justify-content: space-between; padding: 12px 14px; border-radius: var(--radius-sm); background: var(--paper); border: 1px solid var(--line); }
+.task-row.is-overdue { border-color: var(--neg); }
+.task-main { display: grid; gap: 2px; min-width: 0; }
+.task-main strong { font-size: 16px; }
+.task-kind { justify-self: start; font-size: 12px; font-weight: 800; padding: 2px 8px; border-radius: 6px; background: var(--pri-soft); color: var(--pri); }
+.task-kind.k-materi { background: var(--acc-soft); color: var(--acc-ink); }
+.task-kind.k-uji { background: var(--ok-soft); color: var(--ok); }
+.task-meta { display: flex; gap: 10px; align-items: center; flex: none; flex-wrap: wrap; justify-content: flex-end; }
+.task-count strong { font-size: 18px; }
+.task-avg { font-size: 14px; color: var(--ink-2); }
+.task-done-sum { display: flex; gap: 6px; align-items: center; color: var(--ok); font-weight: 700; padding: 4px 2px; }
+.task-done-sum svg { width: 18px; height: 18px; }
+
+/* ---------- Dasbor guru ---------- */
+.dash-head-act { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.cls-pick { display: flex; gap: 6px; align-items: center; font-weight: 700; }
+.cls-pick select { min-height: 40px; border-radius: 10px; border: 1px solid var(--line); padding: 0 10px; background: var(--paper); color: var(--ink); }
+.code-card { display: grid; gap: 10px; padding: 18px; border-radius: var(--radius); background: var(--pri-soft); margin-bottom: 18px; }
+@media (min-width: 760px) { .code-card { grid-template-columns: 1fr auto; align-items: center; } .code-card > .small { grid-column: 1 / -1; } }
+.code-card h2 { font-size: 20px; }
+.code-box { display: flex; gap: 10px; align-items: center; }
+.code { font-family: var(--font-head); font-size: 30px; letter-spacing: .12em; font-weight: 600; background: var(--paper); padding: 6px 14px; border-radius: 12px; border: 2px dashed var(--pri); }
+.dash-sec { margin-top: 26px; }
+.dash-sec h2 { font-size: 21px; }
+.sec-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+.sec-act { display: flex; gap: 8px; flex-wrap: wrap; }
+.panel-form { padding: 16px; border-radius: var(--radius-sm); background: var(--paper); border: 1px solid var(--line); margin-bottom: 12px; max-width: 520px; }
+.panel-form h3 { font-size: 18px; }
+.panel-form select { min-height: 48px; border-radius: 12px; border: 1px solid var(--line); padding: 0 12px; background: var(--paper); color: var(--ink); font: inherit; width: 100%; }
+.mx-wrap { overflow-x: auto; border-radius: var(--radius-sm); border: 1px solid var(--line); background: var(--paper); }
+.mx { border-collapse: collapse; width: 100%; min-width: 420px; font-size: 15px; }
+.mx th, .mx td { padding: 10px 10px; border-bottom: 1px solid var(--line); text-align: center; white-space: nowrap; }
+.mx thead th { font-size: 13px; color: var(--ink-2); }
+.mx th[scope="row"] { text-align: left; font-weight: 700; }
+.mx-name { display: inline-flex; gap: 8px; align-items: center; }
+.mx-ok { color: var(--ok); font-weight: 800; }
+.mx-ok svg { width: 18px; height: 18px; vertical-align: middle; }
+.mx-late { color: var(--acc-ink); }
+.mx-miss { color: var(--neg); font-weight: 800; }
+.mx-todo { color: var(--mut); }
+.mx-key { margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.hard-list { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 8px; }
+.hard-list li { padding: 12px 14px; border-radius: var(--radius-sm); background: var(--paper); border: 1px solid var(--line); display: grid; gap: 4px; }
+.hard-q { display: flex; gap: 12px; align-items: baseline; }
+.hard-pct { flex: none; font-weight: 800; color: var(--neg); min-width: 44px; }
+
+/* ---------- Kartu anak: target, tugas, gabung kelas ---------- */
+.goal-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin: 4px 0 10px; }
+.goal-txt { display: grid; gap: 2px; flex: 1; min-width: 160px; }
+.goal-txt span { color: var(--ink-2); font-size: 14px; }
+.goal-set { display: flex; gap: 6px; align-items: center; font-size: 14px; font-weight: 700; }
+.goal-set select { min-height: 38px; border-radius: 10px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); padding: 0 8px; }
+.kid-tasks h3 { font-size: 16px; margin: 10px 0 6px; }
+.kid-tasks ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+.kid-tasks li { display: grid; grid-template-columns: 20px 1fr auto; gap: 6px; align-items: center; font-size: 15px; }
+.kid-tasks li svg { width: 16px; height: 16px; color: var(--ok); }
+.kid-tasks li.is-overdue span:last-child { color: var(--neg); font-weight: 700; }
+.join-form { display: flex; gap: 8px; margin-top: 8px; }
+.join-form input { flex: 1; min-width: 0; min-height: 44px; border-radius: 12px; border: 1px solid var(--line); padding: 0 12px; background: var(--paper); color: var(--ink); font: inherit; text-transform: uppercase; }
