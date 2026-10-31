@@ -40,7 +40,7 @@ export function viewMasuk(params = {}) {
         <section class="auth-card" aria-labelledby="login-h">
           ${guide(st.err ? 'no' : st.busy ? 'think' : 'hi', st.err ? t('capie.oops') : st.busy ? t('capie.busy') : st.tab === 'anak' ? t('capie.loginKid') : t('capie.login'))}
           <h1 id="login-h">${t('login.h')}</h1>
-          <div class="seg" role="tablist" aria-label="${t('login.who')}">
+          <div class="tabs-seg" role="tablist" aria-label="${t('login.who')}">
             <button type="button" role="tab" aria-selected="${st.tab === 'akun'}" data-tab="akun">${t('login.tabAcc')}</button>
             <button type="button" role="tab" aria-selected="${st.tab === 'anak'}" data-tab="anak">${t('login.tabKid')}</button>
           </div>
@@ -162,8 +162,8 @@ export function viewDaftar(params = {}) {
           <p class="muted">${t('signup.lead')}</p>
           <form class="form" id="f-su" novalidate>
             <fieldset class="role-pick"><legend>${t('signup.who')}</legend>
-              <label class="method${st.role === 'ortu' ? ' on' : ''}"><input type="radio" name="role" value="ortu" ${st.role === 'ortu' ? 'checked' : ''}><span><strong>${t('signup.ortu')}</strong><small>${t('signup.ortuSub')}</small></span></label>
-              <label class="method${st.role === 'siswa' ? ' on' : ''}"><input type="radio" name="role" value="siswa" ${st.role === 'siswa' ? 'checked' : ''}><span><strong>${t('signup.siswa')}</strong><small>${t('signup.siswaSub')}</small></span></label>
+              <label class="role-opt${st.role === 'ortu' ? ' on' : ''}"><input type="radio" name="role" value="ortu" ${st.role === 'ortu' ? 'checked' : ''}><span class="role-txt"><strong>${t('signup.ortu')}</strong><small>${t('signup.ortuSub')}</small></span></label>
+              <label class="role-opt${st.role === 'siswa' ? ' on' : ''}"><input type="radio" name="role" value="siswa" ${st.role === 'siswa' ? 'checked' : ''}><span class="role-txt"><strong>${t('signup.siswa')}</strong><small>${t('signup.siswaSub')}</small></span></label>
             </fieldset>
             <label for="nm">${t('signup.name')}</label>
             <input id="nm" autocomplete="name" required value="${esc(keep.nm)}">
