@@ -85,8 +85,19 @@ function showNum(a) {
 }
 const ansText = (q) => (q.type === 'num' ? showNum(q.ans[0]) : (q.options.find((o) => o.ok) || {}).t);
 
+function masteryLine(m) {
+  if (!m) return '';
+  const pct = Math.round((m.ok / Math.max(1, m.n)) * 100);
+  return `<div class="mastery-line${m.mastered ? ' is-mastered' : ''}">
+    <span class="meter"><span style="transform:scaleX(${Math.min(1, m.ok / 8)})"></span></span>
+    <p>${m.mastered ? t('m.mastered') : t('m.progress', { ok: m.ok, n: m.n, need: 8 })}${m.n ? ` <span class="muted">(${pct}%)</span>` : ''}</p>
+  </div>`;
+}
+
 export function renderQuiz(root, opts) {
-  const { id, title, backHref, backLabel, questions, nextHref, nextLabel, kind = t('q.kindLatihan'), numHint } = opts;
+  const { id, title, backHref, backLabel, nextHref, nextLabel, kind = t('q.kindLatihan'), numHint, onAnswer, masteryOf } = opts;
+  // build(): susun sesi baru (soal segar setiap kali "Latihan lagi"); questions: daftar tetap
+  const questions = opts.build ? opts.build() : opts.questions;
   if (!questions || !questions.length) {
     root.innerHTML = `<div class="state-box"><p class="state-title">${t('q.none')}</p><p>${t('q.noneBody')}</p><a class="btn btn-ghost" href="${backHref}">${backLabel}</a></div>`;
     return;
@@ -164,6 +175,7 @@ export function renderQuiz(root, opts) {
   function answer(ok, why) {
     const q = qs[i];
     results.push(ok);
+    onAnswer?.(q, ok);
     const fb = root.querySelector('.q-fb');
     fb.hidden = false;
     fb.className = `q-fb ${ok ? 'fb-ok' : 'fb-bad'}`;
@@ -203,9 +215,10 @@ export function renderQuiz(root, opts) {
         <p class="result-score"><span class="big">${correct}</span><span class="of">${t('q.of', { t: qs.length })}</span></p>
         ${capie(pct === 1 ? 'fly' : pct >= 0.6 ? 'cheer' : 'worried', { size: 'md', say: msg, cls: 'result-capie', tag: 'div' })}
         ${best && best.best > correct ? `<p class="muted">${t('q.best', { b: best.best, t: best.total })}</p>` : ''}
+        ${masteryLine(masteryOf?.())}
         <div class="end-actions">
           ${nextHref && pct >= 0.6 ? `<a class="btn btn-primary" href="${nextHref}">${nextLabel}</a>` : ''}
-          <button type="button" class="btn ${nextHref && pct >= 0.6 ? 'btn-ghost' : 'btn-primary'}" data-retry>${t('q.retry', { kind })}</button>
+          <button type="button" class="btn ${nextHref && pct >= 0.6 ? 'btn-ghost' : 'btn-primary'}" data-retry>${opts.fresh ? t('q.retryNew', { kind }) : t('q.retry', { kind })}</button>
           <a class="btn btn-ghost" href="${backHref}">${backLabel}</a>
         </div>
         <h2 class="review-title">${t('q.review')}</h2>

@@ -27,7 +27,7 @@ export function planCards({ landing = false, selected = null } = {}) {
       : `<button type="button" class="btn ${sel ? 'btn-primary' : 'btn-ghost'}" data-plan="${p.id}" aria-pressed="${sel}">${sel ? t('plan.chosen') : t('plan.choose')}</button>`;
     return `<article class="plan${p.best ? ' plan-best' : ''}${sel && !landing ? ' plan-sel' : ''}">
       <div class="plan-top"><h3>${t(`plan.${p.id}`)}</h3>${p.best ? `<span class="plan-badge">${t('plan.save', { n: sv })}</span>` : ''}</div>
-      <p class="plan-price"><strong>${rupiah(p.price)}</strong><span>/${t(p.months === 1 ? 'plan.month' : 'plan.year')}</span></p>
+      <p class="plan-price"><strong>${rupiah(p.price)}</strong><span>/${p.months === 1 ? t('plan.month') : p.months === 12 ? t('plan.year') : t('plan.months', { n: p.months })}</span></p>
       <p class="plan-sub">${p.months === 1 ? t('plan.monthSub') : t('plan.yearSub', { pm: rupiah(perMonth(p)) })}</p>
       <ul class="ticks">${FEATURES.map((k) => `<li>${ICON.check}${t(k, { n: MAX_CHILDREN })}</li>`).join('')}</ul>
       ${cta}

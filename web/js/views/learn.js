@@ -2,6 +2,7 @@
 import { BAB, KELAS, LESSONS, kelasOf } from '../../content/index.js';
 import { Player } from '../player.js';
 import { renderQuiz, shuffle } from '../quiz.js';
+import { buildSession, sessionSize, ujiSize, mastery, hasGen, genQuestion, genCount as localGenCount } from '../practice.js';
 import { store } from '../store.js';
 import { spansHTML } from '../shapes.js';
 import { t, getLang } from '../i18n.js';
@@ -146,12 +147,12 @@ export function viewBab(id) {
               ${k === curIdx ? `<p class="path-flag">${t('bab.startHere')}</p>` : ''}
               <h2 class="lesson-title">${lessonTitle(l)}</h2>
               <p class="lesson-hook">${spansHTML(lessonHook(l) || '')}</p>
-              <p class="lesson-tags">${isFree(l.id) && !auth.hasAccess ? `<span class="tag tag-free">${t('learn.free')}</span>` : ''}${!open ? `<span class="tag">${t('learn.subOnly')}</span>` : ''}${done ? `<span class="tag tag-ok">${t('bab.tagWatched')}</span>` : ''}${scoreBadge(l.id)}</p>
+              <p class="lesson-tags">${isFree(l.id) && !auth.hasAccess ? `<span class="tag tag-free">${t('learn.free')}</span>` : ''}${!open ? `<span class="tag">${t('learn.subOnly')}</span>` : ''}${done ? `<span class="tag tag-ok">${t('bab.tagWatched')}</span>` : ''}${mastery(l.id).mastered ? `<span class="tag tag-mastered">${t('m.tag')}</span>` : scoreBadge(l.id)}</p>
               <div class="lesson-actions">
                 ${
                   open
                     ? `<a class="btn ${done ? 'btn-ghost' : 'btn-primary'}" href="${lessonHref(l.id)}">${done ? t('bab.rewatch') : t('bab.watch')}</a>
-                <a class="btn ${done && !store.score(l.id) ? 'btn-primary' : 'btn-ghost'}" href="${practiceHref(l.id)}">${t('bab.practice', { n: l.quiz.length })}</a>`
+                <a class="btn ${done && !store.score(l.id) ? 'btn-primary' : 'btn-ghost'}" href="${practiceHref(l.id)}">${t('bab.practice', { n: hasGen(l.id) ? sessionSize(b.kelas) : Math.min(l.quiz.length, sessionSize(b.kelas)) })}</a>`
                     : `<a class="btn btn-ghost" href="${lessonHref(l.id)}">${ICON.lock}<span>${t('learn.unlock')}</span></a>`
                 }
               </div>
@@ -268,20 +269,34 @@ export function viewLatihan(id) {
     title: t('latihan.title', { no: `${bab.no}.${i + 1}`, title }),
     backHref: `#/bab/${bab.id}`,
     backLabel: t('bab.short', { no: bab.no, title: babTitle(bab) }),
-    questions: loc.quiz,
+    build: () => buildSession(id, loc.quiz, sessionSize(bab.kelas), { lang: getLang() }),
+    fresh: hasGen(id),
+    onAnswer: (q, ok) => store.recordAnswer(id, q.key, ok),
+    masteryOf: () => mastery(id),
     nextHref: !auth.hasAccess ? (auth.loggedIn ? '#/paket' : '#/daftar?next=paket') : isLastInBab ? `#/uji/${bab.id}` : nxOpen ? lessonHref(nx) : null,
     nextLabel: !auth.hasAccess ? t('lock.after') : isLastInBab ? t('latihan.toUji', { no: bab.no }) : nxOpen ? t('latihan.nextMateri', { title: lessonTitle(LESSONS.get(nx).lesson) }) : '',
     numHint: numHint(bab.kelas),
   });
 }
 
+// Uji bab: SD 15 soal, SMP/SMA 20 soal. Satu soal dari tiap materi dulu, lalu soal bank dan
+// soal generator diacak sampai cukup. Kunci soal tetap dicatat untuk analisis guru.
 function pickUji(b) {
-  const pool = b.lessons.map((l) => shuffle(localLesson(l).quiz));
+  const n = ujiSize(b.kelas);
+  const lang = getLang();
+  const pool = b.lessons.map((l) => shuffle(localLesson(l).quiz.map((q, i) => ({ ...q, key: `${l.id}#${i}` }))));
   const picked = [];
-  // satu soal dari tiap materi dulu, lalu isi sisanya secara acak
   pool.forEach((qs) => qs.length && picked.push(qs.shift()));
-  const rest = shuffle([...pool.flat(), ...localExtra(b)]);
-  while (picked.length < 10 && rest.length) picked.push(rest.shift());
+  const rest = shuffle([...pool.flat(), ...localExtra(b).map((q, i) => ({ ...q, key: `${b.id}#x${i}` }))]);
+  const withGen = b.lessons.filter((l) => hasGen(l.id));
+  const gens = [];
+  for (let k = 0; withGen.length && gens.length < n; k++) {
+    const l = withGen[k % withGen.length];
+    gens.push(genQuestion(l.id, Math.floor(Math.random() * localGenCount(l.id)), Math.random, lang));
+  }
+  // separuh sisa dari bank, separuh dari generator (bila ada)
+  const mix = shuffle([...rest.slice(0, Math.ceil((n - picked.length) / (gens.length ? 2 : 1))), ...gens]);
+  while (picked.length < n && mix.length) picked.push(mix.shift());
   return shuffle(picked);
 }
 
@@ -300,7 +315,9 @@ export function viewUji(id) {
     title,
     backHref: `#/bab/${b.id}`,
     backLabel: t('bab.short', { no: b.no, title: babTitle(b) }),
-    questions: pickUji(b),
+    build: () => pickUji(b),
+    fresh: true,
+    onAnswer: (q, ok) => store.recordAnswer(b.id, q.key, ok),
     nextHref: nextBab ? `#/bab/${nextBab.id}` : `#/kelas/${b.kelas}`,
     nextLabel: nextBab ? t('uji.next', { no: nextBab.no, title: babTitle(nextBab) }) : t('uji.back'),
     kind: t('q.kindUji'),

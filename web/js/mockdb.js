@@ -42,7 +42,7 @@ function prog(now, list) {
 function seed() {
   const now = Date.now();
   const accounts = {
-    a_sari: { id: 'a_sari', email: 'ortu@demo.id', pass: 'demo123', role: 'ortu', name: 'Sari Wulandari', plan: { status: 'active', planId: 'tahunan', until: now + 300 * DAY }, profiles: ['p_raka', 'p_nadia'], invoices: [{ id: 'INV-DEMO-1', planId: 'tahunan', amount: 399000, method: 'qris', paidAt: now - 65 * DAY }] },
+    a_sari: { id: 'a_sari', email: 'ortu@demo.id', pass: 'demo123', role: 'ortu', name: 'Sari Wulandari', plan: { status: 'active', planId: 'tahunan', until: now + 300 * DAY }, profiles: ['p_raka', 'p_nadia'], invoices: [{ id: 'INV-DEMO-1', planId: 'tahunan', amount: 699000, method: 'qris', paidAt: now - 65 * DAY }] },
     a_budi: { id: 'a_budi', email: 'ortu.baru@demo.id', pass: 'demo123', role: 'ortu', name: 'Budi Santoso', plan: { status: 'none' }, profiles: ['p_dimas'], invoices: [] },
     a_kevin: { id: 'a_kevin', email: 'siswa@demo.id', pass: 'demo123', role: 'siswa', name: 'Kevin Pratama', plan: { status: 'trial', planId: 'bulanan', until: now + 5 * DAY }, profiles: ['p_kevin'], invoices: [] },
     a_ratna: { id: 'a_ratna', email: 'guru@demo.id', pass: 'demo123', role: 'guru', name: 'Ratna Dewi', school: 'SMP Harapan · Kelas 7A', plan: { status: 'active', planId: 'sekolah', until: now + 200 * DAY }, profiles: ['p_ayu', 'p_bima', 'p_citra'], invoices: [] },

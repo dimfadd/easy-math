@@ -885,3 +885,10 @@ h1 .mk-acc { background: color-mix(in srgb, var(--acc) 45%, var(--paper)); borde
 .ai-where > span:first-child { font-weight: 800; color: #EEF1FA; }
 .ai-chip { display: inline-block; padding: 3px 10px; border-radius: 8px; background: rgba(238, 241, 250, .1); color: #EEF1FA; font-weight: 700; font-size: 13px; }
 .ai-next { margin-top: 14px; padding-top: 16px; border-top: 1px solid rgba(238, 241, 250, .16); font-weight: 700; color: #FFFFFF; }
+
+/* Penguasaan materi */
+.mastery-line { display: grid; gap: 6px; margin: 4px 0 2px; max-width: 460px; }
+.mastery-line .meter > span { background: var(--pri); }
+.mastery-line.is-mastered .meter > span { background: var(--ok); }
+.mastery-line p { font-weight: 700; font-size: 15px; }
+.tag-mastered { background: var(--ok); color: var(--onfill); }

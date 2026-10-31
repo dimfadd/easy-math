@@ -38,6 +38,22 @@ export function mergeProgress(a = {}, b = {}) {
       out.scores[id] = { best: Math.max(c.best, s.best), total: newer.total, last: newer.last, at: newer.at };
     }
   }
+  const newerSide = (b.updatedAt || 0) > (a.updatedAt || 0) ? b : a;
+  // riwayat jawaban: ambil versi perangkat yang lebih baru per materi
+  out.recent = { ...(a.recent || {}) };
+  for (const [id, r] of Object.entries(b.recent || {})) if (!out.recent[id] || newerSide === b) out.recent[id] = r;
+  out.seen = { ...(a.seen || {}) };
+  for (const [id, m] of Object.entries(b.seen || {})) {
+    const c = (out.seen[id] = { ...(out.seen[id] || {}) });
+    for (const [k, at] of Object.entries(m)) c[k] = Math.max(c[k] || 0, at);
+  }
+  out.items = { ...(a.items || {}) };
+  for (const [k, v] of Object.entries(b.items || {})) {
+    const c = out.items[k] || [0, 0];
+    out.items[k] = [Math.max(c[0], v[0]), Math.max(c[1], v[1])];
+  }
+  out.days = { ...(a.days || {}) };
+  for (const [k, n] of Object.entries(b.days || {})) out.days[k] = Math.max(out.days[k] || 0, n);
   if ((b.updatedAt || 0) > (a.updatedAt || 0)) out.last = b.last ?? out.last;
   out.updatedAt = Math.max(a.updatedAt || 0, b.updatedAt || 0);
   return out;

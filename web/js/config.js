@@ -9,10 +9,13 @@ export const FREE = {
 };
 export const FREE_SET = new Set(Object.values(FREE).flat());
 
-// HARGA CONTOH untuk prototipe. Ganti setelah uji harga dengan pengunjung sungguhan.
+// Harga Paket Keluarga (sampai 4 anak). Dasar penetapan ada di docs/arah-produk.md bagian 6.1:
+// di bawah Ruangguru per anak, di atas Zenius, setara Astra AI per orang, tetapi untuk satu keluarga.
+// Masih perlu divalidasi dengan survei harga ke orang tua sebelum peluncuran.
 export const PLANS = [
-  { id: 'bulanan', months: 1, price: 49000 },
-  { id: 'tahunan', months: 12, price: 399000, best: true },
+  { id: 'bulanan', months: 1, price: 99000 },
+  { id: 'semester', months: 6, price: 399000 },
+  { id: 'tahunan', months: 12, price: 699000, best: true },
 ];
 export const TRIAL_DAYS = 7;
 export const MAX_CHILDREN = 4;

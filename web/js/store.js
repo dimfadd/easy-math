@@ -7,7 +7,13 @@ const GUEST_KEY = 'easymath.k7.v1';
 const SETTINGS_KEY = 'easymath.settings.v1';
 const progKey = (pid) => (pid ? `easymath.progress.${pid}` : GUEST_KEY);
 
-const empty = () => ({ watched: {}, scores: {}, last: null, updatedAt: 0 });
+// recent: 0/1 per jawaban terakhir per materi · seen: kapan soal bank terakhir muncul
+// items: [dijawab, salah] per jenis soal · days: banyak jawaban per tanggal (runtutan dan target)
+const empty = () => ({ watched: {}, scores: {}, recent: {}, seen: {}, items: {}, days: {}, last: null, updatedAt: 0 });
+export const dayKey = (ms = Date.now()) => {
+  const d = new Date(ms);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+};
 
 let persistent = true;
 const read = (k) => {
@@ -39,6 +45,12 @@ let profileId = null;
 let data = { ...empty(), ...(read(GUEST_KEY) || {}) };
 delete data.settings;
 const listeners = new Set();
+
+function bumpDay() {
+  data.days = data.days || {};
+  const k = dayKey();
+  data.days[k] = (data.days[k] || 0) + 1;
+}
 
 function save() {
   data.updatedAt = Date.now();
@@ -92,8 +104,36 @@ export const store = {
   markWatched(id) {
     if (!data.watched[id]) {
       data.watched[id] = Date.now();
+      bumpDay();
       save();
     }
+  },
+  recent(id) {
+    return (data.recent || {})[id] || [];
+  },
+  seenAt(id) {
+    return (data.seen || {})[id] || {};
+  },
+  get items() {
+    return data.items || {};
+  },
+  get days() {
+    return data.days || {};
+  },
+  // Satu jawaban latihan: id materi (atau bab untuk uji), kunci soal, benar/salah
+  recordAnswer(id, key, ok) {
+    data.recent = data.recent || {};
+    data.seen = data.seen || {};
+    data.items = data.items || {};
+    data.recent[id] = [...(data.recent[id] || []), ok ? 1 : 0].slice(-20);
+    if (key && key.includes('#')) (data.seen[id] = data.seen[id] || {})[key] = Date.now();
+    if (key) {
+      const it = (data.items[key] = data.items[key] || [0, 0]);
+      it[0]++;
+      if (!ok) it[1]++;
+    }
+    bumpDay();
+    save();
   },
   score(id) {
     return data.scores[id] || null;
