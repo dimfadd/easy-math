@@ -1,5 +1,5 @@
 // Fungsi bantu bersama untuk generator soal SD Kelas 2 sampai 6.
-import { L, ri, pick, D, F, gcd } from '../util.js';
+import { L, ri, pick, D, N, F, gcd } from '../util.js';
 
 export const NAMES = ['Ani', 'Budi', 'Citra', 'Dodi', 'Eka', 'Fajar', 'Gita', 'Hana', 'Intan', 'Joko', 'Kiki', 'Lina', 'Rudi', 'Sari', 'Tono', 'Wati'];
 export const name = (rnd) => pick(rnd, NAMES);
@@ -111,4 +111,4 @@ function enWords(n) {
 }
 export const words = (lang, n) => (lang === 'en' ? enWords(n) : idWords(n));
 
-export { L, ri, pick, D, F, gcd };
+export { L, ri, pick, D, N, F, gcd };
