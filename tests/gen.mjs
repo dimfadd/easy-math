@@ -58,6 +58,8 @@ for (const [id, gens] of Object.entries(GEN)) {
           if (ok.length !== 1) fail(id, k, `pilihan benar = ${ok.length}`, q);
           const ts = q.options.map((o) => o.t);
           if (new Set(ts).size !== ts.length) fail(id, k, 'pilihan kembar', q);
+          const okT = ok[0]?.t;
+          if (okT !== undefined && q.options.some((o) => !o.ok && toNumber(o.t) !== null && same(o.t, okT))) fail(id, k, 'pengecoh bernilai sama dengan kunci', q);
           if (q.options.some((o) => !o.ok && !o.why)) fail(id, k, 'pilihan keliru tanpa penjelasan', q);
         }
         if (!q.steps || !q.steps.length) fail(id, k, 'tanpa pembahasan', q);

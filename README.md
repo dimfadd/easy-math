@@ -399,7 +399,7 @@ Jalankan server lokal dulu, lalu:
 ```sh
 BASE=http://localhost:8765/ node tests/smoke.cjs     # semua halaman, semua langkah, 3 ukuran layar
 node tests/answers.mjs                                # pemeriksa jawaban isian
-node tests/gen.mjs                                    # generator soal acak (ribuan soal diperiksa)
+node tests/gen.mjs                                    # generator soal acak semua kelas + uji kunci lewat solve (GEN_ONLY=k2,k3 untuk sebagian)
 BASE=http://localhost:8765/ node tests/accounts.cjs  # akun, kunci materi, bayar, sinkron
 BASE=http://localhost:8765/ node tests/roles.cjs     # guru, siswa, orang tua: kelas, tugas, target
 BASE=http://localhost:8765/ node tests/offline.cjs   # service worker dan mode offline

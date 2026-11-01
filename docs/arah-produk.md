@@ -155,7 +155,7 @@ Angka harga, lama uji coba, dan batas profil sengaja dibiarkan sebagai
   - progres di satu perangkat.
 - **Keluarga (sampai 4 anak):**
   - semua kelas;
-  - latihan dan uji bab dengan pembahasan (soal baru setiap kali: Kelas 1 sekarang, kelas lain menyusul);
+  - latihan dan uji bab dengan pembahasan (soal baru setiap kali, Kelas 1–12);
   - laporan orang tua, target mingguan, dan ringkasan WhatsApp;
   - sinkronisasi;
   - Lab (nanti).
@@ -196,8 +196,7 @@ Alasan angka Capie:
 
 Kebenaran yang tidak enak:
 - **Harga naik tanpa bukti menurunkan konversi.** Ini terjadi selama belum ada
-  testimoni nyata, belum ada data hasil belajar, dan baru Kelas 1 yang punya soal
-  tak terbatas [Kemungkinan Besar].
+  testimoni nyata dan belum ada data hasil belajar [Kemungkinan Besar].
 - **Sebelum peluncuran, jalankan survei harga ke 30–50 orang tua.** Pakai metode
   Van Westendorp (empat pertanyaan "terlalu murah / murah / mahal / terlalu mahal"),
   lalu uji A/B dua titik harga di halaman paket.
@@ -526,14 +525,17 @@ Alasan:
   "Latihan lagi" berisi soal baru.
 
 Status:
-- **Kelas 1:** 18 materi, semuanya punya generator (24 jenis soal). `tests/gen.mjs`
-  memeriksa ribuan soal hasil generator setiap kali dijalankan.
-- **Kelas 2–12:** masih 5 soal bank per materi.
-  - Sesi latihan memakai yang ada (maksimal 5).
-  - Uji bab memakai soal bank ditambah soal tambahan bab.
-  - Ini pekerjaan konten berikutnya, berurutan: SD 2–6, lalu SMP, lalu SMA.
-- **Materi konseptual** (misalnya membaca pernyataan, memilih alasan) tetap butuh
-  soal tulisan tangan. Targetnya +10 soal per materi.
+- **Semua 252 materi Kelas 1–12 punya generator** (Kelas 1: 24, SD 2–6: 141,
+  SMP: 110, SMA: 159 jenis soal). Sesi latihan dan uji bab memakai patokan di atas.
+- **Uji kunci jawaban:** setiap generator Kelas 2–12 punya fungsi `solve` yang
+  menghitung ulang jawaban dari angka mentah soal dengan cara terpisah.
+  `tests/gen.mjs` membuat sekitar 350.000 soal dan mencocokkan kuncinya, juga
+  menolak pengecoh yang nilainya sama dengan kunci.
+- **Materi konseptual** memakai kumpulan 10–12 soal tulisan tangan baru (pool) di
+  samping generator acak, misalnya jenis sudut, kongruensi, konsep turunan.
+- **Batas yang perlu diketahui:** uji otomatis membuktikan kunci konsisten dengan
+  rumus, bukan bahwa soalnya pas secara pedagogis. Sebelum dijual ke sekolah,
+  minta guru per jenjang meninjau sampel soal (mis. 3 per materi).
 
 ---
 
