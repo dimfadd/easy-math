@@ -1,7 +1,7 @@
 // Service worker: aplikasi tetap bisa dibuka tanpa internet setelah kunjungan pertama.
 // Strategi: file inti di-cache saat instal; file lain di-cache saat pertama diminta,
 // lalu disajikan dari cache sambil diperbarui di latar (stale-while-revalidate).
-const VERSION = 'capie-v83';
+const VERSION = 'capie-v84';
 const CORE = [
   './',
   './index.html',
@@ -41,6 +41,12 @@ const CORE = [
   './content/gen/util.js',
   './content/gen/k1.js',
   './content/gen/sd.js',
+  './content/gen/sd/common.js',
+  './content/gen/sd/k2.js',
+  './content/gen/sd/k3.js',
+  './content/gen/sd/k4.js',
+  './content/gen/sd/k5.js',
+  './content/gen/sd/k6.js',
   './content/gen/smp.js',
   './content/gen/smp/u.js',
   './content/gen/smp/k7.js',
