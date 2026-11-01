@@ -1,2 +1,8 @@
 // Generator soal SD Kelas 2 sampai 6.
-export const SD = {};
+import { K2 } from './sd/k2.js';
+import { K3 } from './sd/k3.js';
+import { K4 } from './sd/k4.js';
+import { K5 } from './sd/k5.js';
+import { K6 } from './sd/k6.js';
+
+export const SD = { ...K2, ...K3, ...K4, ...K5, ...K6 };
